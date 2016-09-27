@@ -1,0 +1,315 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		656ECEBF1D9B0B7000B6CF89 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656ECEBE1D9B0B7000B6CF89 /* Cocoa.framework */; };
+		656ECEC21D9B0B7000B6CF89 /* SelectionPalette-Prefix.pch in Resources */ = {isa = PBXBuildFile; fileRef = 656ECEC11D9B0B7000B6CF89 /* SelectionPalette-Prefix.pch */; };
+		656ECEC41D9B0B7000B6CF89 /* SelectionPalette-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 656ECEC31D9B0B7000B6CF89 /* SelectionPalette-Info.plist */; };
+		656ECEC71D9B0B7000B6CF89 /* SelectionPalette.m in Sources */ = {isa = PBXBuildFile; fileRef = 656ECEC61D9B0B7000B6CF89 /* SelectionPalette.m */; };
+		656ECECB1D9B0B7000B6CF89 /* SelectionPaletteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 656ECEC91D9B0B7000B6CF89 /* SelectionPaletteView.xib */; };
+		656ECECD1D9B0B7000B6CF89 /* GlyphsCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656ECECC1D9B0B7000B6CF89 /* GlyphsCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		656ECEBB1D9B0B7000B6CF89 /* SelectionPalette.glyphsPalette */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SelectionPalette.glyphsPalette; sourceTree = BUILT_PRODUCTS_DIR; };
+		656ECEBE1D9B0B7000B6CF89 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		656ECEC11D9B0B7000B6CF89 /* SelectionPalette-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SelectionPalette-Prefix.pch"; sourceTree = "<group>"; };
+		656ECEC31D9B0B7000B6CF89 /* SelectionPalette-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SelectionPalette-Info.plist"; sourceTree = "<group>"; };
+		656ECEC51D9B0B7000B6CF89 /* SelectionPalette.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectionPalette.h; sourceTree = "<group>"; };
+		656ECEC61D9B0B7000B6CF89 /* SelectionPalette.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectionPalette.m; sourceTree = "<group>"; };
+		656ECECA1D9B0B7000B6CF89 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SelectionPaletteView.xib; sourceTree = "<group>"; };
+		656ECECC1D9B0B7000B6CF89 /* GlyphsCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GlyphsCore.framework; path = /Applications/Glyphs.app/Contents/Frameworks/GlyphsCore.framework; sourceTree = "<absolute>"; };
+		656ECECE1D9B0B7000B6CF89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		656ECEB81D9B0B7000B6CF89 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				656ECECD1D9B0B7000B6CF89 /* GlyphsCore.framework in Frameworks */,
+				656ECEBF1D9B0B7000B6CF89 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		656ECEB21D9B0B7000B6CF89 = {
+			isa = PBXGroup;
+			children = (
+				656ECEC01D9B0B7000B6CF89 /* SelectionPalette */,
+				656ECEBD1D9B0B7000B6CF89 /* Frameworks */,
+				656ECEBC1D9B0B7000B6CF89 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		656ECEBC1D9B0B7000B6CF89 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				656ECEBB1D9B0B7000B6CF89 /* SelectionPalette.glyphsPalette */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		656ECEBD1D9B0B7000B6CF89 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				656ECEBE1D9B0B7000B6CF89 /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		656ECEC01D9B0B7000B6CF89 /* SelectionPalette */ = {
+			isa = PBXGroup;
+			children = (
+				656ECEC11D9B0B7000B6CF89 /* SelectionPalette-Prefix.pch */,
+				656ECEC31D9B0B7000B6CF89 /* SelectionPalette-Info.plist */,
+				656ECEC51D9B0B7000B6CF89 /* SelectionPalette.h */,
+				656ECEC61D9B0B7000B6CF89 /* SelectionPalette.m */,
+				656ECECE1D9B0B7000B6CF89 /* Info.plist */,
+				656ECEC81D9B0B7000B6CF89 /* Supporting Files */,
+			);
+			path = SelectionPalette;
+			sourceTree = "<group>";
+		};
+		656ECEC81D9B0B7000B6CF89 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				656ECEC91D9B0B7000B6CF89 /* SelectionPaletteView.xib */,
+				656ECECC1D9B0B7000B6CF89 /* GlyphsCore.framework */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		656ECEBA1D9B0B7000B6CF89 /* SelectionPalette */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 656ECED11D9B0B7000B6CF89 /* Build configuration list for PBXNativeTarget "SelectionPalette" */;
+			buildPhases = (
+				656ECEB71D9B0B7000B6CF89 /* Sources */,
+				656ECEB81D9B0B7000B6CF89 /* Frameworks */,
+				656ECEB91D9B0B7000B6CF89 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SelectionPalette;
+			productName = SelectionPalette;
+			productReference = 656ECEBB1D9B0B7000B6CF89 /* SelectionPalette.glyphsPalette */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		656ECEB31D9B0B7000B6CF89 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "Daniel Gamage";
+				TargetAttributes = {
+					656ECEBA1D9B0B7000B6CF89 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = R466WB565R;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 656ECEB61D9B0B7000B6CF89 /* Build configuration list for PBXProject "SelectionPalette" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 656ECEB21D9B0B7000B6CF89;
+			productRefGroup = 656ECEBC1D9B0B7000B6CF89 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				656ECEBA1D9B0B7000B6CF89 /* SelectionPalette */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		656ECEB91D9B0B7000B6CF89 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				656ECEC21D9B0B7000B6CF89 /* SelectionPalette-Prefix.pch in Resources */,
+				656ECECB1D9B0B7000B6CF89 /* SelectionPaletteView.xib in Resources */,
+				656ECEC41D9B0B7000B6CF89 /* SelectionPalette-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		656ECEB71D9B0B7000B6CF89 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				656ECEC71D9B0B7000B6CF89 /* SelectionPalette.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		656ECEC91D9B0B7000B6CF89 /* SelectionPaletteView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				656ECECA1D9B0B7000B6CF89 /* en */,
+			);
+			name = SelectionPaletteView.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		656ECECF1D9B0B7000B6CF89 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+			};
+			name = Debug;
+		};
+		656ECED01D9B0B7000B6CF89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+			};
+			name = Release;
+		};
+		656ECED21D9B0B7000B6CF89 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEVELOPMENT_TEAM = R466WB565R;
+				DSTROOT = "~/Library/Application Support/Glyphs/Plugins";
+				FRAMEWORK_SEARCH_PATHS = "$(SYSTEM_APPS_DIR)/Glyphs.app/Contents/Frameworks";
+				INFOPLIST_FILE = SelectionPalette/Info.plist;
+				INSTALL_PATH = /;
+				PRODUCT_BUNDLE_IDENTIFIER = danielgamage.SelectionPalette;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = glyphsPalette;
+			};
+			name = Debug;
+		};
+		656ECED31D9B0B7000B6CF89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = R466WB565R;
+				FRAMEWORK_SEARCH_PATHS = "$(SYSTEM_APPS_DIR)/Glyphs.app/Contents/Frameworks";
+				INFOPLIST_FILE = SelectionPalette/Info.plist;
+				INSTALL_PATH = /;
+				PRODUCT_BUNDLE_IDENTIFIER = danielgamage.SelectionPalette;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = NO;
+				WRAPPER_EXTENSION = glyphsPalette;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		656ECEB61D9B0B7000B6CF89 /* Build configuration list for PBXProject "SelectionPalette" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				656ECECF1D9B0B7000B6CF89 /* Debug */,
+				656ECED01D9B0B7000B6CF89 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		656ECED11D9B0B7000B6CF89 /* Build configuration list for PBXNativeTarget "SelectionPalette" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				656ECED21D9B0B7000B6CF89 /* Debug */,
+				656ECED31D9B0B7000B6CF89 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 656ECEB31D9B0B7000B6CF89 /* Project object */;
+}
