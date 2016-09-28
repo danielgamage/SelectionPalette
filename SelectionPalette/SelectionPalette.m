@@ -39,10 +39,10 @@
     NSUInteger siblingIndex;
 
     if (next == YES) {
-        // && if last node
+        // if last node
         siblingIndex = (index == length - 1) ? 0 : index + 1;
     } else {
-        // && if first node
+        // if first node
         siblingIndex = (index == 0) ? length - 1 : index - 1;
     }
 
@@ -105,11 +105,12 @@
 - (void) continueSelection {
     GSNode *lastNode = layer.selection[[layer.selection count] - 1];
     GSNode *originNode = layer.selection[[layer.selection count] - 2];
-    int *lastNodeIndex = [lastNode.parent indexOfNode:lastNode];
-    int *originNodeIndex = [originNode.parent indexOfNode:originNode];
     GSPath *path = originNode.parent;
+    NSUInteger lastNodeIndex = [path indexOfNode:lastNode];
+    NSUInteger originNodeIndex = [path indexOfNode:originNode];
 
-    int rhythm;
+
+    NSUInteger rhythm;
 
     // Get difference of two nodes
     if (lastNodeIndex > originNodeIndex) {
@@ -158,7 +159,7 @@
     }
 }
 
-- (IBAction)growSelection:(id)sender {
+- (IBAction) growSelection:(id)sender {
     [self growSelection];
 }
 
