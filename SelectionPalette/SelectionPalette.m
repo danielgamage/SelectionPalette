@@ -82,6 +82,27 @@
 
 }
 
+- (void) shrinkSelection {
+    NSMutableArray *nodesToDeselect = [[NSMutableArray alloc] init];
+
+    // Get nodes on inside edges of selection
+    for (GSPath *path in layer.paths) {
+        for (GSNode *node in path.nodes) {
+            if ([self isSelected:node]) {
+                if (![self isSelected:[self nextNode:node]] || ![self isSelected:[self prevNode:node]]) {
+                    [nodesToDeselect addObject:node];
+                }
+            }
+        }
+    }
+
+    // Deselect them
+    for (GSNode *node in nodesToDeselect) {
+        [layer.selection removeObject:node];
+    }
+}
+
+
 - (void) selectByType:(int)type andSmooth:(bool)connection withOperation:(bool)operation {
     for (GSPath *path in layer.paths){
         for (GSNode *node in path.nodes) {
