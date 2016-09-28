@@ -87,6 +87,7 @@
     // Select them
     for (GSNode *node in nodesToSelect) {
         [layer.selection addObject:node];
+        [layer elementDidChange:node];
     }
 
 }
@@ -108,6 +109,7 @@
     // Deselect them
     for (GSNode *node in nodesToDeselect) {
         [layer.selection removeObject:node];
+        [layer elementDidChange:node];
     }
 }
 
@@ -140,7 +142,7 @@
 
     // Select it
     [layer.selection addObject:nodeToSelect];
-
+    [layer elementDidChange:nodeToSelect];
 }
 
 
@@ -160,8 +162,10 @@
             if (![conditions containsObject:@(NO)]) {
                 if (operation) {
                     [layer addSelection:node];
+                    [layer elementDidChange:node];
                 } else {
                     [layer removeObjectFromSelection:node];
+                    [layer elementDidChange:node];
                 }
             }
         }
