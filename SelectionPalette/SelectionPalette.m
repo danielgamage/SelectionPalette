@@ -29,7 +29,7 @@
 
 - (NSString*) title {
 	// Return the name of the tool as it will appear in the menu.
-	return @"SelectionPalette";
+	return @"Selection Palette";
 }
 
 - (GSNode*) getSibling:(GSNode*)node next:(bool)next {
