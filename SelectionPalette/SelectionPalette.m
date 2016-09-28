@@ -21,20 +21,20 @@
 @synthesize windowController;
 
 - (id) init {
-	self = [super init];
-	[NSBundle loadNibNamed:@"SelectionPaletteView" owner:self];
+    self = [super init];
+    [NSBundle loadNibNamed:@"SelectionPaletteView" owner:self];
     layer = [windowController activeLayer];
-	return self;
+    return self;
 }
 
 - (NSUInteger) interfaceVersion {
-	// Distinguishes the API verison the plugin was built for. Return 1.
-	return 1;
+    // Distinguishes the API verison the plugin was built for. Return 1.
+    return 1;
 }
 
 - (NSString*) title {
-	// Return the name of the tool as it will appear in the menu.
-	return @"Selection Palette";
+    // Return the name of the tool as it will appear in the menu.
+    return @"Selection Palette";
 }
 
 - (GSNode*) getSibling:(GSNode*)node next:(bool)next {
@@ -169,12 +169,12 @@
 }
 
 - (NSInteger) maxHeight {
-	return 265;
+    return 265;
 }
 - (NSInteger) minHeight {
-	return 125;
+    return 125;
 }
 - (NSUInteger) currentHeight {
-	return [[NSUserDefaults standardUserDefaults] integerForKey:@"SelectionPaletteCurrentHeight"];
+    return [[NSUserDefaults standardUserDefaults] integerForKey:@"SelectionPaletteCurrentHeight"];
 }
 @end
