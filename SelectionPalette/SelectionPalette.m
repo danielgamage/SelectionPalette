@@ -23,7 +23,7 @@
 - (id) init {
     self = [super init];
     [NSBundle loadNibNamed:@"SelectionPaletteView" owner:self];
-    layer = [windowController activeLayer];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(update:) name:@"GSUpdateInterface" object:nil];
     return self;
 }
 
@@ -35,6 +35,10 @@
 - (NSString*) title {
     // Return the name of the tool as it will appear in the menu.
     return @"Selection Palette";
+}
+
+- (void)update:(id)sender {
+    layer = [windowController activeLayer];
 }
 
 - (GSNode*) getSibling:(GSNode*)node next:(bool)next {
