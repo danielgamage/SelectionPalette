@@ -12,13 +12,18 @@
 #import <GlyphsCore/GSGlyph.h>
 #import <GlyphsCore/GSLayer.h>
 #import <GlyphsCore/GSPath.h>
+#import <GlyphsCore/GSElement.h>
+#import <GlyphsCore/GSNode.h>
+#import <GlyphsCore/GSWindowControllerProtocol.h>
 
 @implementation SelectionPalette
+
+@synthesize windowController;
 
 - (id) init {
 	self = [super init];
 	[NSBundle loadNibNamed:@"SelectionPaletteView" owner:self];
-    layer = [_editViewController.graphicView activeLayer];
+    layer = [windowController activeLayer];
 	return self;
 }
 
