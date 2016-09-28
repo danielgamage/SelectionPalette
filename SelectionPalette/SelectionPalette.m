@@ -68,7 +68,7 @@
     // Get nodes on outside edges of selection
     for (GSPath *path in layer.paths) {
         for (GSNode *node in path.nodes) {
-            if ([self isSelected:node]) {
+            if (![self isSelected:node]) {
                 if ([self isSelected:[self nextNode:node]] || [self isSelected:[self prevNode:node]]) {
                     [nodesToSelect addObject:node];
                 }
