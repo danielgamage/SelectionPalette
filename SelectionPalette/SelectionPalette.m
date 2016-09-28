@@ -102,6 +102,37 @@
     }
 }
 
+- (void) continueSelection {
+    GSNode *lastNode = layer.selection[[layer.selection count] - 1];
+    GSNode *originNode = layer.selection[[layer.selection count] - 2];
+    int *lastNodeIndex = [lastNode.parent indexOfNode:lastNode];
+    int *originNodeIndex = [originNode.parent indexOfNode:originNode];
+    GSPath *path = originNode.parent;
+
+    int rhythm;
+
+    // Get difference of two nodes
+    if (lastNodeIndex > originNodeIndex) {
+        // normal diff
+        rhythm = lastNodeIndex - originNodeIndex;
+    } else {
+        // crossing bounds of path
+        rhythm = abs(originNodeIndex - [path.nodes count]) + lastNodeIndex;
+    }
+
+    // Move to node with rhythm
+    GSNode *nodeToSelect = lastNode;
+    int i = 0;
+    while (i < rhythm) {
+        nodeToSelect = [self nextNode:nodeToSelect];
+        i += 1;
+    }
+
+    // Select it
+    [layer.selection addObject:nodeToSelect];
+
+}
+
 
 - (void) selectByType:(int)type andSmooth:(bool)connection withOperation:(bool)operation {
     for (GSPath *path in layer.paths){
