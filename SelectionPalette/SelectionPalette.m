@@ -149,7 +149,7 @@
             if (type) {
                 [conditions addObject:([NSNumber numberWithBool:(node.type == type)])];
             }
-            if (connection) {
+            if (connection == YES || connection == NO) {
                 // apparently `smooth` = 100 and `sharp` = 0, so multiply for comparison
                 [conditions addObject:([NSNumber numberWithBool:(node.connection == connection * 100)])];
             }
