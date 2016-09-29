@@ -117,8 +117,6 @@
     GSPath *path = originNode.parent;
     NSUInteger lastNodeIndex = [path indexOfNode:lastNode];
     NSUInteger originNodeIndex = [path indexOfNode:originNode];
-
-
     NSUInteger rhythm;
 
     // Get difference of two nodes
@@ -152,11 +150,12 @@
                 [conditions addObject:([NSNumber numberWithBool:(node.type == type)])];
             }
             if (connection) {
-                [conditions addObject:([NSNumber numberWithBool:(node.connection == connection)])];
+                // apparently `smooth` = 100 and `sharp` = 0, so multiply for comparison
+                [conditions addObject:([NSNumber numberWithBool:(node.connection == connection * 100)])];
             }
 
             // if all conditions pass...
-            if (![conditions containsObject:@(NO)]) {
+            if (![conditions containsObject:@(0)]) {
                 if (operation) {
                     [layer addSelection:node];
                 } else {
@@ -182,6 +181,15 @@
 }
 - (IBAction) undoSelection:(id)sender {
     [self undoSelection];
+}
+- (IBAction) selectByType:(id)sender {
+    NSLog(@"%@", sender);
+    int type = (int)[sender valueForKey:@"type"];
+    NSLog(@"%i", type);
+    bool smooth = [sender valueForKey:@"smooth"];
+    NSLog(@"%i", type);
+    bool operation = [sender tag] ? 0 : 1;
+    [self selectByType:type andSmooth:smooth withOperation:operation];
 }
 
 - (NSInteger) maxHeight {

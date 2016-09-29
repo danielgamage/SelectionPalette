@@ -17,6 +17,10 @@
     IBOutlet NSButton *shrinkButton;
     IBOutlet NSButton *continueButton;
     IBOutlet NSButton *undoButton;
+    __weak IBOutlet NSSegmentedControl *selectSmoothCurves;
+    __weak IBOutlet NSSegmentedControl *selectSharpCurves;
+    __weak IBOutlet NSSegmentedControl *selectLines;
+    __weak IBOutlet NSSegmentedControl *selectHandles;
 }
 @property (assign, nonatomic) IBOutlet NSView *theView;
 @end
