@@ -175,6 +175,12 @@
 - (IBAction) growSelection:(id)sender {
     [self growSelection];
 }
+- (IBAction) shrinkSelection:(id)sender {
+    [self shrinkSelection];
+}
+- (IBAction) continueSelection:(id)sender {
+    [self continueSelection];
+}
 
 - (NSInteger) maxHeight {
     return 265;

@@ -14,6 +14,8 @@
     NSView *					__unsafe_unretained _theView;
     GSLayer *layer;
     IBOutlet NSButton *growButton;
+    IBOutlet NSButton *shrinkButton;
+    IBOutlet NSButton *continueButton;
 }
 @property (assign, nonatomic) IBOutlet NSView *theView;
 @end
