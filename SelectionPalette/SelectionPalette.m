@@ -182,14 +182,25 @@
 - (IBAction) undoSelection:(id)sender {
     [self undoSelection];
 }
-- (IBAction) selectByType:(id)sender {
-    NSLog(@"%@", sender);
-    int type = (int)[sender valueForKey:@"type"];
-    NSLog(@"%i", type);
-    bool smooth = [sender valueForKey:@"smooth"];
-    NSLog(@"%i", type);
-    bool operation = [sender tag] ? 0 : 1;
-    [self selectByType:type andSmooth:smooth withOperation:operation];
+- (IBAction) selectSmoothCurves:(id)sender {
+    bool operation = [sender selectedSegment] ? 0 : 1;
+    NSLog(operation ? @"Yes" : @"No");
+    [self selectByType:35 andSmooth:YES withOperation:operation];
+}
+- (IBAction) selectSharpCurves:(id)sender {
+    bool operation = [sender selectedSegment] ? 0 : 1;
+    NSLog(operation ? @"Yes" : @"No");
+    [self selectByType:35 andSmooth:NO withOperation:operation];
+}
+- (IBAction) selectLines:(id)sender {
+    bool operation = [sender selectedSegment] ? 0 : 1;
+    NSLog(operation ? @"Yes" : @"No");
+    [self selectByType:1 andSmooth:NO withOperation:operation];
+}
+- (IBAction) selectHandles:(id)sender {
+    bool operation = [sender selectedSegment] ? 0 : 1;
+    NSLog(operation ? @"Yes" : @"No");
+    [self selectByType:65 andSmooth:NO withOperation:operation];
 }
 
 - (NSInteger) maxHeight {

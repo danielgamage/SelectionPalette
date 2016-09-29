@@ -105,7 +105,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="selectByType:" target="-2" id="Ikt-ny-7aF"/>
+                        <action selector="selectSmoothCurves:" target="-2" id="dmF-kY-bwk"/>
                     </connections>
                 </segmentedControl>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cRr-Np-NBA">
@@ -138,7 +138,7 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="smooth" value="NO"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="selectByType:" target="-2" id="od7-Ym-6N5"/>
+                        <action selector="selectLines:" target="-2" id="qc8-fw-EWs"/>
                     </connections>
                 </segmentedControl>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pzw-mX-c4E">
@@ -171,7 +171,7 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="smooth" value="NO"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="selectByType:" target="-2" id="uQT-KS-iDn"/>
+                        <action selector="selectHandles:" target="-2" id="RmH-Cz-BGd"/>
                     </connections>
                 </segmentedControl>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vpL-Xt-bRY">
@@ -204,7 +204,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="selectByType:" target="-2" id="1zx-pR-gdR"/>
+                        <action selector="selectSharpCurves:" target="-2" id="g1t-2b-CW0"/>
                     </connections>
                 </segmentedControl>
             </subviews>
@@ -241,5 +241,28 @@
             <point key="canvasLocation" x="110.5" y="227"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="Ypu-XZ-4GW"/>
+        <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tmn-BH-UTl">
+            <rect key="frame" x="0.0" y="-2" width="49" height="21"/>
+            <constraints>
+                <constraint firstAttribute="width" constant="49" id="c28-gq-4q2"/>
+            </constraints>
+            <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="capsule" trackingMode="momentary" id="b0b-0g-TDL">
+                <font key="font" metaFont="smallSystem"/>
+                <segments>
+                    <segment label="+" width="20"/>
+                    <segment label="-" width="20" tag="1"/>
+                </segments>
+            </segmentedCell>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="smooth" value="YES"/>
+                <userDefinedRuntimeAttribute type="number" keyPath="type">
+                    <integer key="value" value="35"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <connections>
+                <action selector="selectByType:" target="-2" id="MUR-nb-BiF"/>
+            </connections>
+            <point key="canvasLocation" x="-91" y="300"/>
+        </segmentedControl>
     </objects>
 </document>
