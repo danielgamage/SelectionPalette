@@ -16,6 +16,7 @@
     IBOutlet NSButton *growButton;
     IBOutlet NSButton *shrinkButton;
     IBOutlet NSButton *continueButton;
+    IBOutlet NSButton *undoButton;
 }
 @property (assign, nonatomic) IBOutlet NSView *theView;
 @end

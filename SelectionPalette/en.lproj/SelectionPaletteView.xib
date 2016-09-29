@@ -11,6 +11,7 @@
                 <outlet property="growButton" destination="myv-ff-wV2" id="Yfj-wj-pqF"/>
                 <outlet property="shrinkButton" destination="pVX-N5-HTY" id="pVa-ug-9iY"/>
                 <outlet property="theView" destination="1" id="eSl-yG-tfI"/>
+                <outlet property="undoButton" destination="s3Y-Q7-wwK" id="X8j-LW-ebv"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -55,6 +56,9 @@
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" size="12" name="STIXGeneral-Regular"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="undoSelection:" target="-2" id="BpR-rv-I5A"/>
+                    </connections>
                 </button>
             </subviews>
             <constraints>

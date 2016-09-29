@@ -167,6 +167,10 @@
     }
 }
 
+- (void) undoSelection {
+    [layer removeObjectFromSelection:[layer.selection lastObject]];
+}
+
 - (IBAction) growSelection:(id)sender {
     [self growSelection];
 }
@@ -175,6 +179,9 @@
 }
 - (IBAction) continueSelection:(id)sender {
     [self continueSelection];
+}
+- (IBAction) undoSelection:(id)sender {
+    [self undoSelection];
 }
 
 - (NSInteger) maxHeight {
