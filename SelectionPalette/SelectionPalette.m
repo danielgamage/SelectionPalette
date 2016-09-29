@@ -112,32 +112,34 @@
 }
 
 - (void) continueSelection {
-    GSNode *lastNode = layer.selection[[layer.selection count] - 1];
-    GSNode *originNode = layer.selection[[layer.selection count] - 2];
-    GSPath *path = originNode.parent;
-    NSUInteger lastNodeIndex = [path indexOfNode:lastNode];
-    NSUInteger originNodeIndex = [path indexOfNode:originNode];
-    NSUInteger rhythm;
+    if ([layer.selection count] >= 2) {
+        GSNode *lastNode = layer.selection[[layer.selection count] - 1];
+        GSNode *originNode = layer.selection[[layer.selection count] - 2];
+        GSPath *path = originNode.parent;
+        NSUInteger lastNodeIndex = [path indexOfNode:lastNode];
+        NSUInteger originNodeIndex = [path indexOfNode:originNode];
+        NSUInteger rhythm;
 
-    // Get difference of two nodes
-    if (lastNodeIndex > originNodeIndex) {
-        // normal diff
-        rhythm = lastNodeIndex - originNodeIndex;
-    } else {
-        // crossing bounds of path
-        rhythm = abs(originNodeIndex - [path.nodes count]) + lastNodeIndex;
+        // Get difference of two nodes
+        if (lastNodeIndex > originNodeIndex) {
+            // normal diff
+            rhythm = lastNodeIndex - originNodeIndex;
+        } else {
+            // crossing bounds of path
+            rhythm = abs(originNodeIndex - [path.nodes count]) + lastNodeIndex;
+        }
+
+        // Move to node with rhythm
+        GSNode *nodeToSelect = lastNode;
+        int i = 0;
+        while (i < rhythm) {
+            nodeToSelect = [self nextNode:nodeToSelect];
+            i += 1;
+        }
+
+        // Select it
+        [layer addSelection:nodeToSelect];
     }
-
-    // Move to node with rhythm
-    GSNode *nodeToSelect = lastNode;
-    int i = 0;
-    while (i < rhythm) {
-        nodeToSelect = [self nextNode:nodeToSelect];
-        i += 1;
-    }
-
-    // Select it
-    [layer addSelection:nodeToSelect];
 }
 
 
@@ -146,9 +148,11 @@
         for (GSNode *node in path.nodes) {
             NSMutableArray *conditions = [[NSMutableArray alloc] init];
 
+            // if type is set
             if (type) {
                 [conditions addObject:([NSNumber numberWithBool:(node.type == type)])];
             }
+            // if connection is set
             if (connection == YES || connection == NO) {
                 // apparently `smooth` = 100 and `sharp` = 0, so multiply for comparison
                 [conditions addObject:([NSNumber numberWithBool:(node.connection == connection * 100)])];
