@@ -27,70 +27,51 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button toolTip="Grow selection" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="myv-ff-wV2">
-                    <rect key="frame" x="20" y="144" width="25" height="19"/>
+                    <rect key="frame" x="55" y="144" width="25" height="19"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="25" id="Q9z-Fv-0MI"/>
+                        <constraint firstAttribute="width" constant="25" id="RSA-So-0yY"/>
                     </constraints>
-                    <buttonCell key="cell" type="recessed" title="+" bezelStyle="recessed" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Icu-62-qip">
+                    <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="NSAddTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Icu-62-qip">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="systemBold" size="12"/>
+                        <font key="font" metaFont="systemBold" size="14"/>
                     </buttonCell>
                     <connections>
                         <action selector="growSelection:" target="-2" id="Dt8-6l-qsR"/>
                     </connections>
                 </button>
                 <button toolTip="Shrink selection" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pVX-N5-HTY">
-                    <rect key="frame" x="52" y="144" width="25" height="19"/>
+                    <rect key="frame" x="83" y="144" width="25" height="19"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="25" id="8NE-VE-bAk"/>
+                        <constraint firstAttribute="width" constant="25" id="qrw-tK-Klb"/>
                     </constraints>
-                    <buttonCell key="cell" type="recessed" title="-" bezelStyle="recessed" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0Ei-2h-rqi">
+                    <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0Ei-2h-rqi">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="systemBold" size="12"/>
+                        <font key="font" metaFont="systemBold" size="14"/>
                     </buttonCell>
                     <connections>
                         <action selector="shrinkSelection:" target="-2" id="bhv-So-ODS"/>
                     </connections>
                 </button>
                 <button toolTip="Continue selection" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bqz-xG-H4Y">
-                    <rect key="frame" x="86" y="144" width="25" height="19"/>
-                    <buttonCell key="cell" type="recessed" title="→" bezelStyle="recessed" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="uq7-Iz-B3f">
+                    <rect key="frame" x="126" y="144" width="19" height="19"/>
+                    <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="NSRightFacingTriangleTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="uq7-Iz-B3f">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="systemBold" size="12"/>
+                        <font key="font" metaFont="systemBold" size="14"/>
                     </buttonCell>
                     <connections>
                         <action selector="continueSelection:" target="-2" id="cEf-yP-AMa"/>
                     </connections>
                 </button>
-                <button toolTip="Undo Selection" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="s3Y-Q7-wwK">
-                    <rect key="frame" x="120" y="144" width="25" height="19"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="25" id="Kd5-tp-rvG"/>
-                    </constraints>
-                    <buttonCell key="cell" type="recessed" title="⤺" bezelStyle="recessed" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MFs-AX-Cx3">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" size="12" name="STIXGeneral-Regular"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="undoSelection:" target="-2" id="BpR-rv-I5A"/>
-                    </connections>
-                </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="u5y-wX-apn">
                     <rect key="frame" x="8" y="100" width="97" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="17" id="XHG-Ji-djA"/>
-                    </constraints>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Smooth Curves" id="hky-GF-I6c">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PqK-3P-AYG">
-                    <rect key="frame" x="106" y="99" width="49" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="49" id="pOO-Hj-9Re"/>
-                    </constraints>
+                <segmentedControl toolTip="Select Smooth Curves" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PqK-3P-AYG">
+                    <rect key="frame" x="105" y="99" width="50" height="22"/>
                     <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="capsule" trackingMode="momentary" id="xjH-L6-PnD">
                         <font key="font" metaFont="smallSystem"/>
                         <segments>
@@ -98,32 +79,20 @@
                             <segment label="-" width="20" tag="1"/>
                         </segments>
                     </segmentedCell>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="smooth" value="YES"/>
-                        <userDefinedRuntimeAttribute type="number" keyPath="type">
-                            <integer key="value" value="35"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="selectSmoothCurves:" target="-2" id="dmF-kY-bwk"/>
                     </connections>
                 </segmentedControl>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cRr-Np-NBA">
                     <rect key="frame" x="8" y="46" width="97" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="17" id="XgI-uw-iDo"/>
-                    </constraints>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Lines" id="yTu-tR-HNq">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Sio-Jk-bYZ">
+                <segmentedControl toolTip="Select Lines" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Sio-Jk-bYZ">
                     <rect key="frame" x="106" y="45" width="49" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="49" id="GUR-hU-Qvo"/>
-                    </constraints>
                     <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="capsule" trackingMode="momentary" id="zrN-qW-EhM">
                         <font key="font" metaFont="smallSystem"/>
                         <segments>
@@ -131,32 +100,20 @@
                             <segment label="-" width="20" tag="1"/>
                         </segments>
                     </segmentedCell>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="type">
-                            <integer key="value" value="1"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="smooth" value="NO"/>
-                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="selectLines:" target="-2" id="qc8-fw-EWs"/>
                     </connections>
                 </segmentedControl>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pzw-mX-c4E">
                     <rect key="frame" x="8" y="20" width="97" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="17" id="KP9-ID-mjw"/>
-                    </constraints>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Handles" id="IRE-wk-spP">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eUu-i0-tlk">
+                <segmentedControl toolTip="Select Handles" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eUu-i0-tlk">
                     <rect key="frame" x="106" y="19" width="49" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="49" id="km9-xX-cIb"/>
-                    </constraints>
                     <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="capsule" trackingMode="momentary" id="fYX-dk-atx">
                         <font key="font" metaFont="smallSystem"/>
                         <segments>
@@ -164,31 +121,22 @@
                             <segment label="-" width="20" tag="1"/>
                         </segments>
                     </segmentedCell>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="type">
-                            <integer key="value" value="65"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="smooth" value="NO"/>
-                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="selectHandles:" target="-2" id="RmH-Cz-BGd"/>
                     </connections>
                 </segmentedControl>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vpL-Xt-bRY">
                     <rect key="frame" x="8" y="74" width="97" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="17" id="uka-8m-zBE"/>
-                    </constraints>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sharp Curves" id="qRb-h1-rub">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VfT-aj-6iM">
+                <segmentedControl toolTip="Select Sharp Curves" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VfT-aj-6iM">
                     <rect key="frame" x="106" y="73" width="49" height="21"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="49" id="W3M-0Y-PVu"/>
+                        <constraint firstAttribute="width" constant="49" id="Wan-i4-ldH"/>
                     </constraints>
                     <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="capsule" trackingMode="momentary" id="d0d-0r-GLm">
                         <font key="font" metaFont="smallSystem"/>
@@ -197,72 +145,73 @@
                             <segment label="-" width="20" tag="1"/>
                         </segments>
                     </segmentedCell>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="smooth" value="NO"/>
-                        <userDefinedRuntimeAttribute type="number" keyPath="type">
-                            <integer key="value" value="35"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="selectSharpCurves:" target="-2" id="g1t-2b-CW0"/>
                     </connections>
                 </segmentedControl>
+                <button toolTip="Undo Selection" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="s3Y-Q7-wwK">
+                    <rect key="frame" x="20" y="144" width="25" height="19"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="IDQ-Ta-3SJ"/>
+                    </constraints>
+                    <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="NSGoLeftTemplate" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MFs-AX-Cx3">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="systemBold" size="14"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="undoSelection:" target="-2" id="BpR-rv-I5A"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
-                <constraint firstItem="pVX-N5-HTY" firstAttribute="leading" secondItem="myv-ff-wV2" secondAttribute="trailing" constant="7" id="2Mc-Cd-jvw"/>
-                <constraint firstItem="myv-ff-wV2" firstAttribute="baseline" secondItem="pVX-N5-HTY" secondAttribute="baseline" id="2or-d0-rhB"/>
-                <constraint firstItem="Sio-Jk-bYZ" firstAttribute="leading" secondItem="eUu-i0-tlk" secondAttribute="leading" id="56q-M7-9ML"/>
-                <constraint firstItem="VfT-aj-6iM" firstAttribute="leading" secondItem="vpL-Xt-bRY" secondAttribute="trailing" constant="3" id="6L7-sp-rew"/>
-                <constraint firstItem="myv-ff-wV2" firstAttribute="top" secondItem="1" secondAttribute="top" constant="13" id="7GU-ji-b53"/>
-                <constraint firstAttribute="trailing" secondItem="PqK-3P-AYG" secondAttribute="trailing" constant="10" id="9dp-5t-gWY"/>
-                <constraint firstItem="Bqz-xG-H4Y" firstAttribute="top" secondItem="s3Y-Q7-wwK" secondAttribute="top" id="Brr-eF-eu6"/>
-                <constraint firstItem="PqK-3P-AYG" firstAttribute="leading" secondItem="u5y-wX-apn" secondAttribute="trailing" constant="3" id="CJ2-D8-OHd"/>
-                <constraint firstItem="pVX-N5-HTY" firstAttribute="baseline" secondItem="Bqz-xG-H4Y" secondAttribute="baseline" id="Mex-dF-uWh"/>
-                <constraint firstItem="PqK-3P-AYG" firstAttribute="baseline" secondItem="u5y-wX-apn" secondAttribute="firstBaseline" id="OOU-cR-llF"/>
-                <constraint firstItem="vpL-Xt-bRY" firstAttribute="leading" secondItem="u5y-wX-apn" secondAttribute="leading" id="Ogx-3f-i34"/>
-                <constraint firstItem="myv-ff-wV2" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="RYT-Ij-egb"/>
-                <constraint firstItem="VfT-aj-6iM" firstAttribute="leading" secondItem="Sio-Jk-bYZ" secondAttribute="leading" id="Zow-Wd-3He"/>
-                <constraint firstItem="eUu-i0-tlk" firstAttribute="baseline" secondItem="pzw-mX-c4E" secondAttribute="firstBaseline" id="bjI-2Z-vLS"/>
-                <constraint firstItem="Sio-Jk-bYZ" firstAttribute="baseline" secondItem="cRr-Np-NBA" secondAttribute="firstBaseline" id="cOG-nN-MTv"/>
-                <constraint firstItem="vpL-Xt-bRY" firstAttribute="trailing" secondItem="cRr-Np-NBA" secondAttribute="trailing" id="ewp-aq-c83"/>
-                <constraint firstItem="VfT-aj-6iM" firstAttribute="leading" secondItem="PqK-3P-AYG" secondAttribute="leading" id="kMk-Mn-vLR"/>
-                <constraint firstItem="eUu-i0-tlk" firstAttribute="top" secondItem="Sio-Jk-bYZ" secondAttribute="bottom" constant="8" symbolic="YES" id="kbZ-DR-1Qt"/>
-                <constraint firstItem="vpL-Xt-bRY" firstAttribute="leading" secondItem="cRr-Np-NBA" secondAttribute="leading" id="knM-Yw-kQe"/>
-                <constraint firstAttribute="bottom" secondItem="pzw-mX-c4E" secondAttribute="bottom" constant="20" symbolic="YES" id="krk-Oe-KHj"/>
-                <constraint firstItem="cRr-Np-NBA" firstAttribute="trailing" secondItem="pzw-mX-c4E" secondAttribute="trailing" id="lAy-cw-9eJ"/>
-                <constraint firstItem="Bqz-xG-H4Y" firstAttribute="leading" secondItem="pVX-N5-HTY" secondAttribute="trailing" constant="9" id="laU-dz-TKb"/>
-                <constraint firstItem="cRr-Np-NBA" firstAttribute="leading" secondItem="pzw-mX-c4E" secondAttribute="leading" id="mZ2-gn-yDx"/>
-                <constraint firstItem="VfT-aj-6iM" firstAttribute="top" secondItem="PqK-3P-AYG" secondAttribute="bottom" constant="8" symbolic="YES" id="nii-LB-Msz"/>
-                <constraint firstItem="u5y-wX-apn" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="ot1-Ik-qmU"/>
-                <constraint firstAttribute="trailing" secondItem="s3Y-Q7-wwK" secondAttribute="trailing" constant="20" symbolic="YES" id="rXo-BH-WGr"/>
-                <constraint firstItem="VfT-aj-6iM" firstAttribute="baseline" secondItem="vpL-Xt-bRY" secondAttribute="firstBaseline" id="rdq-Ql-gaG"/>
-                <constraint firstItem="PqK-3P-AYG" firstAttribute="top" secondItem="s3Y-Q7-wwK" secondAttribute="bottom" constant="26" id="yFe-Al-edZ"/>
+                <constraint firstItem="u5y-wX-apn" firstAttribute="leading" secondItem="vpL-Xt-bRY" secondAttribute="leading" id="0Qb-n6-9JR"/>
+                <constraint firstItem="vpL-Xt-bRY" firstAttribute="firstBaseline" secondItem="VfT-aj-6iM" secondAttribute="firstBaseline" id="0rg-fT-hoW"/>
+                <constraint firstItem="Sio-Jk-bYZ" firstAttribute="leading" secondItem="eUu-i0-tlk" secondAttribute="leading" id="4sN-wt-2gU"/>
+                <constraint firstItem="cRr-Np-NBA" firstAttribute="trailing" secondItem="pzw-mX-c4E" secondAttribute="trailing" id="9Rf-WF-2le"/>
+                <constraint firstItem="VfT-aj-6iM" firstAttribute="trailing" secondItem="Sio-Jk-bYZ" secondAttribute="trailing" id="DRd-kG-RWf"/>
+                <constraint firstItem="vpL-Xt-bRY" firstAttribute="top" secondItem="u5y-wX-apn" secondAttribute="bottom" constant="9" id="I2z-4w-c7R"/>
+                <constraint firstItem="pzw-mX-c4E" firstAttribute="top" secondItem="cRr-Np-NBA" secondAttribute="bottom" constant="9" id="I3V-fK-NQC"/>
+                <constraint firstItem="pVX-N5-HTY" firstAttribute="baseline" secondItem="Bqz-xG-H4Y" secondAttribute="baseline" id="KEQ-MC-KM5"/>
+                <constraint firstItem="eUu-i0-tlk" firstAttribute="top" secondItem="Sio-Jk-bYZ" secondAttribute="bottom" constant="8" symbolic="YES" id="O2o-9a-JkX"/>
+                <constraint firstItem="PqK-3P-AYG" firstAttribute="trailing" secondItem="VfT-aj-6iM" secondAttribute="trailing" id="P08-2k-UOU"/>
+                <constraint firstItem="cRr-Np-NBA" firstAttribute="firstBaseline" secondItem="Sio-Jk-bYZ" secondAttribute="firstBaseline" id="Pr3-2a-nJf"/>
+                <constraint firstItem="myv-ff-wV2" firstAttribute="baseline" secondItem="pVX-N5-HTY" secondAttribute="baseline" id="QW0-Zl-2yg"/>
+                <constraint firstItem="u5y-wX-apn" firstAttribute="trailing" secondItem="vpL-Xt-bRY" secondAttribute="trailing" id="ReY-gI-a0N"/>
+                <constraint firstItem="VfT-aj-6iM" firstAttribute="top" secondItem="PqK-3P-AYG" secondAttribute="bottom" constant="8" symbolic="YES" id="ShS-VI-iz4"/>
+                <constraint firstAttribute="trailing" secondItem="Bqz-xG-H4Y" secondAttribute="trailing" constant="20" symbolic="YES" id="TnB-Nd-R7M"/>
+                <constraint firstItem="PqK-3P-AYG" firstAttribute="leading" secondItem="u5y-wX-apn" secondAttribute="trailing" constant="2" id="Wqt-zY-wFj"/>
+                <constraint firstItem="Sio-Jk-bYZ" firstAttribute="baseline" secondItem="cRr-Np-NBA" secondAttribute="firstBaseline" id="XlC-vb-CoS"/>
+                <constraint firstAttribute="bottom" secondItem="pzw-mX-c4E" secondAttribute="bottom" constant="20" symbolic="YES" id="b4E-C4-srm"/>
+                <constraint firstItem="PqK-3P-AYG" firstAttribute="top" secondItem="Bqz-xG-H4Y" secondAttribute="bottom" constant="25" id="cyi-NY-45T"/>
+                <constraint firstItem="PqK-3P-AYG" firstAttribute="baseline" secondItem="u5y-wX-apn" secondAttribute="firstBaseline" id="dqm-1C-gBH"/>
+                <constraint firstItem="pVX-N5-HTY" firstAttribute="leading" secondItem="myv-ff-wV2" secondAttribute="trailing" constant="3" id="fRN-0X-g19"/>
+                <constraint firstItem="s3Y-Q7-wwK" firstAttribute="baseline" secondItem="myv-ff-wV2" secondAttribute="baseline" id="fe2-5e-gn8"/>
+                <constraint firstItem="myv-ff-wV2" firstAttribute="leading" secondItem="s3Y-Q7-wwK" secondAttribute="trailing" constant="10" id="gdW-dG-Wf7"/>
+                <constraint firstItem="eUu-i0-tlk" firstAttribute="baseline" secondItem="pzw-mX-c4E" secondAttribute="firstBaseline" id="kKT-Ez-jJc"/>
+                <constraint firstItem="VfT-aj-6iM" firstAttribute="leading" secondItem="Sio-Jk-bYZ" secondAttribute="leading" id="m0d-ho-Jny"/>
+                <constraint firstItem="u5y-wX-apn" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="poi-TR-qlj"/>
+                <constraint firstItem="pzw-mX-c4E" firstAttribute="firstBaseline" secondItem="eUu-i0-tlk" secondAttribute="firstBaseline" id="qvd-Bk-ipc"/>
+                <constraint firstItem="u5y-wX-apn" firstAttribute="top" secondItem="s3Y-Q7-wwK" secondAttribute="bottom" constant="28" id="r6K-V7-oHs"/>
+                <constraint firstItem="cRr-Np-NBA" firstAttribute="top" secondItem="vpL-Xt-bRY" secondAttribute="bottom" constant="11" id="rFa-gk-aFM"/>
+                <constraint firstItem="Sio-Jk-bYZ" firstAttribute="top" secondItem="VfT-aj-6iM" secondAttribute="bottom" constant="10" id="sIc-Z7-AcX"/>
+                <constraint firstItem="VfT-aj-6iM" firstAttribute="baseline" secondItem="vpL-Xt-bRY" secondAttribute="firstBaseline" id="tap-yn-l3Q"/>
+                <constraint firstItem="vpL-Xt-bRY" firstAttribute="trailing" secondItem="cRr-Np-NBA" secondAttribute="trailing" id="urr-8U-6Ha"/>
+                <constraint firstAttribute="trailing" secondItem="PqK-3P-AYG" secondAttribute="trailing" constant="10" id="vS0-i2-YnU"/>
+                <constraint firstItem="vpL-Xt-bRY" firstAttribute="leading" secondItem="cRr-Np-NBA" secondAttribute="leading" id="vSK-Pz-Aal"/>
+                <constraint firstItem="PqK-3P-AYG" firstAttribute="centerX" secondItem="VfT-aj-6iM" secondAttribute="centerX" id="woK-Ha-LPg"/>
+                <constraint firstItem="cRr-Np-NBA" firstAttribute="leading" secondItem="pzw-mX-c4E" secondAttribute="leading" id="wzu-j8-nxg"/>
+                <constraint firstItem="Sio-Jk-bYZ" firstAttribute="trailing" secondItem="eUu-i0-tlk" secondAttribute="trailing" id="ytJ-L1-oIw"/>
+                <constraint firstItem="s3Y-Q7-wwK" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="yvk-sw-TbZ"/>
+                <constraint firstAttribute="bottom" secondItem="eUu-i0-tlk" secondAttribute="bottom" constant="21" id="znf-3Q-RoI"/>
             </constraints>
             <point key="canvasLocation" x="110.5" y="227"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="Ypu-XZ-4GW"/>
-        <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tmn-BH-UTl">
-            <rect key="frame" x="0.0" y="-2" width="49" height="21"/>
-            <constraints>
-                <constraint firstAttribute="width" constant="49" id="c28-gq-4q2"/>
-            </constraints>
-            <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="capsule" trackingMode="momentary" id="b0b-0g-TDL">
-                <font key="font" metaFont="smallSystem"/>
-                <segments>
-                    <segment label="+" width="20"/>
-                    <segment label="-" width="20" tag="1"/>
-                </segments>
-            </segmentedCell>
-            <userDefinedRuntimeAttributes>
-                <userDefinedRuntimeAttribute type="boolean" keyPath="smooth" value="YES"/>
-                <userDefinedRuntimeAttribute type="number" keyPath="type">
-                    <integer key="value" value="35"/>
-                </userDefinedRuntimeAttribute>
-            </userDefinedRuntimeAttributes>
-            <connections>
-                <action selector="selectByType:" target="-2" id="MUR-nb-BiF"/>
-            </connections>
-            <point key="canvasLocation" x="-91" y="300"/>
-        </segmentedControl>
     </objects>
+    <resources>
+        <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSGoLeftTemplate" width="9" height="12"/>
+        <image name="NSRemoveTemplate" width="11" height="11"/>
+        <image name="NSRightFacingTriangleTemplate" width="9" height="12"/>
+    </resources>
 </document>

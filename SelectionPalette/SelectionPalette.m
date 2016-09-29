@@ -184,22 +184,18 @@
 }
 - (IBAction) selectSmoothCurves:(id)sender {
     bool operation = [sender selectedSegment] ? 0 : 1;
-    NSLog(operation ? @"Yes" : @"No");
     [self selectByType:35 andSmooth:YES withOperation:operation];
 }
 - (IBAction) selectSharpCurves:(id)sender {
     bool operation = [sender selectedSegment] ? 0 : 1;
-    NSLog(operation ? @"Yes" : @"No");
     [self selectByType:35 andSmooth:NO withOperation:operation];
 }
 - (IBAction) selectLines:(id)sender {
     bool operation = [sender selectedSegment] ? 0 : 1;
-    NSLog(operation ? @"Yes" : @"No");
     [self selectByType:1 andSmooth:NO withOperation:operation];
 }
 - (IBAction) selectHandles:(id)sender {
     bool operation = [sender selectedSegment] ? 0 : 1;
-    NSLog(operation ? @"Yes" : @"No");
     [self selectByType:65 andSmooth:NO withOperation:operation];
 }
 
