@@ -188,6 +188,7 @@
             // if all conditions pass...
             if (![conditions containsObject:@(0)]) {
                 [selectionArray addObject:node];
+                // TODO: if line, should probably select prevNode as well, (unless it's OFFCURVE maybe)
             }
         }
     }
