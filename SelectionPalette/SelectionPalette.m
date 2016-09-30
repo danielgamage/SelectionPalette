@@ -215,7 +215,7 @@
     SelectionOperationType operation = [sender selectedSegment];
     // should select both line and curve nodes with smooth on
 //    [self selectNodeByType:LINE andSmooth:SMOOTH withOperation:operation];
-    [self selectNodeByType:CURVE andSmooth:SMOOTH withOperation:operation];
+    [self selectNodeByType:nil andSmooth:SMOOTH withOperation:operation];
 }
 - (IBAction) selectSharpCurves:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
