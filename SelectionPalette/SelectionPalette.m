@@ -188,8 +188,9 @@
 }
 - (IBAction) selectSmoothCurves:(id)sender {
     bool operation = [sender selectedSegment] ? 0 : 1;
-    
-    [self selectByType:nil andSmooth:YES withOperation:operation];
+    // should select both line and curve nodes with smooth on
+    [self selectByType:1 andSmooth:YES withOperation:operation];
+    [self selectByType:35 andSmooth:YES withOperation:operation];
 }
 - (IBAction) selectSharpCurves:(id)sender {
     bool operation = [sender selectedSegment] ? 0 : 1;
