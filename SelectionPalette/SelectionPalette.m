@@ -189,20 +189,20 @@
 - (IBAction) selectSmoothCurves:(id)sender {
     bool operation = [sender selectedSegment] ? 0 : 1;
     // should select both line and curve nodes with smooth on
-    [self selectByType:1 andSmooth:YES withOperation:operation];
-    [self selectByType:35 andSmooth:YES withOperation:operation];
+    [self selectByType:LINE andSmooth:YES withOperation:operation];
+    [self selectByType:CURVE andSmooth:YES withOperation:operation];
 }
 - (IBAction) selectSharpCurves:(id)sender {
     bool operation = [sender selectedSegment] ? 0 : 1;
-    [self selectByType:35 andSmooth:NO withOperation:operation];
+    [self selectByType:CURVE andSmooth:NO withOperation:operation];
 }
 - (IBAction) selectLines:(id)sender {
     bool operation = [sender selectedSegment] ? 0 : 1;
-    [self selectByType:1 andSmooth:NO withOperation:operation];
+    [self selectByType:LINE andSmooth:NO withOperation:operation];
 }
 - (IBAction) selectHandles:(id)sender {
     bool operation = [sender selectedSegment] ? 0 : 1;
-    [self selectByType:65 andSmooth:NO withOperation:operation];
+    [self selectByType:OFFCURVE andSmooth:NO withOperation:operation];
 }
 
 - (NSInteger) maxHeight {
