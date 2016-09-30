@@ -21,6 +21,7 @@
     __weak IBOutlet NSSegmentedControl *selectSharpCurves;
     __weak IBOutlet NSSegmentedControl *selectLines;
     __weak IBOutlet NSSegmentedControl *selectHandles;
+    __weak IBOutlet NSSegmentedControl *selectAnchors;
 }
 @property (assign, nonatomic) IBOutlet NSView *theView;
 @end

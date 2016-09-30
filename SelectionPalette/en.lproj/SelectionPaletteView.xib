@@ -3,17 +3,16 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SelectionPalette">
             <connections>
                 <outlet property="continueButton" destination="Bqz-xG-H4Y" id="g3Z-tS-wCc"/>
                 <outlet property="growButton" destination="myv-ff-wV2" id="Yfj-wj-pqF"/>
+                <outlet property="selectAnchors" destination="tdF-IT-IfS" id="m7J-4w-QP4"/>
                 <outlet property="selectHandles" destination="eUu-i0-tlk" id="XnY-6M-Irk"/>
                 <outlet property="selectLines" destination="Sio-Jk-bYZ" id="IhY-u7-skO"/>
-                <outlet property="selectSharpCurves" destination="VfT-aj-6iM" id="Peg-y1-D6F"/>
+                <outlet property="selectSharpCurves" destination="NKP-WE-x6w" id="C9A-Dq-00b"/>
                 <outlet property="selectSmoothCurves" destination="PqK-3P-AYG" id="ALZ-wO-7VU"/>
                 <outlet property="shrinkButton" destination="pVX-N5-HTY" id="pVa-ug-9iY"/>
                 <outlet property="theView" destination="1" id="eSl-yG-tfI"/>
@@ -23,11 +22,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView wantsLayer="YES" id="1">
-            <rect key="frame" x="0.0" y="0.0" width="165" height="176"/>
+            <rect key="frame" x="0.0" y="0.0" width="165" height="189"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button toolTip="Grow selection" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="myv-ff-wV2">
-                    <rect key="frame" x="55" y="144" width="25" height="19"/>
+                <button toolTip="Grow selection" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="myv-ff-wV2">
+                    <rect key="frame" x="55" y="157" width="25" height="19"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="25" id="RSA-So-0yY"/>
                     </constraints>
@@ -39,8 +38,8 @@
                         <action selector="growSelection:" target="-2" id="Dt8-6l-qsR"/>
                     </connections>
                 </button>
-                <button toolTip="Shrink selection" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pVX-N5-HTY">
-                    <rect key="frame" x="83" y="144" width="25" height="19"/>
+                <button toolTip="Shrink selection" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pVX-N5-HTY">
+                    <rect key="frame" x="88" y="157" width="25" height="19"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="25" id="qrw-tK-Klb"/>
                     </constraints>
@@ -52,8 +51,9 @@
                         <action selector="shrinkSelection:" target="-2" id="bhv-So-ODS"/>
                     </connections>
                 </button>
-                <button toolTip="Continue selection" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bqz-xG-H4Y">
-                    <rect key="frame" x="126" y="144" width="19" height="19"/>
+                <button toolTip="Continue selection" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bqz-xG-H4Y">
+                    <rect key="frame" x="120" y="157" width="25" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="NSRightFacingTriangleTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="uq7-Iz-B3f">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="systemBold" size="14"/>
@@ -62,95 +62,8 @@
                         <action selector="continueSelection:" target="-2" id="cEf-yP-AMa"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="u5y-wX-apn">
-                    <rect key="frame" x="8" y="100" width="97" height="17"/>
-                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Smooth Curves" id="hky-GF-I6c">
-                        <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <segmentedControl toolTip="Select Smooth Curves" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PqK-3P-AYG">
-                    <rect key="frame" x="105" y="99" width="50" height="22"/>
-                    <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="capsule" trackingMode="momentary" id="xjH-L6-PnD">
-                        <font key="font" metaFont="smallSystem"/>
-                        <segments>
-                            <segment label="+" width="20"/>
-                            <segment label="-" width="20" tag="1"/>
-                        </segments>
-                    </segmentedCell>
-                    <connections>
-                        <action selector="selectSmoothCurves:" target="-2" id="dmF-kY-bwk"/>
-                    </connections>
-                </segmentedControl>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cRr-Np-NBA">
-                    <rect key="frame" x="8" y="46" width="97" height="17"/>
-                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Lines" id="yTu-tR-HNq">
-                        <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <segmentedControl toolTip="Select Lines" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Sio-Jk-bYZ">
-                    <rect key="frame" x="106" y="45" width="49" height="21"/>
-                    <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="capsule" trackingMode="momentary" id="zrN-qW-EhM">
-                        <font key="font" metaFont="smallSystem"/>
-                        <segments>
-                            <segment label="+" width="20"/>
-                            <segment label="-" width="20" tag="1"/>
-                        </segments>
-                    </segmentedCell>
-                    <connections>
-                        <action selector="selectLines:" target="-2" id="qc8-fw-EWs"/>
-                    </connections>
-                </segmentedControl>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pzw-mX-c4E">
-                    <rect key="frame" x="8" y="20" width="97" height="17"/>
-                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Handles" id="IRE-wk-spP">
-                        <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <segmentedControl toolTip="Select Handles" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eUu-i0-tlk">
-                    <rect key="frame" x="106" y="19" width="49" height="21"/>
-                    <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="capsule" trackingMode="momentary" id="fYX-dk-atx">
-                        <font key="font" metaFont="smallSystem"/>
-                        <segments>
-                            <segment label="+" width="20"/>
-                            <segment label="-" width="20" tag="1"/>
-                        </segments>
-                    </segmentedCell>
-                    <connections>
-                        <action selector="selectHandles:" target="-2" id="RmH-Cz-BGd"/>
-                    </connections>
-                </segmentedControl>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vpL-Xt-bRY">
-                    <rect key="frame" x="8" y="74" width="97" height="17"/>
-                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sharp Curves" id="qRb-h1-rub">
-                        <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <segmentedControl toolTip="Select Sharp Curves" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VfT-aj-6iM">
-                    <rect key="frame" x="106" y="73" width="49" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="49" id="Wan-i4-ldH"/>
-                    </constraints>
-                    <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="capsule" trackingMode="momentary" id="d0d-0r-GLm">
-                        <font key="font" metaFont="smallSystem"/>
-                        <segments>
-                            <segment label="+" width="20"/>
-                            <segment label="-" width="20" tag="1"/>
-                        </segments>
-                    </segmentedCell>
-                    <connections>
-                        <action selector="selectSharpCurves:" target="-2" id="g1t-2b-CW0"/>
-                    </connections>
-                </segmentedControl>
-                <button toolTip="Undo Selection" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="s3Y-Q7-wwK">
-                    <rect key="frame" x="20" y="144" width="25" height="19"/>
+                <button toolTip="Undo Selection" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s3Y-Q7-wwK">
+                    <rect key="frame" x="20" y="157" width="25" height="19"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="25" id="IDQ-Ta-3SJ"/>
                     </constraints>
@@ -162,56 +75,120 @@
                         <action selector="undoSelection:" target="-2" id="BpR-rv-I5A"/>
                     </connections>
                 </button>
+                <segmentedControl toolTip="Select Smooth Curves" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PqK-3P-AYG">
+                    <rect key="frame" x="67" y="116" width="80" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="xjH-L6-PnD">
+                        <font key="font" metaFont="system"/>
+                        <segments>
+                            <segment label="+" toolTip="Add smooth curves to selection" width="24"/>
+                            <segment label="-" toolTip="Subtract smooth curves from selection" width="24" tag="1"/>
+                            <segment label="○" toolTip="Select only smooth curves from selection" width="24" tag="2"/>
+                        </segments>
+                    </segmentedCell>
+                    <connections>
+                        <action selector="selectSmoothCurves:" target="-2" id="dmF-kY-bwk"/>
+                    </connections>
+                </segmentedControl>
+                <segmentedControl toolTip="Select Lines" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sio-Jk-bYZ">
+                    <rect key="frame" x="67" y="66" width="80" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="zrN-qW-EhM">
+                        <font key="font" metaFont="system"/>
+                        <segments>
+                            <segment label="+" toolTip="Add lines to selection" width="24"/>
+                            <segment label="-" toolTip="Subtract lines from selection" width="24" tag="1"/>
+                            <segment label="○" toolTip="Select only lines from selection" width="24" tag="2"/>
+                        </segments>
+                    </segmentedCell>
+                    <connections>
+                        <action selector="selectLines:" target="-2" id="qc8-fw-EWs"/>
+                    </connections>
+                </segmentedControl>
+                <segmentedControl toolTip="Select Handles" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eUu-i0-tlk">
+                    <rect key="frame" x="67" y="41" width="80" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="fYX-dk-atx">
+                        <font key="font" metaFont="system"/>
+                        <segments>
+                            <segment label="+" toolTip="Add handles to selection" width="24"/>
+                            <segment label="-" toolTip="Subtract handles from selection" width="24" tag="1"/>
+                            <segment label="○" toolTip="Select only handles from selection" width="24" tag="2"/>
+                        </segments>
+                    </segmentedCell>
+                    <connections>
+                        <action selector="selectHandles:" target="-2" id="RmH-Cz-BGd"/>
+                    </connections>
+                </segmentedControl>
+                <segmentedControl toolTip="Select Achors" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tdF-IT-IfS">
+                    <rect key="frame" x="67" y="16" width="80" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="Z4Z-3m-z7V">
+                        <font key="font" metaFont="system"/>
+                        <segments>
+                            <segment label="+" toolTip="Add anchors to selection" width="24"/>
+                            <segment label="-" toolTip="Subtract anchors from selection" width="24" tag="1"/>
+                            <segment label="○" toolTip="Select only anchors from selection" width="24" tag="2"/>
+                        </segments>
+                    </segmentedCell>
+                    <connections>
+                        <action selector="selectHandles:" target="-2" id="Jd0-yB-RJX"/>
+                    </connections>
+                </segmentedControl>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bfs-GG-s1N">
+                    <rect key="frame" x="20" y="95" width="18" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="SharpCurvesTemplate" id="4rt-sH-g0U"/>
+                </imageView>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7ts-Lp-wOw">
+                    <rect key="frame" x="20" y="70" width="18" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="LinesTemplate" id="Yhx-TD-jJw"/>
+                </imageView>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XOa-Dk-feD">
+                    <rect key="frame" x="20" y="45" width="18" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="HandlesTemplate" id="ZQj-BD-xdw"/>
+                </imageView>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zzb-rH-8Lj">
+                    <rect key="frame" x="20" y="120" width="18" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="SmoothCurvesTemplate" id="k8D-Yl-dw6"/>
+                </imageView>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ppf-ZD-dHS">
+                    <rect key="frame" x="20" y="20" width="18" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="AnchorTemplate" id="nge-nk-y6L"/>
+                </imageView>
+                <segmentedControl toolTip="Select Smooth Curves" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NKP-WE-x6w">
+                    <rect key="frame" x="67" y="91" width="80" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="UWL-FV-2b4">
+                        <font key="font" metaFont="system"/>
+                        <segments>
+                            <segment label="+" toolTip="Add smooth curves to selection" width="24"/>
+                            <segment label="-" toolTip="Subtract smooth curves from selection" width="24" tag="1"/>
+                            <segment label="○" toolTip="Select only smooth curves from selection" width="24" tag="2"/>
+                        </segments>
+                    </segmentedCell>
+                    <connections>
+                        <action selector="selectSharpCurves:" target="-2" id="kKC-5e-u3d"/>
+                    </connections>
+                </segmentedControl>
             </subviews>
-            <constraints>
-                <constraint firstItem="u5y-wX-apn" firstAttribute="leading" secondItem="vpL-Xt-bRY" secondAttribute="leading" id="0Qb-n6-9JR"/>
-                <constraint firstItem="vpL-Xt-bRY" firstAttribute="firstBaseline" secondItem="VfT-aj-6iM" secondAttribute="firstBaseline" id="0rg-fT-hoW"/>
-                <constraint firstItem="Sio-Jk-bYZ" firstAttribute="leading" secondItem="eUu-i0-tlk" secondAttribute="leading" id="4sN-wt-2gU"/>
-                <constraint firstItem="cRr-Np-NBA" firstAttribute="trailing" secondItem="pzw-mX-c4E" secondAttribute="trailing" id="9Rf-WF-2le"/>
-                <constraint firstItem="VfT-aj-6iM" firstAttribute="trailing" secondItem="Sio-Jk-bYZ" secondAttribute="trailing" id="DRd-kG-RWf"/>
-                <constraint firstItem="vpL-Xt-bRY" firstAttribute="top" secondItem="u5y-wX-apn" secondAttribute="bottom" constant="9" id="I2z-4w-c7R"/>
-                <constraint firstItem="pzw-mX-c4E" firstAttribute="top" secondItem="cRr-Np-NBA" secondAttribute="bottom" constant="9" id="I3V-fK-NQC"/>
-                <constraint firstItem="pVX-N5-HTY" firstAttribute="baseline" secondItem="Bqz-xG-H4Y" secondAttribute="baseline" id="KEQ-MC-KM5"/>
-                <constraint firstItem="eUu-i0-tlk" firstAttribute="top" secondItem="Sio-Jk-bYZ" secondAttribute="bottom" constant="8" symbolic="YES" id="O2o-9a-JkX"/>
-                <constraint firstItem="PqK-3P-AYG" firstAttribute="trailing" secondItem="VfT-aj-6iM" secondAttribute="trailing" id="P08-2k-UOU"/>
-                <constraint firstItem="cRr-Np-NBA" firstAttribute="firstBaseline" secondItem="Sio-Jk-bYZ" secondAttribute="firstBaseline" id="Pr3-2a-nJf"/>
-                <constraint firstItem="myv-ff-wV2" firstAttribute="baseline" secondItem="pVX-N5-HTY" secondAttribute="baseline" id="QW0-Zl-2yg"/>
-                <constraint firstItem="u5y-wX-apn" firstAttribute="trailing" secondItem="vpL-Xt-bRY" secondAttribute="trailing" id="ReY-gI-a0N"/>
-                <constraint firstItem="VfT-aj-6iM" firstAttribute="top" secondItem="PqK-3P-AYG" secondAttribute="bottom" constant="8" symbolic="YES" id="ShS-VI-iz4"/>
-                <constraint firstAttribute="trailing" secondItem="Bqz-xG-H4Y" secondAttribute="trailing" constant="20" symbolic="YES" id="TnB-Nd-R7M"/>
-                <constraint firstItem="PqK-3P-AYG" firstAttribute="leading" secondItem="u5y-wX-apn" secondAttribute="trailing" constant="2" id="Wqt-zY-wFj"/>
-                <constraint firstItem="Sio-Jk-bYZ" firstAttribute="baseline" secondItem="cRr-Np-NBA" secondAttribute="firstBaseline" id="XlC-vb-CoS"/>
-                <constraint firstAttribute="bottom" secondItem="pzw-mX-c4E" secondAttribute="bottom" constant="20" symbolic="YES" id="b4E-C4-srm"/>
-                <constraint firstItem="PqK-3P-AYG" firstAttribute="top" secondItem="Bqz-xG-H4Y" secondAttribute="bottom" constant="25" id="cyi-NY-45T"/>
-                <constraint firstItem="PqK-3P-AYG" firstAttribute="baseline" secondItem="u5y-wX-apn" secondAttribute="firstBaseline" id="dqm-1C-gBH"/>
-                <constraint firstItem="pVX-N5-HTY" firstAttribute="leading" secondItem="myv-ff-wV2" secondAttribute="trailing" constant="3" id="fRN-0X-g19"/>
-                <constraint firstItem="s3Y-Q7-wwK" firstAttribute="baseline" secondItem="myv-ff-wV2" secondAttribute="baseline" id="fe2-5e-gn8"/>
-                <constraint firstItem="myv-ff-wV2" firstAttribute="leading" secondItem="s3Y-Q7-wwK" secondAttribute="trailing" constant="10" id="gdW-dG-Wf7"/>
-                <constraint firstItem="eUu-i0-tlk" firstAttribute="baseline" secondItem="pzw-mX-c4E" secondAttribute="firstBaseline" id="kKT-Ez-jJc"/>
-                <constraint firstItem="VfT-aj-6iM" firstAttribute="leading" secondItem="Sio-Jk-bYZ" secondAttribute="leading" id="m0d-ho-Jny"/>
-                <constraint firstItem="u5y-wX-apn" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="poi-TR-qlj"/>
-                <constraint firstItem="pzw-mX-c4E" firstAttribute="firstBaseline" secondItem="eUu-i0-tlk" secondAttribute="firstBaseline" id="qvd-Bk-ipc"/>
-                <constraint firstItem="u5y-wX-apn" firstAttribute="top" secondItem="s3Y-Q7-wwK" secondAttribute="bottom" constant="28" id="r6K-V7-oHs"/>
-                <constraint firstItem="cRr-Np-NBA" firstAttribute="top" secondItem="vpL-Xt-bRY" secondAttribute="bottom" constant="11" id="rFa-gk-aFM"/>
-                <constraint firstItem="Sio-Jk-bYZ" firstAttribute="top" secondItem="VfT-aj-6iM" secondAttribute="bottom" constant="10" id="sIc-Z7-AcX"/>
-                <constraint firstItem="VfT-aj-6iM" firstAttribute="baseline" secondItem="vpL-Xt-bRY" secondAttribute="firstBaseline" id="tap-yn-l3Q"/>
-                <constraint firstItem="vpL-Xt-bRY" firstAttribute="trailing" secondItem="cRr-Np-NBA" secondAttribute="trailing" id="urr-8U-6Ha"/>
-                <constraint firstAttribute="trailing" secondItem="PqK-3P-AYG" secondAttribute="trailing" constant="10" id="vS0-i2-YnU"/>
-                <constraint firstItem="vpL-Xt-bRY" firstAttribute="leading" secondItem="cRr-Np-NBA" secondAttribute="leading" id="vSK-Pz-Aal"/>
-                <constraint firstItem="PqK-3P-AYG" firstAttribute="centerX" secondItem="VfT-aj-6iM" secondAttribute="centerX" id="woK-Ha-LPg"/>
-                <constraint firstItem="cRr-Np-NBA" firstAttribute="leading" secondItem="pzw-mX-c4E" secondAttribute="leading" id="wzu-j8-nxg"/>
-                <constraint firstItem="Sio-Jk-bYZ" firstAttribute="trailing" secondItem="eUu-i0-tlk" secondAttribute="trailing" id="ytJ-L1-oIw"/>
-                <constraint firstItem="s3Y-Q7-wwK" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="yvk-sw-TbZ"/>
-                <constraint firstAttribute="bottom" secondItem="eUu-i0-tlk" secondAttribute="bottom" constant="21" id="znf-3Q-RoI"/>
-            </constraints>
-            <point key="canvasLocation" x="110.5" y="227"/>
+            <point key="canvasLocation" x="110.5" y="233.5"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="Ypu-XZ-4GW"/>
     </objects>
     <resources>
+        <image name="AnchorTemplate" width="18" height="18"/>
+        <image name="HandlesTemplate" width="18" height="18"/>
+        <image name="LinesTemplate" width="18" height="18"/>
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSGoLeftTemplate" width="9" height="12"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
         <image name="NSRightFacingTriangleTemplate" width="9" height="12"/>
+        <image name="SharpCurvesTemplate" width="18" height="18"/>
+        <image name="SmoothCurvesTemplate" width="18" height="18"/>
     </resources>
 </document>

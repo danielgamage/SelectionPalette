@@ -188,7 +188,8 @@
 }
 - (IBAction) selectSmoothCurves:(id)sender {
     bool operation = [sender selectedSegment] ? 0 : 1;
-    [self selectByType:35 andSmooth:YES withOperation:operation];
+    
+    [self selectByType:nil andSmooth:YES withOperation:operation];
 }
 - (IBAction) selectSharpCurves:(id)sender {
     bool operation = [sender selectedSegment] ? 0 : 1;
