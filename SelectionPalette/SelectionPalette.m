@@ -144,6 +144,7 @@
 
 
 - (void) selectByType:(GSNodeType)type andSmooth:(GSNodeType)connection withOperation:(SelectionOperationType)operation {
+    NSMutableArray *selectionArray = [[NSMutableArray alloc] init];
     for (GSPath *path in layer.paths){
         for (GSNode *node in path.nodes) {
             NSMutableArray *conditions = [[NSMutableArray alloc] init];
@@ -159,12 +160,28 @@
 
             // if all conditions pass...
             if (![conditions containsObject:@(0)]) {
-                if (operation == ADD) {
-                    [layer addSelection:node];
-                } else if (operation == SUBTRACT) {
-                    [layer removeObjectFromSelection:node];
-                }
+                [selectionArray addObject:node];
             }
+        }
+    }
+    if (operation == ADD || operation == SUBTRACT) {
+        for (GSNode *node in selectionArray) {
+            if (operation == ADD) {
+                [layer addSelection:node];
+            } else if (operation == SUBTRACT) {
+                [layer removeObjectFromSelection:node];
+            }
+        }
+    }
+    if (operation == INTERSECT) {
+        NSMutableArray *nodesToDeselect = [[NSMutableArray alloc] init];
+        for (GSNode *node in layer.selection) {
+            if (![selectionArray containsObject:node]) {
+                [nodesToDeselect addObject:node];
+            }
+        }
+        for (GSNode *node in nodesToDeselect) {
+            [layer removeObjectFromSelection:node];
         }
     }
 }
