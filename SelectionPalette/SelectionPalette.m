@@ -143,7 +143,7 @@
 }
 
 
-- (void) selectByType:(int)type andSmooth:(bool)connection withOperation:(bool)operation {
+- (void) selectByType:(GSNodeType)type andSmooth:(GSNodeType)connection withOperation:(SelectionOperationType)operation {
     for (GSPath *path in layer.paths){
         for (GSNode *node in path.nodes) {
             NSMutableArray *conditions = [[NSMutableArray alloc] init];
@@ -153,16 +153,15 @@
                 [conditions addObject:([NSNumber numberWithBool:(node.type == type)])];
             }
             // if connection is set
-            if (connection == YES || connection == NO) {
-                // apparently `smooth` = 100 and `sharp` = 0, so multiply for comparison
-                [conditions addObject:([NSNumber numberWithBool:(node.connection == connection * 100)])];
+            if (connection == SMOOTH || connection == SHARP) {
+                [conditions addObject:([NSNumber numberWithBool:(node.connection == connection)])];
             }
 
             // if all conditions pass...
             if (![conditions containsObject:@(0)]) {
-                if (operation) {
+                if (operation == ADD) {
                     [layer addSelection:node];
-                } else {
+                } else if (operation == SUBTRACT) {
                     [layer removeObjectFromSelection:node];
                 }
             }
@@ -187,22 +186,22 @@
     [self undoSelection];
 }
 - (IBAction) selectSmoothCurves:(id)sender {
-    bool operation = [sender selectedSegment] ? 0 : 1;
+    SelectionOperationType operation = [sender selectedSegment];
     // should select both line and curve nodes with smooth on
-    [self selectByType:LINE andSmooth:YES withOperation:operation];
-    [self selectByType:CURVE andSmooth:YES withOperation:operation];
+    [self selectByType:LINE andSmooth:SMOOTH withOperation:operation];
+    [self selectByType:CURVE andSmooth:SMOOTH withOperation:operation];
 }
 - (IBAction) selectSharpCurves:(id)sender {
-    bool operation = [sender selectedSegment] ? 0 : 1;
-    [self selectByType:CURVE andSmooth:NO withOperation:operation];
+    SelectionOperationType operation = [sender selectedSegment];
+    [self selectByType:CURVE andSmooth:SHARP withOperation:operation];
 }
 - (IBAction) selectLines:(id)sender {
-    bool operation = [sender selectedSegment] ? 0 : 1;
-    [self selectByType:LINE andSmooth:NO withOperation:operation];
+    SelectionOperationType operation = [sender selectedSegment];
+    [self selectByType:LINE andSmooth:SHARP withOperation:operation];
 }
 - (IBAction) selectHandles:(id)sender {
-    bool operation = [sender selectedSegment] ? 0 : 1;
-    [self selectByType:OFFCURVE andSmooth:NO withOperation:operation];
+    SelectionOperationType operation = [sender selectedSegment];
+    [self selectByType:OFFCURVE andSmooth:SHARP withOperation:operation];
 }
 
 - (NSInteger) maxHeight {

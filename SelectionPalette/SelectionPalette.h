@@ -23,5 +23,16 @@
     __weak IBOutlet NSSegmentedControl *selectHandles;
     __weak IBOutlet NSSegmentedControl *selectAnchors;
 }
+
 @property (assign, nonatomic) IBOutlet NSView *theView;
+
+/**
+ An enumeration of selection operation types.
+ */
+typedef NS_ENUM(uint8_t, SelectionOperationType) {
+    ADD = 0,
+    SUBTRACT = 1,
+    INTERSECT = 2,
+};
+
 @end
