@@ -10,6 +10,7 @@
                 <outlet property="continueButton" destination="Bqz-xG-H4Y" id="g3Z-tS-wCc"/>
                 <outlet property="growButton" destination="myv-ff-wV2" id="Yfj-wj-pqF"/>
                 <outlet property="selectAnchors" destination="tdF-IT-IfS" id="m7J-4w-QP4"/>
+                <outlet property="selectComponents" destination="Dkg-oj-gmO" id="xj4-TK-qNO"/>
                 <outlet property="selectHandles" destination="eUu-i0-tlk" id="XnY-6M-Irk"/>
                 <outlet property="selectLines" destination="Sio-Jk-bYZ" id="IhY-u7-skO"/>
                 <outlet property="selectSharpCurves" destination="NKP-WE-x6w" id="C9A-Dq-00b"/>
@@ -22,11 +23,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView wantsLayer="YES" id="1">
-            <rect key="frame" x="0.0" y="0.0" width="165" height="189"/>
+            <rect key="frame" x="0.0" y="0.0" width="165" height="216"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button toolTip="Grow selection" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="myv-ff-wV2">
-                    <rect key="frame" x="55" y="157" width="25" height="19"/>
+                    <rect key="frame" x="55" y="184" width="25" height="19"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="25" id="RSA-So-0yY"/>
                     </constraints>
@@ -39,7 +40,7 @@
                     </connections>
                 </button>
                 <button toolTip="Shrink selection" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pVX-N5-HTY">
-                    <rect key="frame" x="88" y="157" width="25" height="19"/>
+                    <rect key="frame" x="88" y="184" width="25" height="19"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="25" id="qrw-tK-Klb"/>
                     </constraints>
@@ -52,7 +53,7 @@
                     </connections>
                 </button>
                 <button toolTip="Continue selection" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bqz-xG-H4Y">
-                    <rect key="frame" x="120" y="157" width="25" height="19"/>
+                    <rect key="frame" x="120" y="184" width="25" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="NSRightFacingTriangleTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="uq7-Iz-B3f">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -63,7 +64,7 @@
                     </connections>
                 </button>
                 <button toolTip="Undo Selection" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s3Y-Q7-wwK">
-                    <rect key="frame" x="20" y="157" width="25" height="19"/>
+                    <rect key="frame" x="20" y="184" width="25" height="19"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="25" id="IDQ-Ta-3SJ"/>
                     </constraints>
@@ -76,7 +77,7 @@
                     </connections>
                 </button>
                 <segmentedControl toolTip="Select Smooth Curves" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PqK-3P-AYG">
-                    <rect key="frame" x="67" y="116" width="80" height="24"/>
+                    <rect key="frame" x="67" y="143" width="80" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="xjH-L6-PnD">
                         <font key="font" metaFont="system"/>
@@ -91,7 +92,7 @@
                     </connections>
                 </segmentedControl>
                 <segmentedControl toolTip="Select Lines" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sio-Jk-bYZ">
-                    <rect key="frame" x="67" y="66" width="80" height="24"/>
+                    <rect key="frame" x="67" y="93" width="80" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="zrN-qW-EhM">
                         <font key="font" metaFont="system"/>
@@ -106,7 +107,7 @@
                     </connections>
                 </segmentedControl>
                 <segmentedControl toolTip="Select Handles" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eUu-i0-tlk">
-                    <rect key="frame" x="67" y="41" width="80" height="24"/>
+                    <rect key="frame" x="67" y="68" width="80" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="fYX-dk-atx">
                         <font key="font" metaFont="system"/>
@@ -121,7 +122,7 @@
                     </connections>
                 </segmentedControl>
                 <segmentedControl toolTip="Select Achors" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tdF-IT-IfS">
-                    <rect key="frame" x="67" y="16" width="80" height="24"/>
+                    <rect key="frame" x="67" y="43" width="80" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="Z4Z-3m-z7V">
                         <font key="font" metaFont="system"/>
@@ -135,33 +136,48 @@
                         <action selector="selectAnchors:" target="-2" id="W2m-5J-PHF"/>
                     </connections>
                 </segmentedControl>
+                <segmentedControl toolTip="Select Achors" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dkg-oj-gmO">
+                    <rect key="frame" x="67" y="18" width="80" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="qby-EE-vg7">
+                        <font key="font" metaFont="system"/>
+                        <segments>
+                            <segment label="+" toolTip="Add anchors to selection" width="24"/>
+                            <segment label="-" toolTip="Subtract anchors from selection" width="24" tag="1"/>
+                            <segment label="○" toolTip="Select only anchors from selection" width="24" tag="2"/>
+                        </segments>
+                    </segmentedCell>
+                    <connections>
+                        <action selector="selectComponents:" target="-2" id="ggZ-Ee-EL5"/>
+                    </connections>
+                </segmentedControl>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bfs-GG-s1N">
-                    <rect key="frame" x="20" y="95" width="18" height="18"/>
+                    <rect key="frame" x="20" y="122" width="18" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="SharpCurvesTemplate" id="4rt-sH-g0U"/>
                 </imageView>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7ts-Lp-wOw">
-                    <rect key="frame" x="20" y="70" width="18" height="18"/>
+                    <rect key="frame" x="20" y="97" width="18" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="LinesTemplate" id="Yhx-TD-jJw"/>
                 </imageView>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XOa-Dk-feD">
-                    <rect key="frame" x="20" y="45" width="18" height="18"/>
+                    <rect key="frame" x="20" y="72" width="18" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="HandlesTemplate" id="ZQj-BD-xdw"/>
                 </imageView>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zzb-rH-8Lj">
-                    <rect key="frame" x="20" y="120" width="18" height="18"/>
+                    <rect key="frame" x="20" y="147" width="18" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="SmoothCurvesTemplate" id="k8D-Yl-dw6"/>
                 </imageView>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ppf-ZD-dHS">
-                    <rect key="frame" x="20" y="20" width="18" height="18"/>
+                    <rect key="frame" x="20" y="47" width="18" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="AnchorTemplate" id="nge-nk-y6L"/>
                 </imageView>
                 <segmentedControl toolTip="Select Smooth Curves" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NKP-WE-x6w">
-                    <rect key="frame" x="67" y="91" width="80" height="24"/>
+                    <rect key="frame" x="67" y="118" width="80" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="UWL-FV-2b4">
                         <font key="font" metaFont="system"/>
@@ -175,13 +191,19 @@
                         <action selector="selectSharpCurves:" target="-2" id="kKC-5e-u3d"/>
                     </connections>
                 </segmentedControl>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HP1-yW-Q6U">
+                    <rect key="frame" x="20" y="21" width="18" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="ComponentTemplate" id="hQ8-fO-K22"/>
+                </imageView>
             </subviews>
-            <point key="canvasLocation" x="110.5" y="233.5"/>
+            <point key="canvasLocation" x="110.5" y="247"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="Ypu-XZ-4GW"/>
     </objects>
     <resources>
         <image name="AnchorTemplate" width="18" height="18"/>
+        <image name="ComponentTemplate" width="18" height="18"/>
         <image name="HandlesTemplate" width="18" height="18"/>
         <image name="LinesTemplate" width="18" height="18"/>
         <image name="NSAddTemplate" width="11" height="11"/>

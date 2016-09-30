@@ -13,6 +13,7 @@
 		656ECEC71D9B0B7000B6CF89 /* SelectionPalette.m in Sources */ = {isa = PBXBuildFile; fileRef = 656ECEC61D9B0B7000B6CF89 /* SelectionPalette.m */; };
 		656ECECB1D9B0B7000B6CF89 /* SelectionPaletteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 656ECEC91D9B0B7000B6CF89 /* SelectionPaletteView.xib */; };
 		656ECECD1D9B0B7000B6CF89 /* GlyphsCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656ECECC1D9B0B7000B6CF89 /* GlyphsCore.framework */; };
+		65820AF51D9ECE3900378B63 /* ComponentTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 65820AF41D9ECE3900378B63 /* ComponentTemplate.pdf */; };
 		65FA9BF71D9DD9CA00B9CDE1 /* AnchorTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 65FA9BF11D9DD9CA00B9CDE1 /* AnchorTemplate.pdf */; };
 		65FA9BF81D9DD9CA00B9CDE1 /* HandlesTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 65FA9BF21D9DD9CA00B9CDE1 /* HandlesTemplate.pdf */; };
 		65FA9BF91D9DD9CA00B9CDE1 /* LinesTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 65FA9BF31D9DD9CA00B9CDE1 /* LinesTemplate.pdf */; };
@@ -31,6 +32,7 @@
 		656ECECA1D9B0B7000B6CF89 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SelectionPaletteView.xib; sourceTree = "<group>"; };
 		656ECECC1D9B0B7000B6CF89 /* GlyphsCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GlyphsCore.framework; path = /Applications/Glyphs.app/Contents/Frameworks/GlyphsCore.framework; sourceTree = "<absolute>"; };
 		656ECECE1D9B0B7000B6CF89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65820AF41D9ECE3900378B63 /* ComponentTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = ComponentTemplate.pdf; path = icons/ComponentTemplate.pdf; sourceTree = "<group>"; };
 		65FA9BF11D9DD9CA00B9CDE1 /* AnchorTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = AnchorTemplate.pdf; path = icons/AnchorTemplate.pdf; sourceTree = "<group>"; };
 		65FA9BF21D9DD9CA00B9CDE1 /* HandlesTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = HandlesTemplate.pdf; path = icons/HandlesTemplate.pdf; sourceTree = "<group>"; };
 		65FA9BF31D9DD9CA00B9CDE1 /* LinesTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = LinesTemplate.pdf; path = icons/LinesTemplate.pdf; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 			children = (
 				65FA9BF11D9DD9CA00B9CDE1 /* AnchorTemplate.pdf */,
 				65FA9BF21D9DD9CA00B9CDE1 /* HandlesTemplate.pdf */,
+				65820AF41D9ECE3900378B63 /* ComponentTemplate.pdf */,
 				65FA9BF31D9DD9CA00B9CDE1 /* LinesTemplate.pdf */,
 				65FA9BF41D9DD9CA00B9CDE1 /* SharpCurvesTemplate.pdf */,
 				65FA9BF51D9DD9CA00B9CDE1 /* SmoothCurvesTemplate.pdf */,
@@ -169,6 +172,7 @@
 				656ECECB1D9B0B7000B6CF89 /* SelectionPaletteView.xib in Resources */,
 				65FA9BFC1D9DD9CA00B9CDE1 /* SmoothLinesTemplate.pdf in Resources */,
 				65FA9BF81D9DD9CA00B9CDE1 /* HandlesTemplate.pdf in Resources */,
+				65820AF51D9ECE3900378B63 /* ComponentTemplate.pdf in Resources */,
 				656ECEC41D9B0B7000B6CF89 /* SelectionPalette-Info.plist in Resources */,
 				65FA9BFB1D9DD9CA00B9CDE1 /* SmoothCurvesTemplate.pdf in Resources */,
 				65FA9BFA1D9DD9CA00B9CDE1 /* SharpCurvesTemplate.pdf in Resources */,
