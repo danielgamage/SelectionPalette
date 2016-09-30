@@ -142,9 +142,36 @@
     }
 }
 
+- (void) performSelectionWithArray:(NSMutableArray *)selectionArray andOperation:(SelectionOperationType)operation {
+    if (operation == ADD) {
+        [layer addObjectsFromArrayToSelection:selectionArray];
+    } else if (operation == SUBTRACT) {
+        [layer removeObjectsFromSelection:selectionArray];
+    } else if (operation == INTERSECT) {
+        NSMutableArray *elementsToDeselect = [[NSMutableArray alloc] init];
+        for (GSElement *element in layer.selection) {
+            if (![selectionArray containsObject:element]) {
+                [elementsToDeselect addObject:element];
+            }
+        }
+        [layer removeObjectsFromSelection:elementsToDeselect];
+    }
+}
 
-- (void) selectByType:(GSNodeType)type andSmooth:(GSNodeType)connection withOperation:(SelectionOperationType)operation {
+- (void) selectAnchorwithOperation:(SelectionOperationType)operation {
     NSMutableArray *selectionArray = [[NSMutableArray alloc] init];
+
+    for (NSString *key in layer.anchors) {
+        GSAnchor *anchor = [layer.anchors objectForKey:key];
+        [selectionArray addObject:anchor];
+    }
+
+    [self performSelectionWithArray:selectionArray andOperation:operation];
+}
+
+- (void) selectNodeByType:(GSNodeType)type andSmooth:(GSNodeType)connection withOperation:(SelectionOperationType)operation {
+    NSMutableArray *selectionArray = [[NSMutableArray alloc] init];
+
     for (GSPath *path in layer.paths){
         for (GSNode *node in path.nodes) {
             NSMutableArray *conditions = [[NSMutableArray alloc] init];
@@ -164,26 +191,8 @@
             }
         }
     }
-    if (operation == ADD || operation == SUBTRACT) {
-        for (GSNode *node in selectionArray) {
-            if (operation == ADD) {
-                [layer addSelection:node];
-            } else if (operation == SUBTRACT) {
-                [layer removeObjectFromSelection:node];
-            }
-        }
-    }
-    if (operation == INTERSECT) {
-        NSMutableArray *nodesToDeselect = [[NSMutableArray alloc] init];
-        for (GSNode *node in layer.selection) {
-            if (![selectionArray containsObject:node]) {
-                [nodesToDeselect addObject:node];
-            }
-        }
-        for (GSNode *node in nodesToDeselect) {
-            [layer removeObjectFromSelection:node];
-        }
-    }
+
+    [self performSelectionWithArray:selectionArray andOperation:operation];
 }
 
 - (void) undoSelection {
@@ -205,20 +214,24 @@
 - (IBAction) selectSmoothCurves:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
     // should select both line and curve nodes with smooth on
-    [self selectByType:LINE andSmooth:SMOOTH withOperation:operation];
-    [self selectByType:CURVE andSmooth:SMOOTH withOperation:operation];
+//    [self selectNodeByType:LINE andSmooth:SMOOTH withOperation:operation];
+    [self selectNodeByType:CURVE andSmooth:SMOOTH withOperation:operation];
 }
 - (IBAction) selectSharpCurves:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
-    [self selectByType:CURVE andSmooth:SHARP withOperation:operation];
+    [self selectNodeByType:CURVE andSmooth:SHARP withOperation:operation];
 }
 - (IBAction) selectLines:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
-    [self selectByType:LINE andSmooth:SHARP withOperation:operation];
+    [self selectNodeByType:LINE andSmooth:SHARP withOperation:operation];
 }
 - (IBAction) selectHandles:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
-    [self selectByType:OFFCURVE andSmooth:SHARP withOperation:operation];
+    [self selectNodeByType:OFFCURVE andSmooth:SHARP withOperation:operation];
+}
+- (IBAction) selectAnchors:(id)sender {
+    SelectionOperationType operation = [sender selectedSegment];
+    [self selectAnchorwithOperation:operation];
 }
 
 - (NSInteger) maxHeight {

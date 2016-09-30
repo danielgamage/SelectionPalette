@@ -132,7 +132,7 @@
                         </segments>
                     </segmentedCell>
                     <connections>
-                        <action selector="selectHandles:" target="-2" id="Jd0-yB-RJX"/>
+                        <action selector="selectAnchors:" target="-2" id="W2m-5J-PHF"/>
                     </connections>
                 </segmentedControl>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bfs-GG-s1N">
