@@ -1,4 +1,4 @@
-# SelectionPalette
+# SelectionPalette Beta
 adapted from https://github.com/danielgamage/Glyphs-Scripts
 
 ![Selection Palette Screenshot](https://github.com/danielgamage/SelectionPalette/blob/master/Images/screenshot.png?raw=true)
@@ -8,6 +8,8 @@ adapted from https://github.com/danielgamage/Glyphs-Scripts
 1. (Unzip if necessary) and open the file with the `.glyphsTool` extension.
 1. Follow the "are you sure you want to install" dialogs
 1. Restart glyphs
+
+**NOTE:** Because there are still some issues with it, this is not yet available in the Glyphs plugin manager. When things are a little more predictable and stable, you should be able to find it there.
 
 ## Usage
 
