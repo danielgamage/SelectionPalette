@@ -188,7 +188,11 @@
 
             // if type is set
             if (type) {
-                [conditions addObject:([NSNumber numberWithBool:(node.type == type)])];
+                if (type == CURVE && node.type == LINE && ([self nextNode:node].type == OFFCURVE || [self nextNode:node].type == OFFCURVE)) {
+                    [conditions addObject:[NSNumber numberWithBool:YES]];
+                } else {
+                    [conditions addObject:([NSNumber numberWithBool:(node.type == type)])];
+                }
             }
             // if connection is set
             if (connection == SMOOTH || connection == SHARP) {
@@ -199,6 +203,9 @@
             if (![conditions containsObject:@(0)]) {
                 [selectionArray addObject:node];
                 // TODO: if line, should probably select prevNode as well, (unless it's OFFCURVE maybe)
+                if (type == LINE && node.type == LINE) {
+                    [selectionArray addObject:[self prevNode:node]];
+                }
             }
         }
     }
@@ -234,7 +241,7 @@
 }
 - (IBAction) selectLines:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
-    [self selectNodesByType:LINE andSmooth:SHARP withOperation:operation];
+    [self selectNodesByType:LINE andSmooth:nil withOperation:operation];
 }
 - (IBAction) selectHandles:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
