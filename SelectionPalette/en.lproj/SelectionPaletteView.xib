@@ -26,11 +26,9 @@
             <rect key="frame" x="0.0" y="0.0" width="165" height="216"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button toolTip="Grow selection" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="myv-ff-wV2">
+                <button toolTip="Grow selection" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="myv-ff-wV2">
                     <rect key="frame" x="55" y="184" width="25" height="19"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="25" id="RSA-So-0yY"/>
-                    </constraints>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="NSAddTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Icu-62-qip">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="systemBold" size="14"/>
@@ -39,11 +37,9 @@
                         <action selector="growSelection:" target="-2" id="Dt8-6l-qsR"/>
                     </connections>
                 </button>
-                <button toolTip="Shrink selection" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pVX-N5-HTY">
+                <button toolTip="Shrink selection" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pVX-N5-HTY">
                     <rect key="frame" x="88" y="184" width="25" height="19"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="25" id="qrw-tK-Klb"/>
-                    </constraints>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0Ei-2h-rqi">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="systemBold" size="14"/>
@@ -63,11 +59,9 @@
                         <action selector="continueSelection:" target="-2" id="cEf-yP-AMa"/>
                     </connections>
                 </button>
-                <button toolTip="Undo Selection" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s3Y-Q7-wwK">
+                <button toolTip="Undo Selection" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s3Y-Q7-wwK">
                     <rect key="frame" x="20" y="184" width="25" height="19"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="25" id="IDQ-Ta-3SJ"/>
-                    </constraints>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="NSGoLeftTemplate" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MFs-AX-Cx3">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="systemBold" size="14"/>
@@ -182,9 +176,9 @@
                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="UWL-FV-2b4">
                         <font key="font" metaFont="system"/>
                         <segments>
-                            <segment label="+" toolTip="Add smooth curves to selection" width="24"/>
-                            <segment label="-" toolTip="Subtract smooth curves from selection" width="24" tag="1"/>
-                            <segment label="○" toolTip="Select only smooth curves from selection" width="24" tag="2"/>
+                            <segment label="+" toolTip="Add sharp curves to selection" width="24"/>
+                            <segment label="-" toolTip="Subtract sharp curves from selection" width="24" tag="1"/>
+                            <segment label="○" toolTip="Select only sharp curves from selection" width="24" tag="2"/>
                         </segments>
                     </segmentedCell>
                     <connections>
