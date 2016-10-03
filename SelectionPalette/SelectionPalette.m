@@ -188,23 +188,28 @@
 
             // if type is set
             if (type) {
-                if (type == CURVE && node.type == LINE && ([self nextNode:node].type == OFFCURVE || [self nextNode:node].type == OFFCURVE)) {
+                // when looking for sharp curves, add sharp lines that neighbor offcurves
+                if (type == CURVE && node.type == LINE && node.connection == SHARP && ([self nextNode:node].type == OFFCURVE || [self nextNode:node].type == OFFCURVE)) {
                     [conditions addObject:[NSNumber numberWithBool:YES]];
                 } else {
-                    [conditions addObject:([NSNumber numberWithBool:(node.type == type)])];
+                    [conditions addObject:[NSNumber numberWithBool:(node.type == type)]];
                 }
             }
             // if connection is set
-            if (connection == SMOOTH || connection == SHARP) {
-                [conditions addObject:([NSNumber numberWithBool:(node.connection == connection)])];
+            if (connection == SHARP || connection == SMOOTH) {
+                [conditions addObject:[NSNumber numberWithBool:(node.connection == connection)]];
             }
 
             // if all conditions pass...
             if (![conditions containsObject:@(0)]) {
                 [selectionArray addObject:node];
-                // TODO: if line, should probably select prevNode as well, (unless it's OFFCURVE maybe)
+                // if looking for lines, select prevNode as well (unless it's OFFCURVE)
                 if (type == LINE && node.type == LINE) {
                     [selectionArray addObject:[self prevNode:node]];
+                }
+                // if looking for lines, add next (non-offcurve) node
+                if (type == LINE && [self nextNode:node].type != OFFCURVE) {
+                    [selectionArray addObject:[self nextNode:node]];
                 }
             }
         }
@@ -231,8 +236,7 @@
 }
 - (IBAction) selectSmoothCurves:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
-    // should select both line and curve nodes with smooth on
-//    [self selectNodesByType:LINE andSmooth:SMOOTH withOperation:operation];
+    // should select both line and curve nodes with smooth connections
     [self selectNodesByType:nil andSmooth:SMOOTH withOperation:operation];
 }
 - (IBAction) selectSharpCurves:(id)sender {
@@ -245,7 +249,7 @@
 }
 - (IBAction) selectHandles:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
-    [self selectNodesByType:OFFCURVE andSmooth:SHARP withOperation:operation];
+    [self selectNodesByType:OFFCURVE andSmooth:nil withOperation:operation];
 }
 - (IBAction) selectAnchors:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
