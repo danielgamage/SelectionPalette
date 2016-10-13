@@ -36,10 +36,6 @@
 		<data>
 		3DDx3XSq1riz/eyWsbmx6whD8Do=
 		</data>
-		<key>Resources/SmoothLinesTemplate.pdf</key>
-		<data>
-		gvc2OTLckssOHzrn+dVCWiM3yi4=
-		</data>
 		<key>Resources/en.lproj/SelectionPaletteView.nib</key>
 		<dict>
 			<key>hash</key>
@@ -106,13 +102,6 @@
 			<key>hash2</key>
 			<data>
 			j7rAILKnC3wlMJLA6HoTMgMSsBXd/MKCr+NCvo+Ch94=
-			</data>
-		</dict>
-		<key>Resources/SmoothLinesTemplate.pdf</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			9SOs7iAt2fe4BN0/Rp0wvzI5nH9SNfGYNz8uBGdY3F8=
 			</data>
 		</dict>
 		<key>Resources/en.lproj/SelectionPaletteView.nib</key>
