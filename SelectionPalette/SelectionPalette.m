@@ -24,6 +24,7 @@
     self = [super init];
     [NSBundle loadNibNamed:@"SelectionPaletteView" owner:self];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(update:) name:@"GSUpdateInterface" object:nil];
+    [self addMenuItems];
     return self;
 }
 
@@ -34,11 +35,36 @@
 
 - (NSString*) title {
     // Return the name of the tool as it will appear in the menu.
-    return @"Selection Palette";
+    return @"Select by Type";
 }
 
 - (void)update:(id)sender {
     layer = [windowController activeLayer];
+}
+
+- (void)addMenuItems {
+    NSApplication *app = [NSApplication sharedApplication];
+    NSMenu *editMenu = [[[app mainMenu] itemAtIndex:2] submenu];
+
+    // index + 1 so items are inserted AFTER the other selection items
+    NSInteger startingIndex = [editMenu indexOfItemWithTitle:@"Invert Selection"] + 1;
+
+    NSMenuItem *continueItem = [[NSMenuItem alloc] initWithTitle:@"Continue Selection" action:@selector(continueSelector) keyEquivalent:@"}"];
+    NSMenuItem *undoItem     = [[NSMenuItem alloc] initWithTitle:@"Undo Selection"     action:@selector(undoSelector)     keyEquivalent:@"{"];
+    NSMenuItem *growItem     = [[NSMenuItem alloc] initWithTitle:@"Grow Selection"     action:@selector(growSelector)     keyEquivalent:@"+"];
+    NSMenuItem *shrinkItem   = [[NSMenuItem alloc] initWithTitle:@"Shrink Selection"   action:@selector(shrinkSelector)   keyEquivalent:@"-"];
+
+    NSArray *menuItems = [[NSMutableArray alloc] initWithObjects:continueItem, undoItem, growItem, shrinkItem, nil];
+
+    // reverse object order so that menu items get inserted atIndex in the desired order
+    for (NSMenuItem *item in [menuItems reverseObjectEnumerator]) {
+        [item setKeyEquivalentModifierMask: NSEventModifierFlagCommand | NSEventModifierFlagOption];
+        [item setTarget:self];
+        [editMenu insertItem:item atIndex:startingIndex];
+    }
+
+    // add separator at the top of the list
+    [editMenu insertItem:[NSMenuItem separatorItem] atIndex:startingIndex];
 }
 
 - (GSNode*) getSibling:(GSNode*)node next:(bool)next {
@@ -222,16 +248,16 @@
     [layer removeObjectFromSelection:[layer.selection lastObject]];
 }
 
-- (IBAction) growSelection:(id)sender {
+- (void) growSelector {
     [self growSelection];
 }
-- (IBAction) shrinkSelection:(id)sender {
+- (void) shrinkSelector {
     [self shrinkSelection];
 }
-- (IBAction) continueSelection:(id)sender {
+- (void) continueSelector {
     [self continueSelection];
 }
-- (IBAction) undoSelection:(id)sender {
+- (void) undoSelector {
     [self undoSelection];
 }
 - (IBAction) selectSmoothCurves:(id)sender {
