@@ -42,6 +42,31 @@
     layer = [windowController activeLayer];
 }
 
+- (void)addMenuItems {
+    NSApplication *app = [NSApplication sharedApplication];
+    NSMenu *editMenu = [[[app mainMenu] itemAtIndex:2] submenu];
+
+    // index + 1 so items are inserted AFTER the other selection items
+    NSInteger startingIndex = [editMenu indexOfItemWithTitle:@"Invert Selection"] + 1;
+
+    NSMenuItem *continueItem = [[NSMenuItem alloc] initWithTitle:@"Continue Selection" action:@selector(continueSelector) keyEquivalent:@"}"];
+    NSMenuItem *undoItem     = [[NSMenuItem alloc] initWithTitle:@"Undo Selection"     action:@selector(undoSelector)     keyEquivalent:@"{"];
+    NSMenuItem *growItem     = [[NSMenuItem alloc] initWithTitle:@"Grow Selection"     action:@selector(growSelector)     keyEquivalent:@"+"];
+    NSMenuItem *shrinkItem   = [[NSMenuItem alloc] initWithTitle:@"Shrink Selection"   action:@selector(shrinkSelector)   keyEquivalent:@"-"];
+
+    NSArray *menuItems = [[NSMutableArray alloc] initWithObjects:continueItem, undoItem, growItem, shrinkItem, nil];
+
+    // reverse object order so that menu items get inserted atIndex in the desired order
+    for (NSMenuItem *item in [menuItems reverseObjectEnumerator]) {
+        [item setKeyEquivalentModifierMask: NSEventModifierFlagCommand | NSEventModifierFlagOption];
+        [item setTarget:self];
+        [editMenu insertItem:item atIndex:startingIndex];
+    }
+
+    // add separator at the top of the list
+    [editMenu insertItem:[NSMenuItem separatorItem] atIndex:startingIndex];
+}
+
 - (GSNode*) getSibling:(GSNode*)node next:(bool)next {
     GSPath *path = node.parent;
     NSUInteger index = [path indexOfNode:node];
@@ -223,16 +248,16 @@
     [layer removeObjectFromSelection:[layer.selection lastObject]];
 }
 
-- (void) growSel {
+- (void) growSelector {
     [self growSelection];
 }
-- (void) shrinkSel {
+- (void) shrinkSelector {
     [self shrinkSelection];
 }
-- (void) continueSel {
+- (void) continueSelector {
     [self continueSelection];
 }
-- (void) undoSel {
+- (void) undoSelector {
     [self undoSelection];
 }
 - (IBAction) selectSmoothCurves:(id)sender {
@@ -259,27 +284,6 @@
 - (IBAction) selectComponents:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
     [self selectComponentsWithOperation:operation];
-}
-
-- (void)addMenuItems {
-    NSApplication *app = [NSApplication sharedApplication];
-    NSMenu *menu = [app mainMenu];
-    NSMenu *editMenu = [[menu itemAtIndex:2] submenu];
-    NSInteger startingIndex = [editMenu indexOfItemWithTitle:@"Invert Selection"] + 1;
-
-    NSMenuItem *continueItem = [[NSMenuItem alloc] initWithTitle:@"Continue Selection" action:@selector(continueSel) keyEquivalent:@"}"];
-    NSMenuItem *undoItem = [[NSMenuItem alloc] initWithTitle:@"Undo Selection" action:@selector(undoSel) keyEquivalent:@"{"];
-    NSMenuItem *growItem = [[NSMenuItem alloc] initWithTitle:@"Grow Selection" action:@selector(growSel) keyEquivalent:@"+"];
-    NSMenuItem *shrinkItem = [[NSMenuItem alloc] initWithTitle:@"Shrink Selection" action:@selector(shrinkSel) keyEquivalent:@"-"];
-
-    NSArray *menuItems = [[NSMutableArray alloc] initWithObjects:continueItem, undoItem, growItem, shrinkItem, nil];
-
-    // reverse object order so that menu items get inserted in the correct order
-    for (NSMenuItem *item in [menuItems reverseObjectEnumerator]) {
-        [item setKeyEquivalentModifierMask: NSEventModifierFlagCommand | NSEventModifierFlagOption];
-        [item setTarget:self];
-        [editMenu insertItem:item atIndex:startingIndex];
-    }
 }
 
 - (NSInteger) maxHeight {
