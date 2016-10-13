@@ -3,7 +3,11 @@ adapted from https://github.com/danielgamage/Glyphs-Scripts
 
 ![Selection Palette Screenshot](https://github.com/danielgamage/SelectionPalette/blob/master/Images/screenshot.png?raw=true)
 
-## Installation 
+## Installation
+### Recommended
+Download _SelectionPalette_ via the Glyphs [Plugin Manager](https://github.com/schriftgestalt/glyphs-packages). (Window > Plugin Manager)
+
+### Alternative
 1. Clone or download this repository
 1. (Unzip if necessary) and open the file with the `.glyphsPalette` extension.
 1. Follow the "are you sure you want to install" dialogs
