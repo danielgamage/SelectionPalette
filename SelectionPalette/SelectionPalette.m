@@ -24,6 +24,7 @@
     self = [super init];
     [NSBundle loadNibNamed:@"SelectionPaletteView" owner:self];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(update:) name:@"GSUpdateInterface" object:nil];
+    [self addMenuItems];
     return self;
 }
 
@@ -34,7 +35,7 @@
 
 - (NSString*) title {
     // Return the name of the tool as it will appear in the menu.
-    return @"Selection Palette";
+    return @"Select by Type";
 }
 
 - (void)update:(id)sender {
@@ -222,16 +223,16 @@
     [layer removeObjectFromSelection:[layer.selection lastObject]];
 }
 
-- (IBAction) growSelection:(id)sender {
+- (void) growSel {
     [self growSelection];
 }
-- (IBAction) shrinkSelection:(id)sender {
+- (void) shrinkSel {
     [self shrinkSelection];
 }
-- (IBAction) continueSelection:(id)sender {
+- (void) continueSel {
     [self continueSelection];
 }
-- (IBAction) undoSelection:(id)sender {
+- (void) undoSel {
     [self undoSelection];
 }
 - (IBAction) selectSmoothCurves:(id)sender {
@@ -258,6 +259,27 @@
 - (IBAction) selectComponents:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
     [self selectComponentsWithOperation:operation];
+}
+
+- (void)addMenuItems {
+    NSApplication *app = [NSApplication sharedApplication];
+    NSMenu *menu = [app mainMenu];
+    NSMenu *editMenu = [[menu itemAtIndex:2] submenu];
+    NSInteger startingIndex = [editMenu indexOfItemWithTitle:@"Invert Selection"] + 1;
+
+    NSMenuItem *continueItem = [[NSMenuItem alloc] initWithTitle:@"Continue Selection" action:@selector(continueSel) keyEquivalent:@"}"];
+    NSMenuItem *undoItem = [[NSMenuItem alloc] initWithTitle:@"Undo Selection" action:@selector(undoSel) keyEquivalent:@"{"];
+    NSMenuItem *growItem = [[NSMenuItem alloc] initWithTitle:@"Grow Selection" action:@selector(growSel) keyEquivalent:@"+"];
+    NSMenuItem *shrinkItem = [[NSMenuItem alloc] initWithTitle:@"Shrink Selection" action:@selector(shrinkSel) keyEquivalent:@"-"];
+
+    NSArray *menuItems = [[NSMutableArray alloc] initWithObjects:continueItem, undoItem, growItem, shrinkItem, nil];
+
+    // reverse object order so that menu items get inserted in the correct order
+    for (NSMenuItem *item in [menuItems reverseObjectEnumerator]) {
+        [item setKeyEquivalentModifierMask: NSEventModifierFlagCommand | NSEventModifierFlagOption];
+        [item setTarget:self];
+        [editMenu insertItem:item atIndex:startingIndex];
+    }
 }
 
 - (NSInteger) maxHeight {
