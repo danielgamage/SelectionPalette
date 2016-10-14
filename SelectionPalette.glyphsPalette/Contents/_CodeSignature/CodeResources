@@ -6,19 +6,19 @@
 	<dict>
 		<key>Resources/AnchorTemplate.pdf</key>
 		<data>
-		eQPam96pMhESOg7BKzfNPbo7MKo=
+		h0RFD9e5Rd4XVC5S8PfvvCIbmyc=
 		</data>
 		<key>Resources/ComponentTemplate.pdf</key>
 		<data>
-		X8w5qw3iMvHomqU94D/h7Nlwo2Y=
+		Q0cAh63NPh0YjmpreN5QuuKLasE=
 		</data>
 		<key>Resources/HandlesTemplate.pdf</key>
 		<data>
-		jtxaWx/YC5q+uAChgIfOUb3H55g=
+		NyhJrihv1JFHpVacy0Ryx+9KQAI=
 		</data>
 		<key>Resources/LinesTemplate.pdf</key>
 		<data>
-		2HsnfKHRQ6tVPTWp8pdMf8Rqs7U=
+		9yxEbURRU3DzL4wFkb/6mOsduFg=
 		</data>
 		<key>Resources/SelectionPalette-Info.plist</key>
 		<data>
@@ -30,11 +30,11 @@
 		</data>
 		<key>Resources/SharpCurvesTemplate.pdf</key>
 		<data>
-		T4dkKjfClAjqVQnRvfu38ZRSRO0=
+		ZfRso6kl+pMJ8mTF8h4GkQeJjQA=
 		</data>
 		<key>Resources/SmoothCurvesTemplate.pdf</key>
 		<data>
-		3DDx3XSq1riz/eyWsbmx6whD8Do=
+		9CcmFv3wO1DDiW53xkqTf6spII8=
 		</data>
 		<key>Resources/en.lproj/SelectionPaletteView.nib</key>
 		<dict>
@@ -52,28 +52,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			RVS6/sg/dwLEh9G4fpbRyz0ifJLlkTknxgiFU73M9Jc=
+			h0yJDZcU891M11++jv1t0vIHsqNLD+WTqoAGvuKXXyo=
 			</data>
 		</dict>
 		<key>Resources/ComponentTemplate.pdf</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			g6IXJLBxcVFWkpLMLYXjqe1V/0mBktDl2EZPHGW7poE=
+			u3lD8DInKaZ/55xMPlzEnoXMMS3wSU/fPNMeEJ37E/k=
 			</data>
 		</dict>
 		<key>Resources/HandlesTemplate.pdf</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			5dGbFZZNuJzEQKMqL6bgTAcG1rraSR3EpHSoAI4VMBY=
+			Kw3uBnNcOTyigy/ZpUpGaAutILqqAlwfZKIwaMirgHw=
 			</data>
 		</dict>
 		<key>Resources/LinesTemplate.pdf</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Sa71bxxiUvrwAtizDNn9pZ4kHjAzpxv+ZKEGS2LFLz4=
+			sCtA57oGhPc4RcKmU9/SNyxru+07mPWExgiy9AMGqqw=
 			</data>
 		</dict>
 		<key>Resources/SelectionPalette-Info.plist</key>
@@ -94,14 +94,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			huMdMm/fbw1gr93S6SSxIplWCS8eqyN5zNKU2eoCMys=
+			eY2b4Hf21xfuXLT3S5vbf69FFu0OMmxvpPqGIN54UwU=
 			</data>
 		</dict>
 		<key>Resources/SmoothCurvesTemplate.pdf</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			j7rAILKnC3wlMJLA6HoTMgMSsBXd/MKCr+NCvo+Ch94=
+			91APXM/Asbv3/bl9dmf6uZBlupEthyeoXNy4LS6f9lI=
 			</data>
 		</dict>
 		<key>Resources/en.lproj/SelectionPaletteView.nib</key>

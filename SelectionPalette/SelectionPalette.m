@@ -138,33 +138,37 @@
 }
 
 - (void) continueSelection {
+    // need a pattern from at least two nodes
     if ([layer.selection count] >= 2) {
         GSNode *lastNode = layer.selection[[layer.selection count] - 1];
         GSNode *originNode = layer.selection[[layer.selection count] - 2];
-        GSPath *path = originNode.parent;
-        NSUInteger lastNodeIndex = [path indexOfNode:lastNode];
-        NSUInteger originNodeIndex = [path indexOfNode:originNode];
-        NSUInteger rhythm;
+        // if nodes aren't on the same path, can't calculate a pattern
+        if (lastNode.parent == originNode.parent) {
+            GSPath *path = originNode.parent;
+            NSUInteger lastNodeIndex = [path indexOfNode:lastNode];
+            NSUInteger originNodeIndex = [path indexOfNode:originNode];
+            NSUInteger rhythm;
 
-        // Get difference of two nodes
-        if (lastNodeIndex > originNodeIndex) {
-            // normal diff
-            rhythm = lastNodeIndex - originNodeIndex;
-        } else {
-            // crossing bounds of path
-            rhythm = abs(originNodeIndex - [path.nodes count]) + lastNodeIndex;
+            // Get difference of two nodes
+            if (lastNodeIndex > originNodeIndex) {
+                // normal diff
+                rhythm = lastNodeIndex - originNodeIndex;
+            } else {
+                // crossing bounds of path
+                rhythm = abs(originNodeIndex - [path.nodes count]) + lastNodeIndex;
+            }
+
+            // Move to node with rhythm
+            GSNode *nodeToSelect = lastNode;
+            int i = 0;
+            while (i < rhythm) {
+                nodeToSelect = [self nextNode:nodeToSelect];
+                i += 1;
+            }
+
+            // Select it
+            [layer addSelection:nodeToSelect];
         }
-
-        // Move to node with rhythm
-        GSNode *nodeToSelect = lastNode;
-        int i = 0;
-        while (i < rhythm) {
-            nodeToSelect = [self nextNode:nodeToSelect];
-            i += 1;
-        }
-
-        // Select it
-        [layer addSelection:nodeToSelect];
     }
 }
 
