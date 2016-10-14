@@ -16,14 +16,20 @@ Download _SelectionPalette_ via the Glyphs [Plugin Manager](https://github.com/s
 ## Usage
 
 ### Selection commands
-The top row contains commands from left–right:
-- undo selection
-- grow selection
-- shrink selection
-- continue selection
+In the Edit menu, you'll see some new commands under the other selection commands:
+#### Continue Selection
+to select a node based on the pattern of the last two nodes you selected
+#### Undo Selection
+to remove the last-selected node from the selection set
+#### Grow Selection
+to add closest siblings of selected nodes to the selection set
+#### Shrink Selection
+to shrink outer edges of a selection set
+
+These all have corresponding keyboard shortcuts for easy access.
 
 ### Select by type
-The rows below contain operations for several types of elements:
+The palette in the sidebar contain selection operations for several types of elements:
 - smooth curves
 - sharp corners
 - lines
