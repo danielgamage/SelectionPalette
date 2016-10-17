@@ -50,6 +50,10 @@
 	<dict>
 		<key>Resources/AnchorTemplate.pdf</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			h0RFD9e5Rd4XVC5S8PfvvCIbmyc=
+			</data>
 			<key>hash2</key>
 			<data>
 			h0yJDZcU891M11++jv1t0vIHsqNLD+WTqoAGvuKXXyo=
@@ -57,6 +61,10 @@
 		</dict>
 		<key>Resources/ComponentTemplate.pdf</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			Q0cAh63NPh0YjmpreN5QuuKLasE=
+			</data>
 			<key>hash2</key>
 			<data>
 			u3lD8DInKaZ/55xMPlzEnoXMMS3wSU/fPNMeEJ37E/k=
@@ -64,6 +72,10 @@
 		</dict>
 		<key>Resources/HandlesTemplate.pdf</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			NyhJrihv1JFHpVacy0Ryx+9KQAI=
+			</data>
 			<key>hash2</key>
 			<data>
 			Kw3uBnNcOTyigy/ZpUpGaAutILqqAlwfZKIwaMirgHw=
@@ -71,6 +83,10 @@
 		</dict>
 		<key>Resources/LinesTemplate.pdf</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			9yxEbURRU3DzL4wFkb/6mOsduFg=
+			</data>
 			<key>hash2</key>
 			<data>
 			sCtA57oGhPc4RcKmU9/SNyxru+07mPWExgiy9AMGqqw=
@@ -78,6 +94,10 @@
 		</dict>
 		<key>Resources/SelectionPalette-Info.plist</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			ZpShXd85WruyHQqAvnU3etxRWXQ=
+			</data>
 			<key>hash2</key>
 			<data>
 			MoLBVGQVGJR4w4uY7/ZDrP/jWdYRB9AarshM+9oyPVg=
@@ -85,6 +105,10 @@
 		</dict>
 		<key>Resources/SelectionPalette-Prefix.pch</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			2jmj7l5rSw0yVb/vlWAYkK/YBwk=
+			</data>
 			<key>hash2</key>
 			<data>
 			47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=
@@ -92,6 +116,10 @@
 		</dict>
 		<key>Resources/SharpCurvesTemplate.pdf</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			ZfRso6kl+pMJ8mTF8h4GkQeJjQA=
+			</data>
 			<key>hash2</key>
 			<data>
 			eY2b4Hf21xfuXLT3S5vbf69FFu0OMmxvpPqGIN54UwU=
@@ -99,6 +127,10 @@
 		</dict>
 		<key>Resources/SmoothCurvesTemplate.pdf</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			9CcmFv3wO1DDiW53xkqTf6spII8=
+			</data>
 			<key>hash2</key>
 			<data>
 			91APXM/Asbv3/bl9dmf6uZBlupEthyeoXNy4LS6f9lI=
@@ -106,6 +138,10 @@
 		</dict>
 		<key>Resources/en.lproj/SelectionPaletteView.nib</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			hBJq0FDmTUtLvzRibfC35P1DH2c=
+			</data>
 			<key>hash2</key>
 			<data>
 			XV8918Jp+xjd+QYxb13I4EiITMzzIc0CRynr5B0NZdI=
