@@ -12,7 +12,6 @@
 
 @interface SelectionPalette : NSObject <GlyphsPalette> {
     NSView *					__unsafe_unretained _theView;
-    GSLayer *layer;
     IBOutlet NSButton *growButton;
     IBOutlet NSButton *shrinkButton;
     IBOutlet NSButton *continueButton;

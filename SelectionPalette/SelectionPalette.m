@@ -16,6 +16,10 @@
 #import <GlyphsCore/GSNode.h>
 #import <GlyphsCore/GSWindowControllerProtocol.h>
 
+@interface NSApplication (FontDocument)
+- (NSDocument*)currentFontDocument;
+@end
+
 @implementation SelectionPalette
 
 @synthesize windowController;
@@ -23,7 +27,6 @@
 - (id) init {
     self = [super init];
     [NSBundle loadNibNamed:@"SelectionPaletteView" owner:self];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(update:) name:@"GSUpdateInterface" object:nil];
     [self addMenuItems];
     return self;
 }
@@ -38,33 +41,38 @@
     return @"Select by Type";
 }
 
-- (void)update:(id)sender {
-    layer = [windowController activeLayer];
+- (GSLayer*) layer {
+	NSDocument *doc = [NSApp currentFontDocument];
+	return [[[doc windowControllers] firstObject] activeLayer];
 }
 
 - (void)addMenuItems {
-    NSApplication *app = [NSApplication sharedApplication];
-    NSMenu *editMenu = [[[app mainMenu] itemAtIndex:2] submenu];
+	static SelectionPalette* MenuHandler = nil;
+	if (!MenuHandler) {
+		MenuHandler = self;
+		NSApplication *app = [NSApplication sharedApplication];
+		NSMenu *editMenu = [[[app mainMenu] itemAtIndex:2] submenu];
 
-    // index + 1 so items are inserted AFTER the other selection items
-    NSInteger startingIndex = [editMenu indexOfItemWithTitle:@"Invert Selection"] + 1;
+		// index + 1 so items are inserted AFTER the other selection items
+		NSInteger startingIndex = [editMenu indexOfItemWithTitle:@"Invert Selection"] + 1;
 
-    NSMenuItem *continueItem = [[NSMenuItem alloc] initWithTitle:@"Continue Selection" action:@selector(continueSelector) keyEquivalent:@"}"];
-    NSMenuItem *undoItem     = [[NSMenuItem alloc] initWithTitle:@"Undo Selection"     action:@selector(undoSelector)     keyEquivalent:@"{"];
-    NSMenuItem *growItem     = [[NSMenuItem alloc] initWithTitle:@"Grow Selection"     action:@selector(growSelector)     keyEquivalent:@"+"];
-    NSMenuItem *shrinkItem   = [[NSMenuItem alloc] initWithTitle:@"Shrink Selection"   action:@selector(shrinkSelector)   keyEquivalent:@"-"];
+		NSMenuItem *continueItem = [[NSMenuItem alloc] initWithTitle:@"Continue Selection" action:@selector(continueSelection) keyEquivalent:@"}"];
+		NSMenuItem *undoItem     = [[NSMenuItem alloc] initWithTitle:@"Undo Selection"     action:@selector(undoSelection)     keyEquivalent:@"{"];
+		NSMenuItem *growItem     = [[NSMenuItem alloc] initWithTitle:@"Grow Selection"     action:@selector(growSelection)     keyEquivalent:@"+"];
+		NSMenuItem *shrinkItem   = [[NSMenuItem alloc] initWithTitle:@"Shrink Selection"   action:@selector(shrinkSelection)   keyEquivalent:@"-"];
 
-    NSArray *menuItems = [[NSMutableArray alloc] initWithObjects:continueItem, undoItem, growItem, shrinkItem, nil];
+		NSArray *menuItems = [[NSMutableArray alloc] initWithObjects:continueItem, undoItem, growItem, shrinkItem, nil];
 
-    // reverse object order so that menu items get inserted atIndex in the desired order
-    for (NSMenuItem *item in [menuItems reverseObjectEnumerator]) {
-        [item setKeyEquivalentModifierMask: NSEventModifierFlagCommand | NSEventModifierFlagOption];
-        [item setTarget:self];
-        [editMenu insertItem:item atIndex:startingIndex];
-    }
+		// reverse object order so that menu items get inserted atIndex in the desired order
+		for (NSMenuItem *item in [menuItems reverseObjectEnumerator]) {
+			[item setKeyEquivalentModifierMask: NSEventModifierFlagCommand | NSEventModifierFlagOption];
+			[item setTarget:self];
+			[editMenu insertItem:item atIndex:startingIndex];
+		}
 
-    // add separator at the top of the list
-    [editMenu insertItem:[NSMenuItem separatorItem] atIndex:startingIndex];
+		// add separator at the top of the list
+		[editMenu insertItem:[NSMenuItem separatorItem] atIndex:startingIndex];
+	}
 }
 
 - (GSNode*) getSibling:(GSNode*)node next:(bool)next {
@@ -94,12 +102,12 @@
 }
 
 - (bool) isSelected:(GSNode*)node {
-    return ([layer.selection containsObject:node]);
+    return ([[self layer].selection containsObject:node]);
 }
 
 - (void) growSelection {
     NSMutableArray *nodesToSelect = [[NSMutableArray alloc] init];
-
+	GSLayer *layer = [self layer];
     // Get nodes on outside edges of selection
     for (GSPath *path in layer.paths) {
         for (GSNode *node in path.nodes) {
@@ -112,7 +120,7 @@
     }
     // Select them
     for (GSNode *node in nodesToSelect) {
-        [layer addSelection:node];
+        [[self layer] addSelection:node];
     }
 
 }
@@ -121,7 +129,7 @@
     NSMutableArray *nodesToDeselect = [[NSMutableArray alloc] init];
 
     // Get nodes on inside edges of selection
-    for (GSPath *path in layer.paths) {
+    for (GSPath *path in [self layer].paths) {
         for (GSNode *node in path.nodes) {
             if ([self isSelected:node]) {
                 if (![self isSelected:[self nextNode:node]] || ![self isSelected:[self prevNode:node]]) {
@@ -133,20 +141,20 @@
 
     // Deselect them
     for (GSNode *node in nodesToDeselect) {
-        [layer removeObjectFromSelection:node];
+        [[self layer] removeObjectFromSelection:node];
     }
 }
 
 - (void) continueSelection {
     // need a pattern from at least two nodes
-    if ([layer.selection count] >= 2) {
-        GSNode *lastNode = layer.selection[[layer.selection count] - 1];
-        GSNode *originNode = layer.selection[[layer.selection count] - 2];
+    if ([[self layer].selection count] >= 2) {
+        GSNode *lastNode = [self layer].selection[[[self layer].selection count] - 1];
+        GSNode *originNode = [self layer].selection[[[self layer].selection count] - 2];
         // if nodes aren't on the same path, can't calculate a pattern
         if (lastNode.parent == originNode.parent) {
             GSPath *path = originNode.parent;
             NSUInteger lastNodeIndex = [path indexOfNode:lastNode];
-            NSUInteger originNodeIndex = [path indexOfNode:originNode];
+            NSInteger originNodeIndex = [path indexOfNode:originNode];
             NSUInteger rhythm;
 
             // Get difference of two nodes
@@ -155,7 +163,7 @@
                 rhythm = lastNodeIndex - originNodeIndex;
             } else {
                 // crossing bounds of path
-                rhythm = abs(originNodeIndex - [path.nodes count]) + lastNodeIndex;
+                rhythm = labs(originNodeIndex - (NSInteger)[path.nodes count]) + lastNodeIndex;
             }
 
             // Move to node with rhythm
@@ -167,32 +175,32 @@
             }
 
             // Select it
-            [layer addSelection:nodeToSelect];
+            [[self layer] addSelection:nodeToSelect];
         }
     }
 }
 
 - (void) performSelectionOnArray:(NSMutableArray *)selectionArray andOperation:(SelectionOperationType)operation {
     if (operation == ADD) {
-        [layer addObjectsFromArrayToSelection:selectionArray];
+        [[self layer] addObjectsFromArrayToSelection:selectionArray];
     } else if (operation == SUBTRACT) {
-        [layer removeObjectsFromSelection:selectionArray];
+        [[self layer] removeObjectsFromSelection:selectionArray];
     } else if (operation == INTERSECT) {
         NSMutableArray *elementsToDeselect = [[NSMutableArray alloc] init];
-        for (GSElement *element in layer.selection) {
+        for (GSElement *element in [self layer].selection) {
             if (![selectionArray containsObject:element]) {
                 [elementsToDeselect addObject:element];
             }
         }
-        [layer removeObjectsFromSelection:elementsToDeselect];
+        [[self layer] removeObjectsFromSelection:elementsToDeselect];
     }
 }
 
 - (void) selectAnchorsWithOperation:(SelectionOperationType)operation {
     NSMutableArray *selectionArray = [[NSMutableArray alloc] init];
 
-    for (NSString *key in layer.anchors) {
-        GSAnchor *anchor = [layer.anchors objectForKey:key];
+    for (NSString *key in [self layer].anchors) {
+        GSAnchor *anchor = [[self layer].anchors objectForKey:key];
         [selectionArray addObject:anchor];
     }
 
@@ -202,7 +210,7 @@
 - (void) selectComponentsWithOperation:(SelectionOperationType)operation {
     NSMutableArray *selectionArray = [[NSMutableArray alloc] init];
 
-    for (GSElement *component in layer.components) {
+    for (GSElement *component in [self layer].components) {
         [selectionArray addObject:component];
     }
 
@@ -212,7 +220,7 @@
 - (void) selectNodesByType:(GSNodeType)type andSmooth:(GSNodeType)connection withOperation:(SelectionOperationType)operation {
     NSMutableArray *selectionArray = [[NSMutableArray alloc] init];
 
-    for (GSPath *path in layer.paths){
+    for (GSPath *path in [self layer].paths){
         for (GSNode *node in path.nodes) {
             NSMutableArray *conditions = [[NSMutableArray alloc] init];
 
@@ -249,25 +257,13 @@
 }
 
 - (void) undoSelection {
-    [layer removeObjectFromSelection:[layer.selection lastObject]];
+    [[self layer] removeObjectFromSelection:[[self layer].selection lastObject]];
 }
 
-- (void) growSelector {
-    [self growSelection];
-}
-- (void) shrinkSelector {
-    [self shrinkSelection];
-}
-- (void) continueSelector {
-    [self continueSelection];
-}
-- (void) undoSelector {
-    [self undoSelection];
-}
 - (IBAction) selectSmoothCurves:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
     // should select both line and curve nodes with smooth connections
-    [self selectNodesByType:nil andSmooth:SMOOTH withOperation:operation];
+    [self selectNodesByType:0 andSmooth:SMOOTH withOperation:operation];
 }
 - (IBAction) selectSharpCurves:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
@@ -275,11 +271,11 @@
 }
 - (IBAction) selectLines:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
-    [self selectNodesByType:LINE andSmooth:nil withOperation:operation];
+    [self selectNodesByType:LINE andSmooth:0 withOperation:operation];
 }
 - (IBAction) selectHandles:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
-    [self selectNodesByType:OFFCURVE andSmooth:nil withOperation:operation];
+    [self selectNodesByType:OFFCURVE andSmooth:0 withOperation:operation];
 }
 - (IBAction) selectAnchors:(id)sender {
     SelectionOperationType operation = [sender selectedSegment];
@@ -291,12 +287,12 @@
 }
 
 - (NSInteger) maxHeight {
-    return 265;
+    return 140;
 }
 - (NSInteger) minHeight {
-    return 125;
+    return 140;
 }
 - (NSUInteger) currentHeight {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:@"SelectionPaletteCurrentHeight"];
+	return 140;
 }
 @end
