@@ -287,12 +287,12 @@
 }
 
 - (NSInteger) maxHeight {
-    return 265;
+    return 140;
 }
 - (NSInteger) minHeight {
-    return 125;
+    return 140;
 }
 - (NSUInteger) currentHeight {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:@"SelectionPaletteCurrentHeight"];
+	return 140;
 }
 @end
