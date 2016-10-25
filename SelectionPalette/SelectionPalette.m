@@ -154,7 +154,7 @@
         if (lastNode.parent == originNode.parent) {
             GSPath *path = originNode.parent;
             NSUInteger lastNodeIndex = [path indexOfNode:lastNode];
-            NSUInteger originNodeIndex = [path indexOfNode:originNode];
+            NSInteger originNodeIndex = [path indexOfNode:originNode];
             NSUInteger rhythm;
 
             // Get difference of two nodes
@@ -163,7 +163,7 @@
                 rhythm = lastNodeIndex - originNodeIndex;
             } else {
                 // crossing bounds of path
-                rhythm = abs(originNodeIndex - [path.nodes count]) + lastNodeIndex;
+                rhythm = labs(originNodeIndex - (NSInteger)[path.nodes count]) + lastNodeIndex;
             }
 
             // Move to node with rhythm
