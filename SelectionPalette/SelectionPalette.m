@@ -16,6 +16,10 @@
 #import <GlyphsCore/GSNode.h>
 #import <GlyphsCore/GSWindowControllerProtocol.h>
 
+@interface NSApplication (FontDocument)
+- (NSDocument*)currentFontDocument;
+@end
+
 @implementation SelectionPalette
 
 @synthesize windowController;
@@ -23,7 +27,6 @@
 - (id) init {
     self = [super init];
     [NSBundle loadNibNamed:@"SelectionPaletteView" owner:self];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(update:) name:@"GSUpdateInterface" object:nil];
     [self addMenuItems];
     return self;
 }
@@ -38,8 +41,9 @@
     return @"Select by Type";
 }
 
-- (void)update:(id)sender {
-    layer = [windowController activeLayer];
+- (GSLayer*) layer {
+	NSDocument *doc = [NSApp currentFontDocument];
+	return [[[doc windowControllers] firstObject] activeLayer];
 }
 
 - (void)addMenuItems {
@@ -98,12 +102,12 @@
 }
 
 - (bool) isSelected:(GSNode*)node {
-    return ([layer.selection containsObject:node]);
+    return ([[self layer].selection containsObject:node]);
 }
 
 - (void) growSelection {
     NSMutableArray *nodesToSelect = [[NSMutableArray alloc] init];
-
+	GSLayer *layer = [self layer];
     // Get nodes on outside edges of selection
     for (GSPath *path in layer.paths) {
         for (GSNode *node in path.nodes) {
@@ -116,7 +120,7 @@
     }
     // Select them
     for (GSNode *node in nodesToSelect) {
-        [layer addSelection:node];
+        [[self layer] addSelection:node];
     }
 
 }
@@ -125,7 +129,7 @@
     NSMutableArray *nodesToDeselect = [[NSMutableArray alloc] init];
 
     // Get nodes on inside edges of selection
-    for (GSPath *path in layer.paths) {
+    for (GSPath *path in [self layer].paths) {
         for (GSNode *node in path.nodes) {
             if ([self isSelected:node]) {
                 if (![self isSelected:[self nextNode:node]] || ![self isSelected:[self prevNode:node]]) {
@@ -137,15 +141,15 @@
 
     // Deselect them
     for (GSNode *node in nodesToDeselect) {
-        [layer removeObjectFromSelection:node];
+        [[self layer] removeObjectFromSelection:node];
     }
 }
 
 - (void) continueSelection {
     // need a pattern from at least two nodes
-    if ([layer.selection count] >= 2) {
-        GSNode *lastNode = layer.selection[[layer.selection count] - 1];
-        GSNode *originNode = layer.selection[[layer.selection count] - 2];
+    if ([[self layer].selection count] >= 2) {
+        GSNode *lastNode = [self layer].selection[[[self layer].selection count] - 1];
+        GSNode *originNode = [self layer].selection[[[self layer].selection count] - 2];
         // if nodes aren't on the same path, can't calculate a pattern
         if (lastNode.parent == originNode.parent) {
             GSPath *path = originNode.parent;
@@ -171,7 +175,7 @@
             }
 
             // Select it
-            [layer addSelection:nodeToSelect];
+            [[self layer] addSelection:nodeToSelect];
         }
     }
 }
