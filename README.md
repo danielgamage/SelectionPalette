@@ -25,6 +25,8 @@ to remove the last-selected node from the selection set
 to add closest siblings of selected nodes to the selection set
 #### Shrink Selection
 to shrink outer edges of a selection set
+#### Select Between
+to select all nodes between two selected nodes (the two most recently selected nodes)
 
 These all have corresponding keyboard shortcuts for easy access.
 
