@@ -60,8 +60,9 @@
 		NSMenuItem *undoItem     = [[NSMenuItem alloc] initWithTitle:@"Undo Selection"     action:@selector(undoSelection)     keyEquivalent:@"{"];
 		NSMenuItem *growItem     = [[NSMenuItem alloc] initWithTitle:@"Grow Selection"     action:@selector(growSelection)     keyEquivalent:@"+"];
 		NSMenuItem *shrinkItem   = [[NSMenuItem alloc] initWithTitle:@"Shrink Selection"   action:@selector(shrinkSelection)   keyEquivalent:@"-"];
+        NSMenuItem *fillItem     = [[NSMenuItem alloc] initWithTitle:@"Select Between"     action:@selector(fillSelection)     keyEquivalent:@":"];
 
-		NSArray *menuItems = [[NSMutableArray alloc] initWithObjects:continueItem, undoItem, growItem, shrinkItem, nil];
+		NSArray *menuItems = [[NSMutableArray alloc] initWithObjects:continueItem, undoItem, growItem, shrinkItem, fillItem, nil];
 
 		// reverse object order so that menu items get inserted atIndex in the desired order
 		for (NSMenuItem *item in [menuItems reverseObjectEnumerator]) {
@@ -142,6 +143,46 @@
     // Deselect them
     for (GSNode *node in nodesToDeselect) {
         [[self layer] removeObjectFromSelection:node];
+    }
+}
+
+- (void) fillSelection {
+    if ([[self layer].selection count] >= 2) {
+        NSMutableArray *nodesToSelect = [[NSMutableArray alloc] init];
+
+        GSNode *lastNode = [self layer].selection[[[self layer].selection count] - 1];
+        GSNode *originNode = [self layer].selection[[[self layer].selection count] - 2];
+        GSNode* node1;
+        GSNode* node2;
+
+        // only allow filling if nodes are on same path
+        if (lastNode.parent == originNode.parent) {
+            GSPath *path = lastNode.parent;
+
+            // sort nodes by index
+            if ([path indexOfNode:lastNode] > [path indexOfNode:originNode]) {
+                node1 = originNode;
+                node2 = lastNode;
+            } else {
+                node1 = lastNode;
+                node2 = originNode;
+            }
+
+            NSInteger node1Index = [path indexOfNode:node1];
+            NSInteger node2Index = [path indexOfNode:node2];
+
+            if (!path.closed || node2Index - node1Index <= node1Index + [path.nodes count] - node2Index) {
+                // shortest (or only) path is direct from node 1 to node 2
+                [nodesToSelect addObjectsFromArray:[path.nodes subarrayWithRange:NSMakeRange(node1Index, node2Index - node1Index)] ];
+            } else {
+                // shortest path crosses path bounds
+                [nodesToSelect addObjectsFromArray:[path.nodes subarrayWithRange:NSMakeRange(0, node1Index)] ];
+                [nodesToSelect addObjectsFromArray:[path.nodes subarrayWithRange:NSMakeRange(node2Index, [path.nodes count] - node2Index)] ];
+            }
+
+            // Select them
+            [[self layer] addObjectsFromArrayToSelection:nodesToSelect];
+        }
     }
 }
 
@@ -258,6 +299,7 @@
 
 - (void) undoSelection {
     [[self layer] removeObjectFromSelection:[[self layer].selection lastObject]];
+//    setSelectionUndo
 }
 
 - (IBAction) selectSmoothCurves:(id)sender {
