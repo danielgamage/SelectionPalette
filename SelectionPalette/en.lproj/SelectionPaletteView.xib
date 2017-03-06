@@ -87,9 +87,9 @@
                     <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="qby-EE-vg7">
                         <font key="font" metaFont="smallSystem"/>
                         <segments>
-                            <segment label="+" toolTip="Add anchors to selection" width="24"/>
-                            <segment label="-" toolTip="Subtract anchors from selection" width="24" tag="1"/>
-                            <segment label="○" toolTip="Select only anchors from selection" width="24" tag="2"/>
+                            <segment label="+" toolTip="Add components to selection" width="24"/>
+                            <segment label="-" toolTip="Subtract components from selection" width="24" tag="1"/>
+                            <segment label="○" toolTip="Select only components from selection" width="24" tag="2"/>
                         </segments>
                     </segmentedCell>
                     <connections>
