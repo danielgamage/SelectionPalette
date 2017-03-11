@@ -81,17 +81,29 @@
     NSUInteger index = [path indexOfNode:node];
     NSUInteger length = [path.nodes count];
     NSUInteger siblingIndex;
+    BOOL crossesBounds = NO;
 
     if (next == YES) {
-        // if last node
-        siblingIndex = (index + 1) % (length - 1);
+        siblingIndex = (index + 1) % length;
+        if (siblingIndex == 0) {
+            // if last node
+            crossesBounds = YES;
+        }
     } else {
-        // if first node
-        siblingIndex = (index - 1 + length - 1) % (length - 1); // add (length - 1) in case (index - 1) is negative
+        siblingIndex = (index - 1 + length) % length; // add (length) in case (index - 1) is negative
+        if (siblingIndex == length - 1) {
+            // if first node
+            crossesBounds = YES;
+        }
     }
 
-    GSNode *nextNode = [path nodeAtIndex:siblingIndex];
-    return nextNode;
+    if (!path.closed && crossesBounds) {
+        // just return the same node if the path is open and we're at a path end
+        return node;
+    } else {
+        GSNode *nextNode = [path nodeAtIndex:siblingIndex];
+        return nextNode;
+    }
 }
 
 - (GSNode*) prevNode:(GSNode*)node {
