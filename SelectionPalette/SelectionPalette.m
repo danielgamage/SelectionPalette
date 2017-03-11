@@ -84,10 +84,10 @@
 
     if (next == YES) {
         // if last node
-        siblingIndex = (index == length - 1) ? 0 : index + 1;
+        siblingIndex = (index + 1) % (length - 1);
     } else {
         // if first node
-        siblingIndex = (index == 0) ? length - 1 : index - 1;
+        siblingIndex = (index - 1 + length - 1) % (length - 1); // add (length - 1) in case (index - 1) is negative
     }
 
     GSNode *nextNode = [path nodeAtIndex:siblingIndex];
