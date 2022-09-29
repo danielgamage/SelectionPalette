@@ -1,7 +1,7 @@
 # SelectionPalette
 adapted from https://github.com/danielgamage/Glyphs-Scripts
 
-![Selection Palette Screenshot](https://github.com/danielgamage/SelectionPalette/blob/master/Images/screenshot.png?raw=true)
+![Selection Palette Screenshot](https://github.com/danielgamage/SelectionPalette/blob/main/Images/screenshot.png?raw=true)
 
 ## Installation
 ### Recommended
