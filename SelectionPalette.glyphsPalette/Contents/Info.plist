@@ -2,43 +2,31 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>BuildMachineOSBuild</key>
-	<string>16A323</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>SelectionPalette</string>
 	<key>CFBundleExecutable</key>
-	<string>SelectionPalette</string>
+	<string>plugin</string>
 	<key>CFBundleIdentifier</key>
-	<string>danielgamage.SelectionPalette</string>
+	<string>com.RicardGarcia.ChangeCase</string>
 	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
+	<string>2.0</string>
 	<key>CFBundleName</key>
-	<string>SelectionPalette</string>
-	<key>CFBundleShortVersionString</key>
-	<string>0.5.2</string>
-	<key>CFBundleSupportedPlatforms</key>
-	<array>
-		<string>MacOSX</string>
-	</array>
+	<string>ChangeCase</string>
 	<key>CFBundleVersion</key>
-	<string>11</string>
-	<key>DTCompiler</key>
-	<string>com.apple.compilers.llvm.clang.1_0</string>
-	<key>DTPlatformBuild</key>
-	<string>8A218a</string>
-	<key>DTPlatformVersion</key>
-	<string>GM</string>
-	<key>DTSDKBuild</key>
-	<string>16A300</string>
-	<key>DTSDKName</key>
-	<string>macosx10.12</string>
-	<key>DTXcode</key>
-	<string>0800</string>
-	<key>DTXcodeBuild</key>
-	<string>8A218a</string>
+	<string>5</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.0.2</string>
 	<key>UpdateFeedURL</key>
-	<string>https://raw.githubusercontent.com/danielgamage/SelectionPalette/master/SelectionPalette.glyphsPalette/Contents/Info.plist</string>
+	<string>https://raw.githubusercontent.com/danielgamage/SelectionPalette/main/SelectionPalette/SelectionPalette.glyphsPalette/Contents/Info.plist</string>
+	<key>productPageURL</key>
+	<string>https://github.com/Ricard-Garcia/danielgamage/SelectionPalette</string>
+	<key>productReleaseNotes</key>
+	<string>python rewrite</string>
+	<key>NSPrincipalClass</key>
+	<string>SelectionPalette</string>
+	<key>PyMainFileNames</key>
+	<array>
+		<string>plugin.py</string>
+	</array>
 </dict>
 </plist>
