@@ -1,98 +1,106 @@
 # encoding: utf-8
 
-###########################################################################################################
-#
-#
-#	Palette Plugin
-#
-#	Read the docs:
-#	https://github.com/schriftgestalt/GlyphsSDK/tree/master/Python%20Templates/Palette
-#
-#
-###########################################################################################################
-
 from __future__ import print_function
 from enum import Enum
 from importlib.metadata import distribution
 import objc
-from AppKit import NSMenuItem, NSImage
+from AppKit import NSMenuItem, NSImage, NSAlternateKeyMask, NSCommandKeyMask
 from GlyphsApp import *
 from GlyphsApp import Glyphs, EDIT_MENU, LINE, CURVE, OFFCURVE
 from GlyphsApp.plugins import *
-from vanilla import Window, Button, ImageButton, Group, TextBox, VerticalStackView, HorizontalStackView, ImageView
+from vanilla import Window, ImageButton, Group, TextBox, VerticalStackView, HorizontalStackView, ImageView, HorizontalLine
 import traceback, os
+
+# 
+# Translations
+# 
+
+translations = {
+	"undo_selection": Glyphs.localize({ 'en': "Undo Selection" }),
+	"shrink_selection": Glyphs.localize({ 'en': "Shrink Selection" }),
+	"select_between": Glyphs.localize({ 'en': "Select Between" }),
+	"grow_selection": Glyphs.localize({ 'en': "Grow Selection" }),
+	"continue_selection": Glyphs.localize({ 'en': "Continue Selection", "de": "Auswahl fortsetzen" }),
+	"select_linked_hints": Glyphs.localize({ 'en': "Select Linked Hints" }),
+	"boolean_add": lambda label: Glyphs.localize({'en': "Add %s to selection" % label,}),
+	"boolean_remove": lambda label: Glyphs.localize({'en': "Remove %s from selection" % label,}),
+	"boolean_intersect": lambda label: Glyphs.localize({'en': "Select only %s" % label,}),
+}
 
 class Operation(Enum):
 	ADD = 0
 	SUBTRACT = 1
 	INTERSECT = 2
 
+def getImageViewFromPath(path):
+	osource_image = os.path.join(os.path.dirname(__file__), path + '.svg')
+	icon = NSImage.alloc().initWithContentsOfFile_(osource_image)
+	icon.setTemplate_(True)
+	return icon
+
+# createImageButton def with 3 named arguments for icon, callback and tooltip
+def createImageButton(icon, callback, tooltip):
+	addButton = ImageButton(
+		"auto",
+		bordered=False,
+		imageObject=icon,
+		callback=callback,
+	)
+	addButton.getNSButton().setToolTip_(tooltip)
+	return addButton
 
 class SelectionPalette(PalettePlugin):
-		
 	def settings(self):
 		try:
-			# print("SelectionPalette hello0")
-			self.buttonList = []
 			self.name = "SelectionPalette"
-			# Create Vanilla window and group with controls
-			width = 180
-			height = 200
+			# cache for vanilla buttons https://github.com/robotools/vanilla/issues/165
+			self.buttonList = []
+			# TODO width does not update on panel resize
+			self.width = 160
+			self.height = 185
 			types = (
 				("SmoothCurves", "Smooth", self.selectSmoothCurves_withOperation_),
 				("SharpCurves", "Sharp", self.selectSharpCurves_withOperation_),
 				("Lines", "Lines", self.selectLines_withOperation_),
 				("Handles", "Handles", self.selectHandles_withOperation_),
-				("Corners", "Corners", self.selectComponents_withOperation_),
 				("Components", "Components", self.selectComponents_withOperation_),
-				("Guides", "Guides", self.selectGuides_withOperation_),
 				("Anchors", "Anchors", self.selectAnchors_withOperation_),
+				("Guides", "Guides", self.selectGuides_withOperation_),
 				)
-			self.paletteView = Window((width, height))
-			self.paletteView.group = Group((0, 0, width, height))
-			self.paletteView.group.stack = VerticalStackView((0, 0, width, height), views=[], edgeInsets=(4, 8, 8, 8), distribution="equalSpacing", alignment="center")
+			self.paletteView = Window((self.width, self.height))
+			self.paletteView.group = Group((0, 0, self.width, self.height))
+			self.paletteView.group.stack = VerticalStackView((0, 0, self.width, self.height), views=[], spacing=4, edgeInsets=(4, 8, 8, 8), distribution="gravity", alignment="center")
 
-			addIcon = NSImage.alloc().initWithContentsOfFile_(os.path.join(os.path.dirname(__file__), 'union.svg'))
-			addIcon.setTemplate_(True)
-			subtractIcon = NSImage.alloc().initWithContentsOfFile_(os.path.join(os.path.dirname(__file__), 'subtract.svg'))
-			subtractIcon.setTemplate_(True)
-			intersectIcon = NSImage.alloc().initWithContentsOfFile_(os.path.join(os.path.dirname(__file__), 'intersect.svg'))
-			intersectIcon.setTemplate_(True)
-			
+			addIcon = getImageViewFromPath('Union')
+			subtractIcon = getImageViewFromPath('Subtract')
+			intersectIcon = getImageViewFromPath('Intersect')
 			for type,label,callback in types:
-				addButton = ImageButton(
-					"auto",
-					bordered=False,
-					imageObject=addIcon,
-					# avoiding late binding of `callback`:
-					callback=lambda sender, callback=callback: callback(sender, Operation.ADD)
+				addButton = createImageButton(
+					icon=addIcon,
+					callback=lambda sender, callback=callback: callback(sender, Operation.ADD),
+					tooltip=translations["boolean_add"](label)
 				)
-				subtractButton = ImageButton(
-					"auto",
-					bordered=False,
-					imageObject=subtractIcon,
-					callback=lambda sender, callback=callback: callback(sender, Operation.SUBTRACT)
+				subtractButton = createImageButton(
+					icon=subtractIcon,
+					callback=lambda sender, callback=callback: callback(sender, Operation.SUBTRACT),
+					tooltip=translations["boolean_remove"](label)
 				)
-				intersectionButton = ImageButton(
-					"auto",
-					bordered=False,
-					imageObject=intersectIcon,
-					callback=lambda sender, callback=callback: callback(sender, Operation.INTERSECT)
+				intersectionButton = createImageButton(
+					icon=intersectIcon,
+					callback=lambda sender, callback=callback: callback(sender, Operation.INTERSECT),
+					tooltip=translations["boolean_intersect"](label)
 				)
 				
-				# see https://github.com/robotools/vanilla/issues/165
 				self.buttonList.extend([addButton, subtractButton, intersectionButton])
 				
-				osource_image = os.path.join(os.path.dirname(__file__), type + '.svg')
-				icon = NSImage.alloc().initWithContentsOfFile_(osource_image)
-				icon.setTemplate_(True) # inherit fill color from surrounding text
-				imageView = ImageView((0, 0, 32, 32))
-				imageView.setImage(imageObject=icon)
+				rowIcon = getImageViewFromPath(type)
+				rowImageView = ImageView((0, 0, 32, 32))
+				rowImageView.setImage(imageObject=rowIcon)
 				row = HorizontalStackView(
-					(0, 0, width, 0), 
+					(0, 0, self.width, 0), 
 					views=[
-						dict(view=imageView, width=22),
-						dict(view=TextBox("auto", text=label, sizeStyle="small"), width=72),
+						dict(view=rowImageView, width=22),
+						# dict(view=TextBox("auto", text=label, sizeStyle="small"), width=72),
 						dict(view=HorizontalStackView(
 							(0, 0, 12, 0),
 							views=[
@@ -100,63 +108,115 @@ class SelectionPalette(PalettePlugin):
 								dict(view=subtractButton),
 								dict(view=intersectionButton),
 							],
-							spacing=4,
+							spacing=8,
 						)),
 					],
-					spacing=4,
-					distribution="gravity",
-					alignment="center",
+					spacing=24,
+					distribution="equalSpacing",
+					alignment="leading",
 					edgeInsets=(0, 0, 0, 0),
 				)
-				 # callback[1](sender, Operation.ADD)
 				self.paletteView.group.stack.appendView(row)
 
 			# Set dialog to NSView
 			self.dialog = self.paletteView.group.getNSView()
-			
-			# Edit menu additions
-			invertMenuItemIndex = Glyphs.menu[EDIT_MENU].submenu().indexOfItemWithTitle_("Invert Selection") + 1
-			menuItems = (
-				("Continue Selection", self.continueSelection_),
-				("Undo Selection",     self.undoSelection_),
-				("Grow Selection",     self.growSelection_),
-				("Shrink Selection",   self.shrinkSelection_),
-				("Select Between",     self.fillSelection_)
-				)
-			for menuItem in menuItems:
-				item = NSMenuItem(*menuItem)
-				Glyphs.menu[EDIT_MENU].submenu().insertItem_atIndex_(item, invertMenuItemIndex)
-				invertMenuItemIndex += 1
+
 		except:
 			print(traceback.format_exc())
+	def start(self):
+		self.addMenuItems()
 
+	def addMenuItems(self):
+		# Edit menu additions
+		try:
+			# TODO: feel like I shouldn't have to do this, but otherwise menus are added for each document, because of the loop below? unsure
+			if (Glyphs.menu[EDIT_MENU].submenu().indexOfItemWithTitle_(translations["continue_selection"]) > 0):
+				return
+
+			# TODO We can add menu items near the selection section, but this methoddoes not work for locales other than English 👎 fallback to end of menu
+			selectionItemIndex = Glyphs.menu[EDIT_MENU].submenu().indexOfItemWithTitle_("Keep Layer Selections in Sync")
+			if (selectionItemIndex < 0):
+				selectionItemIndex = Glyphs.menu[EDIT_MENU].submenu().numberOfItems() - 1
+			selectionItemIndex += 1
+			Glyphs.menu[EDIT_MENU].submenu().insertItem_atIndex_(NSMenuItem.separatorItem(), selectionItemIndex)
+			selectionItemIndex += 1
+			menuItems = (
+				(translations["undo_selection"],      self.undoSelection_,     "Undo",     "["),
+				(translations["shrink_selection"],    self.shrinkSelection_,   "Shrink",   "-"),
+				(translations["select_between"],      self.fillSelection_,     "Between",  ":"),
+				(translations["grow_selection"],      self.growSelection_,     "Grow",     "+"),
+				(translations["continue_selection"],  self.continueSelection_, "Continue", "]"),
+				(translations["select_linked_hints"], self.selectLinkedHints_, "Corners",  "<"),
+			)
+			for menuItemLabel,menuItemCallback,menuItemIconKey,menuItemKey in menuItems:
+				item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(menuItemLabel, menuItemCallback, menuItemKey)
+				item.setKeyEquivalentModifierMask_(NSAlternateKeyMask | NSCommandKeyMask)
+				item.setTarget_(self)
+				Glyphs.menu[EDIT_MENU].submenu().insertItem_atIndex_(item, selectionItemIndex)
+				selectionItemIndex += 1
+		except:
+			print(traceback.format_exc())
+			
+	# Helpers
 	def layer(self):
 		return Glyphs.font.selectedLayers[0]
+	@objc.python_method
+	def getSibling(self, node, next):
+		path = node.parent
+		length = len(path.nodes)
+		siblingIndex = 0
+		crossesBounds = False
 		
+		if next == True:
+			siblingIndex = (node.index + 1) % length
+			if siblingIndex == 0:
+				crossesBounds = True
+		else:
+			siblingIndex = (node.index - 1 + length) % length
+			if siblingIndex == length - 1:
+				crossesBounds = True
+		
+		if not path.closed and crossesBounds:
+			return node
+		else:
+			return path.nodes[siblingIndex]
+	@objc.python_method
+	def nextNode(self, node):
+		return self.getSibling(node, True)
+	@objc.python_method
+	def prevNode(self, node):
+		return self.getSibling(node, False)
+	
+	# 
+	# Selection methods
+	# 
 	def continueSelection_(self, sender):
 		try:
 			#  Need at least two nodes to infer a pattern
 			if len(self.layer().selection) >= 2:
 				lastNode = self.layer().selection[-1]
 				originNode = self.layer().selection[-2]
+				
+				# TODO make sure https://github.com/danielgamage/SelectionPalette/issues/8 doesn't regress
+				# Ensure that the last two nodes are on the same path
+				if (lastNode.parent == originNode.parent):
+					# Get difference of two nodes
+					if lastNode.index > originNode.index:
+						# normal diff
+						rhythm = lastNode.index - originNode.index
+					else:
+						# crossing bounds of path
+						rhythm = abs(originNode.index - len(originNode.parent.nodes)) + lastNode.index
 
-				# Get difference of two nodes
-				if lastNode.index > originNode.index:
-					# normal diff
-					rhythm = lastNode.index - originNode.index
-				else:
-					# crossing bounds of path
-					rhythm = abs(originNode.index - len(originNode.parent.nodes)) + lastNode.index
+					# Move to node width rhythm
+					nodeToSelect = lastNode
+					i = 0
+					while i < rhythm:
+						nodeToSelect = nodeToSelect.nextNode
+						i += 1
 
-				# Move to node width rhythm
-				nodeToSelect = lastNode
-				i = 0
-				while i < rhythm:
-					nodeToSelect = nodeToSelect.nextNode
-					i += 1
-
-				# Select it
-				nodeToSelect.selected = True
+					# Select it
+					nodeToSelect.selected = True
 		except:
 			print(traceback.format_exc())
 	def undoSelection_(self, sender):
@@ -176,7 +236,7 @@ class SelectionPalette(PalettePlugin):
 			for path in self.layer().paths:
 				for node in path.nodes:
 					if not node.selected:
-						if node.nextNode.selected or node.prevNode.selected:
+						if self.nextNode(node).selected or self.prevNode(node).selected:
 							nodesToSelect.append(node)
 
 			self.selectElements_(nodesToSelect)
@@ -190,7 +250,7 @@ class SelectionPalette(PalettePlugin):
 			for path in self.layer().paths:
 				for node in path.nodes:
 					if node.selected:
-						if not node.nextNode.selected or not node.prevNode.selected:
+						if not self.nextNode(node).selected or not self.prevNode(node).selected:
 							nodesToDeselect.append(node)
 
 			self.deselectElements_(nodesToDeselect)
@@ -227,7 +287,9 @@ class SelectionPalette(PalettePlugin):
 		except:
 			print(traceback.format_exc())
 
+	# 
 	# Selection utils
+	# 
 	def selectElements_withBooleanOperation_(self, elements, booleanOperation):
 		try:
 			self.layer().beginChanges()
@@ -257,45 +319,6 @@ class SelectionPalette(PalettePlugin):
 		except:
 			print(traceback.format_exc())
 
-	# - (void) selectNodesByType:(GSNodeType)type andSmooth:(GSNodeType)connection withOperation:(SelectionOperationType)operation {
-	# 	NSMutableArray *selectionArray = [[NSMutableArray alloc] init];
-
-	# 	for (GSPath *path in [self layer].paths){
-	# 		for (GSNode *node in path.nodes) {
-	# 			NSMutableArray *conditions = [[NSMutableArray alloc] init];
-
-	# 			// if type is set
-	# 			if (type) {
-	# 				// when looking for sharp curves, add sharp lines that neighbor offcurves
-	# 				if (type == CURVE && node.type == LINE && node.connection == SHARP && ([self nextNode:node].type == OFFCURVE || [self nextNode:node].type == OFFCURVE)) {
-	# 					[conditions addObject:[NSNumber numberWithBool:YES]];
-	# 				} else {
-	# 					[conditions addObject:[NSNumber numberWithBool:(node.type == type)]];
-	# 				}
-	# 			}
-	# 			// if connection is set
-	# 			if (connection == SHARP || connection == SMOOTH) {
-	# 				[conditions addObject:[NSNumber numberWithBool:(node.connection == connection)]];
-	# 			}
-
-	# 			// if all conditions pass...
-	# 			if (![conditions containsObject:@(0)]) {
-	# 				[selectionArray addObject:node];
-	# 				// if looking for lines, select prevNode as well (unless it's OFFCURVE)
-	# 				if (type == LINE && node.type == LINE) {
-	# 					[selectionArray addObject:[self prevNode:node]];
-	# 				}
-	# 				// if looking for lines, add next (non-offcurve) node
-	# 				if (type == LINE && [self nextNode:node].type != OFFCURVE) {
-	# 					[selectionArray addObject:[self nextNode:node]];
-	# 				}
-	# 			}
-	# 		}
-	# 	}
-
-	# 	[self performSelectionOnArray:selectionArray andOperation:operation];
-	# }
-	
 	def selectNodesByType_andSmooth_withOperation_(self, type, smooth, operation):
 		try:
 			selectionArray = []
@@ -306,8 +329,10 @@ class SelectionPalette(PalettePlugin):
 					conditions = []
 					
 					if type:
+						# TODO when looking for lines, ignore ends of open paths that neighbor an OFFCURVE
 						# when looking for sharp curves, add sharp lines that neighbor offcurves
-						if type == CURVE and node.type == LINE and not node.smooth and (node.nextNode.type == OFFCURVE or node.nextNode.type == OFFCURVE):
+						curvish = type == CURVE and node.type == LINE and not node.smooth and (self.prevNode(node).type == OFFCURVE or self.nextNode(node).type == OFFCURVE)
+						if curvish:
 							conditions.append(True)
 						else:
 							conditions.append(node.type == type)
@@ -319,70 +344,72 @@ class SelectionPalette(PalettePlugin):
 						selectionArray.append(node)
 						# if looking for LINEs, select node (unless it's OFFCURVE)'s prevNode as well
 						if type == LINE and node.type == LINE:
-							if node.prevNode and node.prevNode.type != OFFCURVE:
-								selectionArray.append(node.prevNode)
+							if self.prevNode(node) and self.prevNode(node).type != OFFCURVE:
+								selectionArray.append(self.prevNode(node))
 						# if looking for LINEs, add next (non-offcurve) node
-						if type == LINE and node.nextNode.type != OFFCURVE:
-							selectionArray.append(node.nextNode)
+						if type == LINE and self.nextNode(node).type != OFFCURVE:
+							selectionArray.append(self.nextNode(node))
 					
 
 			# Select them
-			print(operation, selectionArray)
 			self.performSelectionOnArray_andOperation_(selectionArray, operation)
 		except:
 			print(traceback.format_exc())
-
-	# - (void) selectAnchorsWithOperation:(SelectionOperationType)operation {
-	#     NSMutableArray *selectionArray = [[NSMutableArray alloc] init];
-
-	#     for (NSString *key in [self layer].anchors) {
-	#         GSAnchor *anchor = [[self layer].anchors objectForKey:key];
-	#         [selectionArray addObject:anchor];
-	#     }
-
-	#     [self performSelectionOnArray:selectionArray andOperation:operation];
-	# }
-
-	# - (void) selectComponentsWithOperation:(SelectionOperationType)operation {
-	#     NSMutableArray *selectionArray = [[NSMutableArray alloc] init];
-
-	#     for (GSElement *component in [self layer].components) {
-	#         [selectionArray addObject:component];
-	#     }
-
-	#     [self performSelectionOnArray:selectionArray andOperation:operation];
-	# }
 	
+	# 
+	# Selection Types
+	# 
+	def selectSmoothCurves_withOperation_(self, sender, operation):
+		# should select both line and curve nodes with smooth connections
+		self.selectNodesByType_andSmooth_withOperation_(None, True, operation)
+	def selectSharpCurves_withOperation_(self, sender, operation):
+		self.selectNodesByType_andSmooth_withOperation_(CURVE, False, operation)
+	def selectLines_withOperation_(self, sender, operation):
+		self.selectNodesByType_andSmooth_withOperation_(LINE, None, operation)
+	def selectHandles_withOperation_(self, sender, operation):
+		self.selectNodesByType_andSmooth_withOperation_(OFFCURVE, None, operation)
+	def selectAnchors_withOperation_(self, sender, operation):
+		selectionArray = []
+		anchors = self.layer().anchors
+		for anchor in anchors:
+			selectionArray.append(anchor)
+		self.performSelectionOnArray_andOperation_(selectionArray, operation)
+
+	def selectComponents_withOperation_(self, sender, operation):
+		selectionArray = []
+		for component in self.layer().components:
+			selectionArray.append(component)
+		self.performSelectionOnArray_andOperation_(selectionArray, operation)
 	def selectGuides_withOperation_(self, sender, operation):
 		try:
 			selectionArray = []
 
-			globalGuides = Glyphs.font.selectedFontMaster.guides
+			# Currently disabled because 
+			# globalGuides = Glyphs.font.selectedFontMaster.guides
+			# selectionArray.extend(globalGuides) 
 			localGuides = self.layer().guides
-			selectionArray.extend(globalGuides)
 			selectionArray.extend(localGuides)
 
-			print(selectionArray)
 			self.performSelectionOnArray_andOperation_(selectionArray, operation)
 		except:
 			print(traceback.format_exc())
 
-	def selectSmoothCurves_withOperation_(self, sender, operation):
-		print("selectSmoothCurves")
-		# should select both line and curve nodes with smooth connections
-		self.selectNodesByType_andSmooth_withOperation_(None, True, operation)
-	def selectSharpCurves_withOperation_(self, sender, operation):
-		print("selectSharpCurves")
-		self.selectNodesByType_andSmooth_withOperation_(CURVE, False, operation)
-	def selectLines_withOperation_(self, sender, operation):
-		print("selectLines")
-		self.selectNodesByType_andSmooth_withOperation_(LINE, None, operation)
-	def selectHandles_withOperation_(self, sender, operation):
-		print("selectHandles")
-		self.selectNodesByType_andSmooth_withOperation_(OFFCURVE, None, operation)
-	def selectAnchors_withOperation_(self, sender, operation):
-		print("selectAnchors")
-		# self.selectNodesByType_andSmooth_withOperation_(operation)
-	def selectComponents_withOperation_(self, sender, operation):
-		print("selectComponents")
-		# self.selectNodesByType_andSmooth_withOperation_(operation)
+	# 
+	# Transfers
+	# 
+	
+	# Transfers selection from origin nodes to their connected corner components, caps, brushes(?)
+	def selectLinkedHints_(self, sender):
+		hints = self.layer().hints
+		deselectionArray = []
+		selectionArray = []
+		for element in self.layer().selection:
+			for hint in hints:
+				if hint.originNode == element or hint.targetNode == element:
+					deselectionArray.append(element)
+					selectionArray.append(hint)
+			
+		for element in deselectionArray:
+			element.selected = False
+		for element in selectionArray:
+			element.selected = True
