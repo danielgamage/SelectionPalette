@@ -384,7 +384,7 @@ class SelectionPalette(PalettePlugin):
 		try:
 			selectionArray = []
 
-			# Currently disabled because 
+			# TODO: Currently disabled because global guides don't report / update `.selected` properly
 			# globalGuides = Glyphs.font.selectedFontMaster.guides
 			# selectionArray.extend(globalGuides) 
 			localGuides = self.layer().guides
