@@ -142,10 +142,10 @@ class SelectionPalette(PalettePlugin):
 			selectionItemIndex += 1
 			menuItems = (
 				(translations["undo_selection"],          self.undoSelection_,          "Undo",     "["),
-				(translations["shrink_selection"],        self.shrinkSelection_,        "Shrink",   "-"),
-				(translations["select_between"],          self.fillSelection_,          "Between",  ":"),
-				(translations["grow_selection"],          self.growSelection_,          "Grow",     "+"),
 				(translations["continue_selection"],      self.continueSelection_,      "Continue", "]"),
+				(translations["shrink_selection"],        self.shrinkSelection_,        "Shrink",   "-"),
+				(translations["grow_selection"],          self.growSelection_,          "Grow",     "+"),
+				(translations["select_between"],          self.fillSelection_,          "Between",  ":"),
 				(translations["select_linked_hints"],     self.selectLinkedHints_,      "Corners",  "<"),
 			)
 			for menuItemLabel,menuItemCallback,menuItemIconKey,menuItemKey in menuItems:
