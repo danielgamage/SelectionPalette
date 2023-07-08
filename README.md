@@ -16,30 +16,52 @@ Download _SelectionPalette_ via the Glyphs [Plugin Manager](https://github.com/s
 ## Usage
 
 ### Selection commands
-In the Edit menu, you'll see some new commands under the other selection commands:
-#### Continue Selection
-to select a node based on the pattern of the last two nodes you selected
-#### Undo Selection
-to remove the last-selected node from the selection set
-#### Grow Selection
-to add closest siblings of selected nodes to the selection set
-#### Shrink Selection
-to shrink outer edges of a selection set
-#### Select Between
-to select all nodes between two selected nodes (the two most recently selected nodes)
-
-These all have corresponding keyboard shortcuts for easy access.
+In the Edit menu, you'll see some new commands under the other selection commands that all have corresponding keyboard shortcuts for easy access:
+#### Undo Selection (`⌥⌘[`)
+Removes the last-selected node from the selection set
+#### Continue Selection (`⌥⌘]`)
+Selects a node based on the pattern of the last two nodes you selected
+#### Grow Selection (`⌥⌘+`)
+Adds closest siblings of selected nodes to the selection set
+#### Shrink Selection (`⌥⌘-`)
+Shrinks outer edges of a selection set
+#### Select Between (`⌥⌘:`)
+Selects all nodes between two selected nodes (the two most recently selected nodes)
+#### Select Linked Hints (`⌥⌘<`)
+Corner, cap, and segment components are all linked to a given node. This command transfers selections of nodes to their linked components.
 
 ### Select by type
 The palette in the sidebar contain selection operations for several types of elements:
-- smooth curves
-- sharp corners
-- lines
-- handles
-- anchors
-- components
+
+- **Smooth curves**
+  
+  Nodes with even handles
+
+- **Sharp corners**
+  
+  Nodes with uneven handles
+
+- **Lines**
+  
+  Nodes bordering lines (path segments without handles)
+
+- **Handles**
+  
+  Offcurve nodes
+
+- **Anchors**
+  
+  Anchors for composite glyphs
+
+- **Components**
+  
+  Includes basic components, but not corners or segments.
+
+- **Guides**
+  
+  Includes both global and local guides—careful!
 
 Each type allows for three selection operations
-- ( `+` ) add elements of type to current selection
-- ( `-` ) subtract elements from current selection
-- ( `○` ) select only elements of type from current selection
+- **Add** elements of type to current selection
+- **Subtract** elements from current selection
+- **Select only** elements of type from current selection
