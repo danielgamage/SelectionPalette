@@ -21,6 +21,7 @@ translations = {
 	"select_between": Glyphs.localize({ 'en': "Select Between" }),
 	"grow_selection": Glyphs.localize({ 'en': "Grow Selection" }),
 	"continue_selection": Glyphs.localize({ 'en': "Continue Selection", "de": "Auswahl fortsetzen" }),
+	"select_linked_offcurves": Glyphs.localize({ 'en': "Select Connected Handles" }),
 	"select_linked_hints": Glyphs.localize({ 'en': "Select Linked Hints" }),
 	"boolean_add": lambda label: Glyphs.localize({'en': "Add %s to selection" % label,}),
 	"boolean_remove": lambda label: Glyphs.localize({'en': "Remove %s from selection" % label,}),
@@ -141,12 +142,13 @@ class SelectionPalette(PalettePlugin):
 			Glyphs.menu[EDIT_MENU].submenu().insertItem_atIndex_(NSMenuItem.separatorItem(), selectionItemIndex)
 			selectionItemIndex += 1
 			menuItems = (
-				(translations["undo_selection"],      self.undoSelection_,     "Undo",     "["),
-				(translations["shrink_selection"],    self.shrinkSelection_,   "Shrink",   "-"),
-				(translations["select_between"],      self.fillSelection_,     "Between",  ":"),
-				(translations["grow_selection"],      self.growSelection_,     "Grow",     "+"),
-				(translations["continue_selection"],  self.continueSelection_, "Continue", "]"),
-				(translations["select_linked_hints"], self.selectLinkedHints_, "Corners",  "<"),
+				(translations["undo_selection"],          self.undoSelection_,          "Undo",     "["),
+				(translations["shrink_selection"],        self.shrinkSelection_,        "Shrink",   "-"),
+				(translations["select_between"],          self.fillSelection_,          "Between",  ":"),
+				(translations["grow_selection"],          self.growSelection_,          "Grow",     "+"),
+				(translations["continue_selection"],      self.continueSelection_,      "Continue", "]"),
+				(translations["select_linked_offcurves"], self.selectLinkedOffcurves_,  "Corners",  "'"),
+				(translations["select_linked_hints"],     self.selectLinkedHints_,      "Corners",  "<"),
 			)
 			for menuItemLabel,menuItemCallback,menuItemIconKey,menuItemKey in menuItems:
 				item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(menuItemLabel, menuItemCallback, menuItemKey)
@@ -260,6 +262,8 @@ class SelectionPalette(PalettePlugin):
 		try:
 			nodesToSelect = []
 
+			if len(self.layer().selection) < 2: return
+
 			lastNode = self.layer().selection[-1]
 			originNode = self.layer().selection[-2]
 
@@ -275,13 +279,17 @@ class SelectionPalette(PalettePlugin):
 					node1 = lastNode
 					node2 = originNode
 
-				if ((not path.closed) or (node2.index - node1.index <= node1.index + len(path.nodes) - node2.index)):
+				# check if shortest path is direct from node 1 to node 2
+				is_contiguous_shortest = (node2.index - node1.index <= node1.index + len(path.nodes) - node2.index)
+				is_contiguous = (not path.closed) or is_contiguous_shortest
+
+				if (is_contiguous):
 					# shortest (or only) path is direct from node 1 to node 2
 					nodesToSelect.extend(path.nodes[node1.index:node2.index])
 				else:
 					# shortest path crosses path bounds
 					nodesToSelect.extend(path.nodes[0:node1.index])
-					nodesToSelect.extend(path.nodes[node2.index:-node2.index])
+					nodesToSelect.extend(path.nodes[node2.index:])
 
 				self.selectElements_(nodesToSelect)
 		except:
@@ -293,8 +301,15 @@ class SelectionPalette(PalettePlugin):
 	def selectElements_withBooleanOperation_(self, elements, booleanOperation):
 		try:
 			self.layer().beginChanges()
-			for element in elements:
-				element.selected = booleanOperation
+			
+			if (booleanOperation):
+				# selecting
+				self.layer().selection.extend(elements)
+			else:
+				# deselecting
+				for element in elements:
+					self.layer().selection.remove(element)
+
 			self.layer().endChanges()
 			# Glyphs.font.currentTab.redraw()
 		except:
@@ -327,28 +342,51 @@ class SelectionPalette(PalettePlugin):
 			for path in self.layer().paths:
 				for node in path.nodes:
 					conditions = []
-					
+
+					# properties
+					end_of_open_path = not path.closed and (node.index == 0 or node.index == len(path.nodes) - 1)
+					sharp_line_that_neighbors_offcurve = node.type == LINE and node.smooth is not True and (self.prevNode(node).type == OFFCURVE or self.nextNode(node).type == OFFCURVE)
+					smooth_end_of_open_path = end_of_open_path and ((node.smooth and type == CURVE) or node.type == LINE)
+					neighboring_offcurve = self.prevNode(node).type == OFFCURVE or self.nextNode(node).type == OFFCURVE
+					smooth_line = node.type == LINE and node.smooth is True
+
 					if type:
-						# TODO when looking for lines, ignore ends of open paths that neighbor an OFFCURVE
-						# when looking for sharp curves, add sharp lines that neighbor offcurves
-						curvish = type == CURVE and node.type == LINE and not node.smooth and (self.prevNode(node).type == OFFCURVE or self.nextNode(node).type == OFFCURVE)
-						if curvish:
+						# for smooth curves, ignore end of open paths
+						if type == CURVE and (smooth is True):
+							if end_of_open_path:
+								conditions.append(False)
+						# for lines ignore those that neighbor offcurves AND are the end of a path
+						if type == LINE:
+							if end_of_open_path and neighboring_offcurve:
+								conditions.append(False)
+						# for sharp curves, ignore end of open paths that don't neighbor offcurves
+						if type == CURVE and (smooth is False) and end_of_open_path and not neighboring_offcurve:
+							conditions.append(False)
+
+						# for sharp curves, include sharp lines that neighbors offcurves
+						if type == CURVE and (smooth is False) and sharp_line_that_neighbors_offcurve:
+							conditions.append(True)
+						# for sharp curves, include smooth ends of open paths
+						elif type == CURVE and (smooth is False) and smooth_end_of_open_path:
+							conditions.append(True)
+						# for smooth curves, include smooth lines
+						elif type == CURVE and (smooth is True) and smooth_line:
 							conditions.append(True)
 						else:
 							conditions.append(node.type == type)
-					if smooth is not None:
-						conditions.append(node.smooth == smooth)
+							if smooth is not None:
+								conditions.append(node.smooth == smooth)
 
 					# if all conditions pass...
 					if all(conditions):
 						selectionArray.append(node)
-						# if looking for LINEs, select node (unless it's OFFCURVE)'s prevNode as well
-						if type == LINE and node.type == LINE:
-							if self.prevNode(node) and self.prevNode(node).type != OFFCURVE:
-								selectionArray.append(self.prevNode(node))
-						# if looking for LINEs, add next (non-offcurve) node
-						if type == LINE and self.nextNode(node).type != OFFCURVE:
-							selectionArray.append(self.nextNode(node))
+						# if looking for LINEs, select neighboring (non-OFFCURVE) node as well
+						if type == LINE:
+							if node.type == LINE:
+								if self.prevNode(node) and self.prevNode(node).type != OFFCURVE:
+									selectionArray.append(self.prevNode(node))
+							if self.nextNode(node).type != OFFCURVE:
+								selectionArray.append(self.nextNode(node))
 					
 
 			# Select them
@@ -361,7 +399,7 @@ class SelectionPalette(PalettePlugin):
 	# 
 	def selectSmoothCurves_withOperation_(self, sender, operation):
 		# should select both line and curve nodes with smooth connections
-		self.selectNodesByType_andSmooth_withOperation_(None, True, operation)
+		self.selectNodesByType_andSmooth_withOperation_(CURVE, True, operation)
 	def selectSharpCurves_withOperation_(self, sender, operation):
 		self.selectNodesByType_andSmooth_withOperation_(CURVE, False, operation)
 	def selectLines_withOperation_(self, sender, operation):
@@ -385,8 +423,8 @@ class SelectionPalette(PalettePlugin):
 			selectionArray = []
 
 			# TODO: Currently disabled because global guides don't report / update `.selected` properly
-			# globalGuides = Glyphs.font.selectedFontMaster.guides
-			# selectionArray.extend(globalGuides) 
+			globalGuides = Glyphs.font.selectedFontMaster.guides
+			selectionArray.extend(globalGuides) 
 			localGuides = self.layer().guides
 			selectionArray.extend(localGuides)
 
@@ -395,7 +433,7 @@ class SelectionPalette(PalettePlugin):
 			print(traceback.format_exc())
 
 	# 
-	# Transfers
+	# Transfers, Links
 	# 
 	
 	# Transfers selection from origin nodes to their connected corner components, caps, brushes(?)
@@ -413,3 +451,11 @@ class SelectionPalette(PalettePlugin):
 			element.selected = False
 		for element in selectionArray:
 			element.selected = True
+
+	# Adds connected offcurves to selection
+	def selectLinkedOffcurves_(self, sender):
+		for path in self.layer().paths:
+			for node in path.nodes:
+				if not node.selected:
+					if self.nextNode(node).selected or self.prevNode(node).selected:
+						nodesToSelect.append(node)
