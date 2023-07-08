@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>plugin</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.RicardGarcia.ChangeCase</string>
+	<string>com.DanielGamage.SelectionPalette</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>2.0</string>
 	<key>CFBundleName</key>
@@ -17,11 +17,11 @@
 	<key>CFBundleShortVersionString</key>
 	<string>2.0.2</string>
 	<key>UpdateFeedURL</key>
-	<string>https://raw.githubusercontent.com/danielgamage/SelectionPalette/main/SelectionPalette/SelectionPalette.glyphsPalette/Contents/Info.plist</string>
+	<string>https://raw.githubusercontent.com/danielgamage/SelectionPalette/main/SelectionPalette.glyphsPalette/Contents/Info.plist</string>
 	<key>productPageURL</key>
-	<string>https://github.com/Ricard-Garcia/danielgamage/SelectionPalette</string>
+	<string>https://github.com/danielgamage/SelectionPalette</string>
 	<key>productReleaseNotes</key>
-	<string>python rewrite</string>
+	<string>python rewrite for Gylphs 3</string>
 	<key>NSPrincipalClass</key>
 	<string>SelectionPalette</string>
 	<key>PyMainFileNames</key>
