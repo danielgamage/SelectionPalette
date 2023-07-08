@@ -21,7 +21,6 @@ translations = {
 	"select_between": Glyphs.localize({ 'en': "Select Between" }),
 	"grow_selection": Glyphs.localize({ 'en': "Grow Selection" }),
 	"continue_selection": Glyphs.localize({ 'en': "Continue Selection", "de": "Auswahl fortsetzen" }),
-	"select_linked_offcurves": Glyphs.localize({ 'en': "Select Connected Handles" }),
 	"select_linked_hints": Glyphs.localize({ 'en': "Select Linked Hints" }),
 	"boolean_add": lambda label: Glyphs.localize({'en': "Add %s to selection" % label,}),
 	"boolean_remove": lambda label: Glyphs.localize({'en': "Remove %s from selection" % label,}),
@@ -147,7 +146,6 @@ class SelectionPalette(PalettePlugin):
 				(translations["select_between"],          self.fillSelection_,          "Between",  ":"),
 				(translations["grow_selection"],          self.growSelection_,          "Grow",     "+"),
 				(translations["continue_selection"],      self.continueSelection_,      "Continue", "]"),
-				(translations["select_linked_offcurves"], self.selectLinkedOffcurves_,  "Corners",  "'"),
 				(translations["select_linked_hints"],     self.selectLinkedHints_,      "Corners",  "<"),
 			)
 			for menuItemLabel,menuItemCallback,menuItemIconKey,menuItemKey in menuItems:
@@ -451,11 +449,3 @@ class SelectionPalette(PalettePlugin):
 			element.selected = False
 		for element in selectionArray:
 			element.selected = True
-
-	# Adds connected offcurves to selection
-	def selectLinkedOffcurves_(self, sender):
-		for path in self.layer().paths:
-			for node in path.nodes:
-				if not node.selected:
-					if self.nextNode(node).selected or self.prevNode(node).selected:
-						nodesToSelect.append(node)
