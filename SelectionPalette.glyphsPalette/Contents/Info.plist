@@ -17,7 +17,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>2.0.2</string>
 	<key>UpdateFeedURL</key>
-	<string>https://raw.githubusercontent.com/danielgamage/SelectionPalette/main/SelectionPalette.glyphsPalette/Info.plist</string>
+	<string>https://raw.githubusercontent.com/danielgamage/SelectionPalette/glyphs-3/SelectionPalette.glyphsPalette/Contents/Info.plist</string>
 	<key>productPageURL</key>
 	<string>https://github.com/danielgamage/SelectionPalette</string>
 	<key>productReleaseNotes</key>
