@@ -21,7 +21,8 @@ translations = {
 	"select_between": Glyphs.localize({ 'en': "Select Between" }),
 	"grow_selection": Glyphs.localize({ 'en': "Grow Selection" }),
 	"continue_selection": Glyphs.localize({ 'en': "Continue Selection", "de": "Auswahl fortsetzen" }),
-	"select_linked_hints": Glyphs.localize({ 'en': "Select Linked Hints" }),
+	"select_linked_hints": Glyphs.localize({ 'en': "Select Linked Caps/Corners" }),
+	"select_extremes": Glyphs.localize({ 'en': "Select Extremes" }),
 	"boolean_add": lambda label: Glyphs.localize({'en': "Add %s to selection" % label,}),
 	"boolean_remove": lambda label: Glyphs.localize({'en': "Remove %s from selection" % label,}),
 	"boolean_intersect": lambda label: Glyphs.localize({'en': "Select only %s" % label,}),
@@ -49,6 +50,13 @@ def createImageButton(icon, callback, tooltip):
 	addButton.getNSButton().setToolTip_(tooltip)
 	return addButton
 
+# "All",
+# "Extremes",
+# "NonExtremes",
+# "Locked",
+# "Unlocked",
+# "Corner",
+# "Cap",
 class SelectionPalette(PalettePlugin):
 	def settings(self):
 		try:
@@ -56,17 +64,50 @@ class SelectionPalette(PalettePlugin):
 			# cache for vanilla buttons https://github.com/robotools/vanilla/issues/165
 			self.buttonList = []
 			# TODO width does not update on panel resize
-			self.width = 160
+			self.width = 180
 			self.height = 185
 			types = (
-				("SmoothCurves", "Smooth", self.selectSmoothCurves_withOperation_),
-				("SharpCurves", "Sharp", self.selectSharpCurves_withOperation_),
-				("Lines", "Lines", self.selectLines_withOperation_),
-				("Handles", "Handles", self.selectHandles_withOperation_),
-				("Components", "Components", self.selectComponents_withOperation_),
-				("Anchors", "Anchors", self.selectAnchors_withOperation_),
-				("Guides", "Guides", self.selectGuides_withOperation_),
+				("SmoothCurves", "Smooth", self.selectSmoothCurves_withOperation_, [
+					"All",
+					"Extremes",
+					"NonExtremes",
+				]),
+				("SharpCurves", "Sharp", self.selectSharpCurves_withOperation_, [
+					"All",
+					"Extremes",
+					"NonExtremes",
+				]),
+				("Lines", "Lines", self.selectLines_withOperation_, [
+					"All",
+					"Extremes",
+					"NonExtremes",
+				]),
+				("Handles", "Handles", self.selectHandles_withOperation_, [
+					"All",
+					"Extremes",
+					"NonExtremes",
+				]),
+				("Components", "Components", self.selectComponents_withOperation_, [
+					"All"
+				]),
+				("Anchors", "Anchors", self.selectAnchors_withOperation_, [
+					"All"
+				]),
+				("Guides", "Guides", self.selectGuides_withOperation_, [
+					"All",
+					"Locked",
+					"Unlocked",
+				]),
 				)
+			# generate list from types
+			self.rowSettings = list(map(lambda type: {
+				"icon": getImageViewFromPath(type[0]),
+				"label": type[1],
+				"callback": type[2],
+				"options": type[3],
+				"option": 0,
+				"enabled": True,
+			}, types))
 			self.paletteView = Window((self.width, self.height))
 			self.paletteView.group = Group((0, 0, self.width, self.height))
 			self.paletteView.group.stack = VerticalStackView((0, 0, self.width, self.height), views=[], spacing=4, edgeInsets=(4, 8, 8, 8), distribution="gravity", alignment="center")
@@ -74,7 +115,8 @@ class SelectionPalette(PalettePlugin):
 			addIcon = getImageViewFromPath('Union')
 			subtractIcon = getImageViewFromPath('Subtract')
 			intersectIcon = getImageViewFromPath('Intersect')
-			for type,label,callback in types:
+			for idx, (type,label,callback,options) in enumerate(types):
+				print(idx, type, label, callback, options)
 				addButton = createImageButton(
 					icon=addIcon,
 					callback=lambda sender, callback=callback: callback(sender, Operation.ADD),
@@ -91,7 +133,17 @@ class SelectionPalette(PalettePlugin):
 					tooltip=translations["boolean_intersect"](label)
 				)
 				
-				self.buttonList.extend([addButton, subtractButton, intersectionButton])
+				selectedOption = options[self.rowSettings[idx]["option"]]
+				rowModifierIcon = getImageViewFromPath("Subtype_" + selectedOption)
+				
+				optionButton = createImageButton(
+					icon=rowModifierIcon,
+					# add 1 to the current rowSettings item's option
+					callback=lambda sender, callback=callback, idx=idx: self.updateOption(sender, callback, idx),
+					tooltip=translations["boolean_intersect"](label)
+				)
+				
+				self.buttonList.extend([addButton, subtractButton, intersectionButton, optionButton])
 				
 				rowIcon = getImageViewFromPath(type)
 				rowImageView = ImageView((0, 0, 32, 32))
@@ -99,8 +151,17 @@ class SelectionPalette(PalettePlugin):
 				row = HorizontalStackView(
 					(0, 0, self.width, 0), 
 					views=[
-						dict(view=rowImageView, width=22),
 						# dict(view=TextBox("auto", text=label, sizeStyle="small"), width=72),
+						dict(view=HorizontalStackView(
+							(0, 0, 32, 0), 
+							views=[
+								dict(view=rowImageView, width=22),
+								dict(view=optionButton),
+							],
+							spacing=8,
+							alignment="center",
+							edgeInsets=(0, 0, 0, 0),
+						)),
 						dict(view=HorizontalStackView(
 							(0, 0, 12, 0),
 							views=[
@@ -113,7 +174,7 @@ class SelectionPalette(PalettePlugin):
 					],
 					spacing=24,
 					distribution="equalSpacing",
-					alignment="leading",
+					alignment="center",
 					edgeInsets=(0, 0, 0, 0),
 				)
 				self.paletteView.group.stack.appendView(row)
@@ -125,6 +186,17 @@ class SelectionPalette(PalettePlugin):
 			print(traceback.format_exc())
 	def start(self):
 		self.addMenuItems()
+		
+	@objc.python_method
+	def updateOption(self, sender, callback, idx):
+		try:
+			self.rowSettings[idx]["option"] = (self.rowSettings[idx]["option"] + 1) % len(self.rowSettings[idx]["options"])
+			selectedOption = self.rowSettings[idx]["options"][self.rowSettings[idx]["option"]]
+			rowModifierIcon = getImageViewFromPath("Subtype_" + selectedOption)
+			sender.setImage(imageObject=rowModifierIcon)
+			callback(sender, Operation.INTERSECT)
+		except:
+			print(traceback.format_exc())
 
 	def addMenuItems(self):
 		# Edit menu additions
