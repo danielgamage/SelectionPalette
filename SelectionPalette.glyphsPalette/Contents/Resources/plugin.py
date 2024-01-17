@@ -95,17 +95,23 @@ class SelectionPalette(PalettePlugin):
 					"NonExtremes",
 				]),
 				("Components", "Components", self.selectComponents_withOperation_, [
-					"All"
-				]),
-				("Anchors", "Anchors", self.selectAnchors_withOperation_, [
-					"All"
-				]),
-				("Guides", "Guides", self.selectGuides_withOperation_, [
 					"All",
 					"Locked",
 					"Unlocked",
+				]),
+				("Anchors", "Anchors", self.selectAnchors_withOperation_, [
+					"All",
+					"Anchors",
+					"UnderscoredAnchors",
+					"Entry",
+					"Exit",
+				]),
+				("Guides", "Guides", self.selectGuides_withOperation_, [
+					"Unlocked",
+					"Locked",
 					"Global",
 					"Local",
+					"All",
 				]),
 				)
 			# generate list from types
@@ -167,7 +173,7 @@ class SelectionPalette(PalettePlugin):
 								dict(view=rowImageView, width=22),
 								dict(view=optionButton),
 							],
-							spacing=8,
+							spacing=4,
 							alignment="center",
 							edgeInsets=(0, 0, 0, 0),
 						)),
@@ -181,7 +187,7 @@ class SelectionPalette(PalettePlugin):
 							spacing=8,
 						)),
 					],
-					spacing=24,
+					spacing=16,
 					distribution="equalSpacing",
 					alignment="center",
 					edgeInsets=(0, 0, 0, 0),
@@ -199,7 +205,9 @@ class SelectionPalette(PalettePlugin):
 	@objc.python_method
 	def updateOption(self, sender, callback, idx):
 		try:
-			self.rowSettings[idx]["option"] = (self.rowSettings[idx]["option"] + 1) % len(self.rowSettings[idx]["options"])
+			direction = -1 if Glyphs.currentDocument.windowController().AltKey() else 1
+			optionsLength = len(self.rowSettings[idx]["options"])
+			self.rowSettings[idx]["option"] = (self.rowSettings[idx]["option"] + direction + optionsLength) % optionsLength
 			selectedOption = self.rowSettings[idx]["options"][self.rowSettings[idx]["option"]]
 			rowModifierIcon = getImageViewFromPath("Icon=" + selectedOption)
 			sender.setImage(imageObject=rowModifierIcon)
@@ -494,9 +502,24 @@ class SelectionPalette(PalettePlugin):
 		self.selectNodesByType_andSmooth_withOperation_andKey_(OFFCURVE, None, operation, "Handles")
 	def selectAnchors_withOperation_(self, sender, operation):
 		selectionArray = []
+		
+		rowSetting = next((item for item in self.rowSettings if item["label"] == "Anchors"), None)
+		typeFilter = rowSetting["options"][rowSetting["option"]] # locked, unlocked, etc
+		print("typeFilter", typeFilter)
+		
 		anchors = self.layer().anchors
 		for anchor in anchors:
-			selectionArray.append(anchor)
+			if typeFilter == "All":
+				selectionArray.append(anchor)
+			elif typeFilter == "Anchors" and anchor.name[0] != "_":
+				selectionArray.append(anchor)
+			elif typeFilter == "UnderscoredAnchors" and anchor.name[0] == "_":
+				selectionArray.append(anchor)
+			elif typeFilter == "Entry" and "entry" in anchor.name.lower():
+				selectionArray.append(anchor)
+			elif typeFilter == "Exit" and "exit" in anchor.name.lower():
+				selectionArray.append(anchor)
+
 		self.performSelectionOnArray_andOperation_(selectionArray, operation)
 
 	def selectComponents_withOperation_(self, sender, operation):
