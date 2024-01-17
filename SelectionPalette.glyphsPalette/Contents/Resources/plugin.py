@@ -104,6 +104,8 @@ class SelectionPalette(PalettePlugin):
 					"All",
 					"Locked",
 					"Unlocked",
+					"Global",
+					"Local",
 				]),
 				)
 			# generate list from types
@@ -141,7 +143,7 @@ class SelectionPalette(PalettePlugin):
 				)
 				
 				selectedOption = options[self.rowSettings[idx]["option"]]
-				rowModifierIcon = getImageViewFromPath("Subtype_" + selectedOption)
+				rowModifierIcon = getImageViewFromPath("Icon=" + selectedOption)
 				
 				optionButton = createImageButton(
 					icon=rowModifierIcon,
@@ -199,9 +201,8 @@ class SelectionPalette(PalettePlugin):
 		try:
 			self.rowSettings[idx]["option"] = (self.rowSettings[idx]["option"] + 1) % len(self.rowSettings[idx]["options"])
 			selectedOption = self.rowSettings[idx]["options"][self.rowSettings[idx]["option"]]
-			rowModifierIcon = getImageViewFromPath("Subtype_" + selectedOption)
+			rowModifierIcon = getImageViewFromPath("Icon=" + selectedOption)
 			sender.setImage(imageObject=rowModifierIcon)
-			callback(sender, Operation.INTERSECT)
 		except:
 			print(traceback.format_exc())
 
@@ -422,11 +423,7 @@ class SelectionPalette(PalettePlugin):
 					conditions = []
 					
 					rowSetting = next((item for item in self.rowSettings if item["label"] == key), None)
-					print("rowSetting", rowSetting)
-					
 					typeFilter = rowSetting["options"][rowSetting["option"]] # extremes, all, etc
-					print("typeFilter", typeFilter)
-					
 					if (typeFilter == "Extremes"):
 						conditions.append(is_node_extreme(node))
 					if (typeFilter == "NonExtremes"):
@@ -511,11 +508,26 @@ class SelectionPalette(PalettePlugin):
 		try:
 			selectionArray = []
 
-			# TODO: Currently disabled because global guides don't report / update `.selected` properly
+			allGuides = []
 			globalGuides = Glyphs.font.selectedFontMaster.guides
-			selectionArray.extend(globalGuides) 
 			localGuides = self.layer().guides
-			selectionArray.extend(localGuides)
+			allGuides.extend(globalGuides)
+			allGuides.extend(localGuides)
+
+			rowSetting = next((item for item in self.rowSettings if item["label"] == "Guides"), None)
+			typeFilter = rowSetting["options"][rowSetting["option"]] # locked, unlocked, etc
+
+			for guide in allGuides:
+				if typeFilter == "All":
+					selectionArray.append(guide)
+				elif typeFilter == "Locked" and guide.locked:
+					selectionArray.append(guide)
+				elif typeFilter == "Unlocked" and not guide.locked:
+					selectionArray.append(guide)
+				elif typeFilter == "Global" and guide in globalGuides:
+					selectionArray.append(guide)
+				elif typeFilter == "Local" and guide in localGuides:
+					selectionArray.append(guide)
 
 			self.performSelectionOnArray_andOperation_(selectionArray, operation)
 		except:
