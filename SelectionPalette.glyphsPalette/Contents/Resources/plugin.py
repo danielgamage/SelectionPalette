@@ -10,6 +10,7 @@ from GlyphsApp import Glyphs, EDIT_MENU, LINE, CURVE, OFFCURVE
 from GlyphsApp.plugins import *
 from vanilla import Window, ImageButton, Group, TextBox, VerticalStackView, HorizontalStackView, ImageView, HorizontalLine
 import traceback, os
+from math import atan2, pi
 
 # 
 # Translations
@@ -50,13 +51,19 @@ def createImageButton(icon, callback, tooltip):
 	addButton.getNSButton().setToolTip_(tooltip)
 	return addButton
 
-# "All",
-# "Extremes",
-# "NonExtremes",
-# "Locked",
-# "Unlocked",
-# "Corner",
-# "Cap",
+# utils
+getAngleBetweenPoints = lambda p1, p2: atan2(p2.y - p1.y, p2.x - p1.x) * 180 / pi
+isMultipleOf90 = lambda angle: (angle + 360) % 90 == 0
+
+def is_node_extreme(node):
+	if (node.type == CURVE or node.type == LINE) and (node.prevNode.type == OFFCURVE or node.nextNode.type == OFFCURVE):
+			# Calculate the angles
+			angle1 = getAngleBetweenPoints(node.prevNode, node)
+			angle2 = getAngleBetweenPoints(node, node.nextNode)
+
+			is_extreme = angle1 == angle2 and isMultipleOf90(angle1)
+			return is_extreme
+
 class SelectionPalette(PalettePlugin):
 	def settings(self):
 		try:
@@ -404,14 +411,26 @@ class SelectionPalette(PalettePlugin):
 		except:
 			print(traceback.format_exc())
 
-	def selectNodesByType_andSmooth_withOperation_(self, type, smooth, operation):
+	def selectNodesByType_andSmooth_withOperation_andKey_(self, type, smooth, operation, key):
 		try:
 			selectionArray = []
+			print("key", key)
 
 			# Get nodes on outside edges of selection
 			for path in self.layer().paths:
 				for node in path.nodes:
 					conditions = []
+					
+					rowSetting = next((item for item in self.rowSettings if item["label"] == key), None)
+					print("rowSetting", rowSetting)
+					
+					typeFilter = rowSetting["options"][rowSetting["option"]] # extremes, all, etc
+					print("typeFilter", typeFilter)
+					
+					if (typeFilter == "Extremes"):
+						conditions.append(is_node_extreme(node))
+					if (typeFilter == "NonExtremes"):
+						conditions.append(not is_node_extreme(node))
 
 					# properties
 					end_of_open_path = not path.closed and (node.index == 0 or node.index == len(path.nodes) - 1)
@@ -469,13 +488,13 @@ class SelectionPalette(PalettePlugin):
 	# 
 	def selectSmoothCurves_withOperation_(self, sender, operation):
 		# should select both line and curve nodes with smooth connections
-		self.selectNodesByType_andSmooth_withOperation_(CURVE, True, operation)
+		self.selectNodesByType_andSmooth_withOperation_andKey_(CURVE, True, operation, "Smooth")
 	def selectSharpCurves_withOperation_(self, sender, operation):
-		self.selectNodesByType_andSmooth_withOperation_(CURVE, False, operation)
+		self.selectNodesByType_andSmooth_withOperation_andKey_(CURVE, False, operation, "Sharp")
 	def selectLines_withOperation_(self, sender, operation):
-		self.selectNodesByType_andSmooth_withOperation_(LINE, None, operation)
+		self.selectNodesByType_andSmooth_withOperation_andKey_(LINE, None, operation, "Lines")
 	def selectHandles_withOperation_(self, sender, operation):
-		self.selectNodesByType_andSmooth_withOperation_(OFFCURVE, None, operation)
+		self.selectNodesByType_andSmooth_withOperation_andKey_(OFFCURVE, None, operation, "Handles")
 	def selectAnchors_withOperation_(self, sender, operation):
 		selectionArray = []
 		anchors = self.layer().anchors
@@ -504,6 +523,7 @@ class SelectionPalette(PalettePlugin):
 
 	# 
 	# Transfers, Links
+	# TODO: make these transfers optional, and allow for removing from selection or adding to selection
 	# 
 	
 	# Transfers selection from origin nodes to their connected corner components, caps, brushes(?)
