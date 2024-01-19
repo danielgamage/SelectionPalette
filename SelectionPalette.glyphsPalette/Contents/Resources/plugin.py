@@ -58,7 +58,6 @@ class Operation(Enum):
 
 def getImageViewFromPath(path):
 	osource_image = os.path.join(os.path.dirname(__file__), "icons/" + path + '.svg')
-	print(osource_image)
 	icon = NSImage.alloc().initWithContentsOfFile_(osource_image)
 	icon.setTemplate_(True)
 	return icon
@@ -262,6 +261,7 @@ class SelectionPalette(PalettePlugin):
 			selectedFilter = self.rowSettings[idx]["filters"][self.rowSettings[idx]["filter"]]
 			rowFilterIcon = getImageViewFromPath("filter/Filter=" + selectedFilter)
 			sender.setImage(imageObject=rowFilterIcon)
+			sender.getNSButton().setToolTip_(translations[selectedFilter]) # tooltip doesn't update through vanilla interface
 		except:
 			print(traceback.format_exc())
 	
