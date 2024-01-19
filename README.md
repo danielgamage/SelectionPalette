@@ -33,33 +33,80 @@ Corner, cap, and segment components are all linked to a given node. This command
 ### Select by type
 The palette in the sidebar contain selection operations for several types of elements:
 
-- **Smooth curves**
+- #### Smooth curves
   
   Nodes with even handles
-
-- **Sharp corners**
+  
+  Filters for
+  - All
+  - Extremes
+  - Non-extremes
+  
+- #### Sharp corners
   
   Nodes with uneven handles
-
-- **Lines**
+  
+  Filters for:
+  - All
+  - Extremes
+  - Non-extremes
+  
+- #### Lines
   
   Nodes bordering lines (path segments without handles)
-
-- **Handles**
+  
+  Filters for:
+  - All
+  - Extremes
+  - Non-extremes
+  
+- #### Handles
   
   Offcurve nodes
-
-- **Anchors**
+  
+  Filters for:
+  - All
+  - Extremes
+  - Non-extremes
+  
+- #### Components
+  
+  Includes basic components, smart components
+  
+  Filters for:
+  - Unlocked
+  - Locked
+  - All
+  
+- #### Path omponents
+  
+  Includes corner, cap, and segment nodes
+  
+  Filters for:
+  - All
+  - Corners
+  - Caps
+  - Segments
+  
+- #### Anchors
   
   Anchors for composite glyphs
-
-- **Components**
   
-  Includes basic components, but not corners or segments.
-
-- **Guides**
+  Filters for:
+  - All
+  - Anchors (for base glyphs)
+  - Underscored Anchors (for combining glyphs)
+  - Entry (for cursive attachment)
+  - Exit (for cursive attachment)
   
-  Includes both global and local guides—careful!
+- #### Guides
+  Filters for:
+  - Unlocked
+  - Locked
+  - Global
+  - Local
+  - All
+
 
 Each type allows for three selection operations
 - **Add** elements of type to current selection

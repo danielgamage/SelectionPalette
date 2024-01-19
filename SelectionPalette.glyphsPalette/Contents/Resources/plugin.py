@@ -6,10 +6,11 @@ from importlib.metadata import distribution
 import objc
 from AppKit import NSMenuItem, NSImage, NSAlternateKeyMask, NSCommandKeyMask
 from GlyphsApp import *
-from GlyphsApp import Glyphs, EDIT_MENU, LINE, CURVE, OFFCURVE
+from GlyphsApp import Glyphs, EDIT_MENU, LINE, CURVE, OFFCURVE, CORNER, CAP, SEGMENT
 from GlyphsApp.plugins import *
 from vanilla import Window, ImageButton, Group, TextBox, VerticalStackView, HorizontalStackView, ImageView, HorizontalLine
 import traceback, os
+from math import atan2, pi
 
 # 
 # Translations
@@ -21,10 +22,33 @@ translations = {
 	"select_between": Glyphs.localize({ 'en': "Select Between" }),
 	"grow_selection": Glyphs.localize({ 'en': "Grow Selection" }),
 	"continue_selection": Glyphs.localize({ 'en': "Continue Selection", "de": "Auswahl fortsetzen" }),
-	"select_linked_hints": Glyphs.localize({ 'en': "Select Linked Hints" }),
+	"select_linked_hints": Glyphs.localize({ 'en': "Select Linked Caps/Corners" }),
+	"select_extremes": Glyphs.localize({ 'en': "Select Extremes" }),
 	"boolean_add": lambda label: Glyphs.localize({'en': "Add %s to selection" % label,}),
 	"boolean_remove": lambda label: Glyphs.localize({'en': "Remove %s from selection" % label,}),
 	"boolean_intersect": lambda label: Glyphs.localize({'en': "Select only %s" % label,}),
+	"smooth_nodes": Glyphs.localize({ 'en': "Smooth Curves" }),
+	"sharp_nodes": Glyphs.localize({ 'en': "Sharp Curves" }),
+	"line_nodes": Glyphs.localize({ 'en': "Lines" }),
+	"handle_nodes": Glyphs.localize({ 'en': "Handles" }),
+	"components": Glyphs.localize({ 'en': "Components" }),
+	"path_components": Glyphs.localize({ 'en': "Path Components" }),
+	"anchors": Glyphs.localize({ 'en': "Anchors" }),
+	"guides": Glyphs.localize({ 'en': "Guides" }),
+	"all": Glyphs.localize({ 'en': "All" }),
+	"extremes": Glyphs.localize({ 'en': "Extremes" }),
+	"non_extremes": Glyphs.localize({ 'en': "Non-extremes" }),
+	"unlocked": Glyphs.localize({ 'en': "Unlocked" }),
+	"locked": Glyphs.localize({ 'en': "Locked" }),
+	"corners": Glyphs.localize({ 'en': "Corners" }),
+	"caps": Glyphs.localize({ 'en': "Caps" }),
+	"segments": Glyphs.localize({ 'en': "Segments" }),
+	"anchors": Glyphs.localize({ 'en': "Anchors" }),
+	"underscored_anchors": Glyphs.localize({ 'en': "Underscored Anchors" }),
+	"entry": Glyphs.localize({ 'en': "Entry" }),
+	"exit": Glyphs.localize({ 'en': "Exit" }),
+	"global": Glyphs.localize({ 'en': "Global" }),
+	"local": Glyphs.localize({ 'en': "Local" }),
 }
 
 class Operation(Enum):
@@ -33,7 +57,7 @@ class Operation(Enum):
 	INTERSECT = 2
 
 def getImageViewFromPath(path):
-	osource_image = os.path.join(os.path.dirname(__file__), path + '.svg')
+	osource_image = os.path.join(os.path.dirname(__file__), "icons/" + path + '.svg')
 	icon = NSImage.alloc().initWithContentsOfFile_(osource_image)
 	icon.setTemplate_(True)
 	return icon
@@ -49,6 +73,39 @@ def createImageButton(icon, callback, tooltip):
 	addButton.getNSButton().setToolTip_(tooltip)
 	return addButton
 
+# utils
+getAngleBetweenPoints = lambda p1, p2: atan2(p2.y - p1.y, p2.x - p1.x) * 180 / pi
+isMultipleOf90 = lambda angle: (angle + 360) % 90 == 0
+
+def is_node_extreme(node):
+	node1 = None
+	node2 = None
+	node3 = None
+
+	if (node.type in [CURVE, LINE]) and (node.prevNode.type == OFFCURVE or node.nextNode.type == OFFCURVE):
+		node1 = node.prevNode
+		node2 = node
+		node3 = node.nextNode
+	elif node.type == OFFCURVE:
+		if node.prevNode.type in [CURVE, LINE]:
+			node1 = node.prevNode.prevNode
+			node2 = node.prevNode
+			node3 = node
+		elif node.nextNode.type in [CURVE, LINE]:
+			node1 = node
+			node2 = node.nextNode
+			node3 = node.nextNode.nextNode
+
+	if (node1 and node2 and node3):
+		angle1 = getAngleBetweenPoints(node1, node2)
+		angle2 = getAngleBetweenPoints(node2, node3)
+		# TODO: check italic angle for masters with an italic angle
+
+		is_extreme = angle1 == angle2 and isMultipleOf90(angle1)
+		return is_extreme
+	else:
+		return False
+
 class SelectionPalette(PalettePlugin):
 	def settings(self):
 		try:
@@ -56,51 +113,120 @@ class SelectionPalette(PalettePlugin):
 			# cache for vanilla buttons https://github.com/robotools/vanilla/issues/165
 			self.buttonList = []
 			# TODO width does not update on panel resize
-			self.width = 160
-			self.height = 185
+			self.width = 180
+			self.height = 200
 			types = (
-				("SmoothCurves", "Smooth", self.selectSmoothCurves_withOperation_),
-				("SharpCurves", "Sharp", self.selectSharpCurves_withOperation_),
-				("Lines", "Lines", self.selectLines_withOperation_),
-				("Handles", "Handles", self.selectHandles_withOperation_),
-				("Components", "Components", self.selectComponents_withOperation_),
-				("Anchors", "Anchors", self.selectAnchors_withOperation_),
-				("Guides", "Guides", self.selectGuides_withOperation_),
+				("smooth_nodes", self.selectSmoothCurves_withOperation_, [
+					"all",
+					"extremes",
+					"non_extremes",
+				]),
+				("sharp_nodes", self.selectSharpCurves_withOperation_, [
+					"all",
+					"extremes",
+					"non_extremes",
+				]),
+				("line_nodes", self.selectLines_withOperation_, [
+					"all",
+					"extremes",
+					"non_extremes",
+				]),
+				("handle_nodes", self.selectHandles_withOperation_, [
+					"all",
+					"extremes",
+					"non_extremes",
+				]),
+				("components", self.selectComponents_withOperation_, [
+					"unlocked",
+					"locked",
+					"all",
+				]),
+				("path_components", self.selectPathComponents_withOperation_, [
+					"all",
+					"corners",
+					"caps",
+					"segments",
+				]),
+				("anchors", self.selectAnchors_withOperation_, [
+					"all",
+					"anchors",
+					"underscored_anchors",
+					"entry",
+					"exit",
+				]),
+				("guides", self.selectGuides_withOperation_, [
+					"unlocked",
+					"locked",
+					"global",
+					"local",
+					"all",
+				]),
 				)
+			# generate list from types
+			self.rowSettings = list(map(lambda type: {
+				"key": type[0],
+				"icon": getImageViewFromPath("base/Icon=" + type[0]),
+				"label": translations[type[0]],
+				"callback": type[1],
+				"filters": type[2],
+				"filter": 0,
+				"enabled": True,
+			}, types))
 			self.paletteView = Window((self.width, self.height))
 			self.paletteView.group = Group((0, 0, self.width, self.height))
 			self.paletteView.group.stack = VerticalStackView((0, 0, self.width, self.height), views=[], spacing=4, edgeInsets=(4, 8, 8, 8), distribution="gravity", alignment="center")
 
-			addIcon = getImageViewFromPath('Union')
-			subtractIcon = getImageViewFromPath('Subtract')
-			intersectIcon = getImageViewFromPath('Intersect')
-			for type,label,callback in types:
+			addIcon = getImageViewFromPath('boolean/union')
+			subtractIcon = getImageViewFromPath('boolean/subtract')
+			intersectIcon = getImageViewFromPath('boolean/intersect')
+			for idx, (type,callback,filters) in enumerate(types):
+				rowSettings = self.rowSettings[idx]
+				typeLabel = translations[type]
+				
 				addButton = createImageButton(
 					icon=addIcon,
 					callback=lambda sender, callback=callback: callback(sender, Operation.ADD),
-					tooltip=translations["boolean_add"](label)
+					tooltip=translations["boolean_add"](typeLabel)
 				)
 				subtractButton = createImageButton(
 					icon=subtractIcon,
 					callback=lambda sender, callback=callback: callback(sender, Operation.SUBTRACT),
-					tooltip=translations["boolean_remove"](label)
+					tooltip=translations["boolean_remove"](typeLabel)
 				)
 				intersectionButton = createImageButton(
 					icon=intersectIcon,
 					callback=lambda sender, callback=callback: callback(sender, Operation.INTERSECT),
-					tooltip=translations["boolean_intersect"](label)
+					tooltip=translations["boolean_intersect"](typeLabel)
 				)
 				
-				self.buttonList.extend([addButton, subtractButton, intersectionButton])
+				selectedFilter = filters[rowSettings["filter"]]
+				rowFilterIcon = getImageViewFromPath("filter/Filter=" + selectedFilter)
 				
-				rowIcon = getImageViewFromPath(type)
+				filterButton = createImageButton(
+					icon=rowFilterIcon,
+					callback=lambda sender, callback=callback, idx=idx: self.updateFilter(sender, callback, idx),
+					tooltip=translations[selectedFilter]
+				)
+				
+				self.buttonList.extend([addButton, subtractButton, intersectionButton, filterButton])
+				
+				rowIcon = getImageViewFromPath("base/Icon=" + type)
 				rowImageView = ImageView((0, 0, 32, 32))
 				rowImageView.setImage(imageObject=rowIcon)
 				row = HorizontalStackView(
-					(0, 0, self.width, 0), 
+					(0, 0, self.width, 0),
 					views=[
-						dict(view=rowImageView, width=22),
 						# dict(view=TextBox("auto", text=label, sizeStyle="small"), width=72),
+						dict(view=HorizontalStackView(
+							(0, 0, 32, 0), 
+							views=[
+								dict(view=rowImageView, width=22),
+								dict(view=filterButton),
+							],
+							spacing=4,
+							alignment="center",
+							edgeInsets=(0, 0, 0, 0),
+						)),
 						dict(view=HorizontalStackView(
 							(0, 0, 12, 0),
 							views=[
@@ -111,9 +237,9 @@ class SelectionPalette(PalettePlugin):
 							spacing=8,
 						)),
 					],
-					spacing=24,
+					spacing=16,
 					distribution="equalSpacing",
-					alignment="leading",
+					alignment="center",
 					edgeInsets=(0, 0, 0, 0),
 				)
 				self.paletteView.group.stack.appendView(row)
@@ -125,6 +251,25 @@ class SelectionPalette(PalettePlugin):
 			print(traceback.format_exc())
 	def start(self):
 		self.addMenuItems()
+		
+	@objc.python_method
+	def updateFilter(self, sender, callback, idx):
+		try:
+			direction = -1 if Glyphs.currentDocument.windowController().AltKey() else 1
+			filtersLength = len(self.rowSettings[idx]["filters"])
+			self.rowSettings[idx]["filter"] = (self.rowSettings[idx]["filter"] + direction + filtersLength) % filtersLength
+			selectedFilter = self.rowSettings[idx]["filters"][self.rowSettings[idx]["filter"]]
+			rowFilterIcon = getImageViewFromPath("filter/Filter=" + selectedFilter)
+			sender.setImage(imageObject=rowFilterIcon)
+			sender.getNSButton().setToolTip_(translations[selectedFilter]) # tooltip doesn't update through vanilla interface
+		except:
+			print(traceback.format_exc())
+	
+	@objc.python_method
+	def getFilter(self, key):
+		rowSetting = next((item for item in self.rowSettings if item["key"] == key), None)
+		typeFilter = rowSetting["filters"][rowSetting["filter"]]
+		return typeFilter
 
 	def addMenuItems(self):
 		# Edit menu additions
@@ -141,12 +286,12 @@ class SelectionPalette(PalettePlugin):
 			Glyphs.menu[EDIT_MENU].submenu().insertItem_atIndex_(NSMenuItem.separatorItem(), selectionItemIndex)
 			selectionItemIndex += 1
 			menuItems = (
-				(translations["undo_selection"],          self.undoSelection_,          "Undo",     "["),
-				(translations["continue_selection"],      self.continueSelection_,      "Continue", "]"),
-				(translations["shrink_selection"],        self.shrinkSelection_,        "Shrink",   "-"),
-				(translations["grow_selection"],          self.growSelection_,          "Grow",     "+"),
-				(translations["select_between"],          self.fillSelection_,          "Between",  ":"),
-				(translations["select_linked_hints"],     self.selectLinkedHints_,      "Corners",  "<"),
+				(translations["undo_selection"],       self.undoSelection_,       "undo",      "["),
+				(translations["continue_selection"],   self.continueSelection_,   "continue",  "]"),
+				(translations["shrink_selection"],     self.shrinkSelection_,     "shrink",    "-"),
+				(translations["grow_selection"],       self.growSelection_,       "grow",      "+"),
+				(translations["select_between"],       self.fillSelection_,       "between",   ":"),
+				(translations["select_linked_hints"],  self.selectLinkedHints_,   "corners",   "<"),
 			)
 			for menuItemLabel,menuItemCallback,menuItemIconKey,menuItemKey in menuItems:
 				item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(menuItemLabel, menuItemCallback, menuItemKey)
@@ -332,7 +477,7 @@ class SelectionPalette(PalettePlugin):
 		except:
 			print(traceback.format_exc())
 
-	def selectNodesByType_andSmooth_withOperation_(self, type, smooth, operation):
+	def selectNodesByType_andSmooth_withOperation_andKey_(self, type, smooth, operation, key):
 		try:
 			selectionArray = []
 
@@ -340,6 +485,12 @@ class SelectionPalette(PalettePlugin):
 			for path in self.layer().paths:
 				for node in path.nodes:
 					conditions = []
+					
+					typeFilter = self.getFilter(key)
+					if (typeFilter == "extremes"):
+						conditions.append(is_node_extreme(node))
+					if (typeFilter == "non_extremes"):
+						conditions.append(not is_node_extreme(node))
 
 					# properties
 					end_of_open_path = not path.closed and (node.index == 0 or node.index == len(path.nodes) - 1)
@@ -396,35 +547,91 @@ class SelectionPalette(PalettePlugin):
 	# Selection Types
 	# 
 	def selectSmoothCurves_withOperation_(self, sender, operation):
-		# should select both line and curve nodes with smooth connections
-		self.selectNodesByType_andSmooth_withOperation_(CURVE, True, operation)
+		self.selectNodesByType_andSmooth_withOperation_andKey_(CURVE, True, operation, "smooth_nodes")
 	def selectSharpCurves_withOperation_(self, sender, operation):
-		self.selectNodesByType_andSmooth_withOperation_(CURVE, False, operation)
+		self.selectNodesByType_andSmooth_withOperation_andKey_(CURVE, False, operation, "sharp_nodes")
 	def selectLines_withOperation_(self, sender, operation):
-		self.selectNodesByType_andSmooth_withOperation_(LINE, None, operation)
+		self.selectNodesByType_andSmooth_withOperation_andKey_(LINE, None, operation, "line_nodes")
 	def selectHandles_withOperation_(self, sender, operation):
-		self.selectNodesByType_andSmooth_withOperation_(OFFCURVE, None, operation)
+		self.selectNodesByType_andSmooth_withOperation_andKey_(OFFCURVE, None, operation, "handle_nodes")
 	def selectAnchors_withOperation_(self, sender, operation):
 		selectionArray = []
+		
+		typeFilter = self.getFilter("anchors")
+		
 		anchors = self.layer().anchors
 		for anchor in anchors:
-			selectionArray.append(anchor)
+			if typeFilter == "all":
+				selectionArray.append(anchor)
+			elif typeFilter == "anchors" and anchor.name[0] != "_":
+				selectionArray.append(anchor)
+			elif typeFilter == "underscored_anchors" and anchor.name[0] == "_":
+				selectionArray.append(anchor)
+			elif typeFilter == "entry" and "entry" in anchor.name.lower():
+				selectionArray.append(anchor)
+			elif typeFilter == "exit" and "exit" in anchor.name.lower():
+				selectionArray.append(anchor)
+
 		self.performSelectionOnArray_andOperation_(selectionArray, operation)
 
 	def selectComponents_withOperation_(self, sender, operation):
 		selectionArray = []
+		
+		typeFilter = self.getFilter("components")
+		
 		for component in self.layer().components:
-			selectionArray.append(component)
+			if typeFilter == "all":
+				selectionArray.append(component)
+			elif typeFilter == "locked" and component.locked:
+				selectionArray.append(component)
+			elif typeFilter == "unlocked" and not component.locked:
+				selectionArray.append(component)
+
 		self.performSelectionOnArray_andOperation_(selectionArray, operation)
 	def selectGuides_withOperation_(self, sender, operation):
 		try:
 			selectionArray = []
 
-			# TODO: Currently disabled because global guides don't report / update `.selected` properly
+			allGuides = []
 			globalGuides = Glyphs.font.selectedFontMaster.guides
-			selectionArray.extend(globalGuides) 
 			localGuides = self.layer().guides
-			selectionArray.extend(localGuides)
+			allGuides.extend(globalGuides)
+			allGuides.extend(localGuides)
+
+			typeFilter = self.getFilter("guides")
+
+			for guide in allGuides:
+				if typeFilter == "all":
+					selectionArray.append(guide)
+				elif typeFilter == "locked" and guide.locked:
+					selectionArray.append(guide)
+				elif typeFilter == "unlocked" and not guide.locked:
+					selectionArray.append(guide)
+				elif typeFilter == "global" and guide in globalGuides:
+					selectionArray.append(guide)
+				elif typeFilter == "local" and guide in localGuides:
+					selectionArray.append(guide)
+
+			self.performSelectionOnArray_andOperation_(selectionArray, operation)
+		except:
+			print(traceback.format_exc())
+
+	def selectPathComponents_withOperation_(self, sender, operation):
+		try:
+			selectionArray = []
+
+			typeFilter = self.getFilter("path_components")
+
+			for hint in self.layer().hints:
+				# if hint.type is in [CORNER, CAP, SEGMENT]
+				if typeFilter == "all"        and hint.type in [CORNER, CAP, SEGMENT]:
+					selectionArray.append(hint)
+				elif typeFilter == "corners"  and hint.type == CORNER:
+					selectionArray.append(hint)
+				elif typeFilter == "caps"     and hint.type == CAP:
+					selectionArray.append(hint)
+				elif typeFilter == "segments" and hint.type == SEGMENT:
+					selectionArray.append(hint)
 
 			self.performSelectionOnArray_andOperation_(selectionArray, operation)
 		except:
@@ -432,6 +639,7 @@ class SelectionPalette(PalettePlugin):
 
 	# 
 	# Transfers, Links
+	# TODO: make these transfers optional, and allow for removing from selection or adding to selection
 	# 
 	
 	# Transfers selection from origin nodes to their connected corner components, caps, brushes(?)
