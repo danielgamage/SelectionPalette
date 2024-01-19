@@ -94,10 +94,10 @@ The palette in the sidebar contain selection operations for several types of ele
   
   Filters for:
   - All
-  - Anchors
-  - Underscored Anchors
-  - Entry
-  - Exit
+  - Anchors (for base glyphs)
+  - Underscored Anchors (for combining glyphs)
+  - Entry (for cursive attachment)
+  - Exit (for cursive attachment)
   
 - #### Guides
   Filters for:
